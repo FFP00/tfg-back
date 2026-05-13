@@ -1,15 +1,9 @@
 from datetime import datetime
 
-from app.endpoint.validation.roleSchema import RoleShow
 from sqlmodel import SQLModel
 
-'''
-class RoleShow(SQLModel):
-    id: int
-    titulo: str
+from app.endpoint.validation.roleSchema import RoleShow
 
-Esto se tiene que crear en roleSchema e importarlo
-'''
 
 class UserCreate(SQLModel):
     name:       str
@@ -29,8 +23,8 @@ class UserShow(SQLModel):
     status:     bool
 
     role:       RoleShow | None = None
-    created_at: datetime            | None = None
-    updated_at: datetime            | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
 
 

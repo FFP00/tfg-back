@@ -1,6 +1,12 @@
 from sqlmodel import SQLModel
 
 
+class RoleCreate(SQLModel):
+    name:   str | None = None
+
 class RoleShow(SQLModel):
-    id:     int
-    name:   str
+    name:   str | None = None
+
+class RolePatch(SQLModel):
+    name:   str | None = None
+
