@@ -1,0 +1,13 @@
+# Ignorar cualquier carpeta llamada "log"
+**/log/
+
+# Ignorar todos los .env
+*.env
+
+# No ignorar los .env.example
+!.env.example
+
+__pycache__/
+.venv/
+.uv_cache/
+.ruff_cache/
