@@ -1,5 +1,6 @@
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+
 from alembic import op
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 
 # revision identifiers, used by Alembic.
 revision        = "001"
@@ -10,7 +11,7 @@ depends_on      = None
 
 def upgrade():
     op.create_table("users",
-    
+
         Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
         Column("name",          String, nullable=False),
         Column("lastname",      String, nullable=False),

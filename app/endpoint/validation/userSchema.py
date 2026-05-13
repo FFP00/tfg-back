@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from sqlmodel import SQLModel
-
 from app.endpoint.validation.roleSchema import RoleShow
+from sqlmodel import SQLModel
 
 '''
 class RoleShow(SQLModel):
@@ -29,18 +28,18 @@ class UserShow(SQLModel):
     email:      str
     status:     bool
 
-    role:       Optional[RoleShow]  | None = None
+    role:       RoleShow | None = None
     created_at: datetime            | None = None
     updated_at: datetime            | None = None
 
 
 
 class UserPatch(SQLModel):
-    name:       Optional[str]   = None
-    lastname:   Optional[str]   = None
-    dni:        Optional[str]   = None
-    email:      Optional[str]   = None
-    password:   Optional[str]   = None
-    status:     Optional[bool]  = None
+    name:       str | None = None
+    lastname:   str | None = None
+    dni:        str | None = None
+    email:      str | None = None
+    password:   str | None = None
+    status:     bool| None = None
 
-    rol_id:     Optional[int]   = None
+    rol_id:     int | None = None

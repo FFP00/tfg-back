@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlmodel import Field, SQLModel
 
 
-class Users(SQLModel, table=True):
+class User(SQLModel, table=True):
 
     __tablename__ = "users"
 
