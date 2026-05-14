@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from app.endpoint.route.user import router as user_router
 from app.endpoint.route.role import router as role_router
+from app.endpoint.route.user import router as user_router
 from app.settings import settings
 
 app = FastAPI(title=settings.PROJECT_NAME)
