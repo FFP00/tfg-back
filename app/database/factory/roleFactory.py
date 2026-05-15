@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
@@ -10,8 +8,8 @@ fake = Faker(['es_ES'])
 
 class RoleFactory(SQLAlchemyFactory[Role]):
     __model__ = Role
-    id          = None
-    updated_at  = Use(datetime.now)
+    id = Use(lambda: None)
 
-    name      = Use(fake.job)
-    created_at  = Use(datetime.now)
+    name      = Use(fake.unique.job)
+    created_at  = Use(lambda: None)
+    updated_at  = Use(lambda: None)

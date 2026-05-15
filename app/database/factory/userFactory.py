@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
@@ -12,14 +10,17 @@ password_hasher = PasswordHash.recommended()
 
 class UserFactory(SQLAlchemyFactory[User]):
     __model__ = User
-    id          = None
-    status      = True
-    role_id     = None
-    updated_at  = Use(datetime.now)
-    created_at  = Use(datetime.now)
+    __set_relationships__ = False
+
+    id          = Use(lambda: None)
+    status      = Use(lambda: True)
+
 
     name      = Use(fake.first_name)
     lastname  = Use(fake.last_name)
     dni       = Use(lambda: fake.unique.bothify("########?").upper())
     email  = Use(fake.unique.email)
     password  = Use(lambda: password_hasher.hash("password123"))
+
+    updated_at  = Use(lambda: None)
+    created_at  = Use(lambda: None)

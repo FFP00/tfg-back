@@ -13,14 +13,15 @@ def seed_users(session: Session, count: int):
     users = []
     roles = session.exec(select(Role.id)).all()
 
+    if not roles:
+        logger.info("Saltando usuarios")
+        return
+
     for _ in range(count):
         role = secrets.choice(roles)
 
-        if not roles:
-            logger.info("Saltando usuarios")
-            return
-
-        user = UserFactory.build(role_id=role)
+        user = UserFactory.build()
+        user.role_id=role
         users.append(user)
 
     session.add_all(users)

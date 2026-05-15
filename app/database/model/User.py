@@ -1,6 +1,9 @@
 from datetime import datetime
 
-from sqlmodel import Field, SQLModel
+from sqlalchemy import Column, DateTime, func
+from sqlmodel import Field, Relationship, SQLModel
+
+from app.database.model.Role import Role
 
 
 class User(SQLModel, table=True):
@@ -13,8 +16,10 @@ class User(SQLModel, table=True):
     dni:            str             = Field(unique=True, nullable=False)
     email:          str             = Field(unique=True, nullable=False)
     password:       str             = Field(nullable=False)
-    status:         bool            = Field(default=False, nullable=False)
+    status:         bool            = Field(default=True, nullable=False)
 
-    role_id:        int             = Field(foreign_key="roles.id", nullable=False)
-    created_at:     datetime | None = Field(default=None)
-    updated_at:     datetime | None = Field(default=None)
+    role_id:        int      | None = Field(default=None, foreign_key="roles.id", nullable=True)
+    created_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+    updated_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False, default=None))
+
+    role:           Role     | None = Relationship(sa_relationship_kwargs={"lazy": "joined"})

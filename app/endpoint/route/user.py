@@ -6,12 +6,16 @@ from app.endpoint.validation.userSchema import UserCreate as CreateValidation
 from app.endpoint.validation.userSchema import UserPatch as PatchValidation
 from app.endpoint.validation.userSchema import UserShow as ShowValidation
 from app.settings.connection import get_session
+from pwdlib import PasswordHash
 
+# Argon2 es el estándar de oro actual para contraseñas
+hasher = PasswordHash.recommended()
 router = APIRouter()
 
 @router.post("/", response_model=ShowValidation, status_code=201)
 def create(payload: CreateValidation, session: Session = Depends(get_session)):
     user = User.model_validate(payload)
+    user.password = hasher.hash(user.password)
     session.add(user)
     session.commit()
     session.refresh(user)
@@ -61,6 +65,7 @@ def update(id: int, payload: PatchValidation, session: Session = Depends(get_ses
 
     user.sqlmodel_update(payload.model_dump(exclude_unset=True))
 
+    user.password = hasher.hash(user.password)
     session.add(user)
     session.commit()
     session.refresh(user)
@@ -76,6 +81,7 @@ def update_by_dni(dni: str, payload: PatchValidation, session: Session = Depends
 
     user.sqlmodel_update(payload.model_dump(exclude_unset=True))
 
+    user.password = hasher.hash(user.password)
     session.add(user)
     session.commit()
     session.refresh(user)
@@ -91,6 +97,7 @@ def update_by_email(email: str, payload: PatchValidation, session: Session = Dep
 
     user.sqlmodel_update(payload.model_dump(exclude_unset=True))
 
+    user.password = hasher.hash(user.password)
     session.add(user)
     session.commit()
     session.refresh(user)

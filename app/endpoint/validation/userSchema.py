@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from app.endpoint.validation.roleSchema import RoleShow
+from app.endpoint.validation.roleSchema import RoleCreate, RoleShow
 
 
 class UserCreate(SQLModel):
@@ -11,8 +11,6 @@ class UserCreate(SQLModel):
     dni:        str
     email:      str
     password:   str
-    status:     bool
-
 
 
 class UserShow(SQLModel):
@@ -34,6 +32,5 @@ class UserPatch(SQLModel):
     dni:        str | None = None
     email:      str | None = None
     password:   str | None = None
-    status:     bool| None = None
 
-    rol_id:     int | None = None
+    role_id:     int | None = None
