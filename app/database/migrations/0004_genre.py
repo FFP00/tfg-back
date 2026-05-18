@@ -1,25 +1,19 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import Column, DateTime, Integer, String, func
 
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision        = "001"
-down_revision   = "000"
+revision        = "004"
+down_revision   = "003"
 branch_labels   = None
 depends_on      = None
 
 def upgrade():
-    t = op.create_table("users",
+    t = op.create_table("genre",
 
         Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("name", String, nullable=False),
-        Column("lastname", String, nullable=False),
-        Column("dni", String, nullable=False, unique=True),
-        Column("email", String, nullable=False, unique=True),
-        Column("password", String, nullable=False),
-        Column("status", Boolean, default=True, nullable=False),
+        Column("name", String, nullable=False, unique=True),
 
-        Column("role_id", Integer, ForeignKey("roles.id"), nullable=True, default=None),
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
         Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
     )
@@ -41,4 +35,4 @@ def upgrade():
     """)
 
 def downgrade():
-    op.drop_table("users")
+    op.drop_table("genre")
