@@ -2,14 +2,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME:               str | None = None
-    POSTGRES_SERVER:            str | None = None
-    POSTGRES_USER:              str | None = None
-    POSTGRES_PASSWORD:          str | None = None
-    POSTGRES_DB:                str | None = None
-    POSTGRES_PORT:              int | None = None
-    FIRST_SUPERUSER:            str | None = None
-    FIRST_SUPERUSER_PASSWORD:   str | None = None
+    PROJECT_NAME:               str = ""
+    POSTGRES_SERVER:            str = ""
+    POSTGRES_USER:              str = ""
+    POSTGRES_PASSWORD:          str = ""
+    POSTGRES_DB:                str = ""
+    POSTGRES_PORT:              int = 0
 
     @property
     def DATABASE_URL(self) -> str:

@@ -2,7 +2,7 @@ import logging
 
 from sqlmodel import Session
 
-from app.database.factory.roleFactory import RoleFactory
+from app.database.factories.roleFactory import RoleFactory
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

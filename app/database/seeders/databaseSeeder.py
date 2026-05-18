@@ -2,16 +2,16 @@ import logging
 
 from sqlmodel import Session
 
-from app.database.seeder.roleSeeder import seed_roles
-from app.database.seeder.userSeeder import seed_users
-from app.settings.connection import engine
+from app.config.database import engine
+from app.database.seeders.roleSeeder import seed_roles
+from app.database.seeders.userSeeder import seed_users
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def run_seed():
 
-    logger.info("Iniciando DatabaseSeeder...")
+    logger.info("Iniciando databaseSeeder.py")
     with Session(engine) as session:
         try:
 

@@ -1,5 +1,5 @@
 PYTHON = uv run
-SEEDER = app/database/seeder/databaseSeeder.py
+SEEDER = app/database/seeders/databaseSeeder.py
 
 migrate-fresh-seed:
 	@$(PYTHON) alembic downgrade base

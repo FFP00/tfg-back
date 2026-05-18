@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from app.endpoint.validation.roleSchema import RoleCreate, RoleShow
+from app.endpoint.schemas.roleSchema import RoleShow
 
 
 class UserCreate(SQLModel):

@@ -1,35 +1,24 @@
-# 1. Todas las importaciones arriba (Corrige E402)
+import logging
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
 from sqlmodel import SQLModel
 
-import app.database.model  # noqa: F401
 from alembic import context
-from app.settings import settings
+from app.config.database import engine
+from app.config.settings import settings
 
-# Obtener el objeto de configuración de Alembic
-config = context.config
+if context.config.config_file_name is not None:
+    fileConfig(context.config.config_file_name)
 
-# 2. Configuración de logging sin usar 'assert' (Corrige S101)
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
-else:
-    # Opcional: manejar el error si el archivo no existe
-    pass
+logger = logging.getLogger(__name__)
 
-# Definir el metadata para autogenerate
-target_metadata = SQLModel.metadata
 
-def get_url() -> str:
-    return str(settings.SQLALCHEMY_DATABASE_URI)
+def offline() -> None:
+    logger.info("Realizando migraciones offline.")
 
-def run_migrations_offline():
-    """Ejecutar migraciones en modo 'offline'."""
-    url = get_url()
     context.configure(
-        url=url,
-        target_metadata=target_metadata,
+        url=settings.DATABASE_URL,
+        target_metadata=SQLModel.metadata,
         literal_binds=True,
         compare_type=True,
     )
@@ -37,29 +26,21 @@ def run_migrations_offline():
     with context.begin_transaction():
         context.run_migrations()
 
-def run_migrations_online():
-    """Ejecutar migraciones en modo 'online'."""
-    # Asegurar que obtenemos la sección de configuración
-    configuration = config.get_section(config.config_ini_section) or {}
-    configuration["sqlalchemy.url"] = get_url()
 
-    connectable = engine_from_config(
-        configuration,
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+def online() -> None:
+    logger.info("Realizando migraciones online.")
 
-    with connectable.connect() as connection:
+    with engine.connect() as connection:
         context.configure(
             connection=connection,
-            target_metadata=target_metadata,
-            compare_type=True
+            target_metadata=SQLModel.metadata,
+            compare_type=True,
         )
 
         with context.begin_transaction():
             context.run_migrations()
 
 if context.is_offline_mode():
-    run_migrations_offline()
+    offline()
 else:
-    run_migrations_online()
+    online()

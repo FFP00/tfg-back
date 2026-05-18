@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Column, DateTime, func
 from sqlmodel import Field, Relationship, SQLModel
 
-from app.database.model.Role import Role
+from app.endpoint.models.RoleModel import Role
 
 
 class User(SQLModel, table=True):

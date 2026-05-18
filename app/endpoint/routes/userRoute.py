@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
+from pwdlib import PasswordHash
 from sqlmodel import Session, select
 
-from app.database.model.User import User
-from app.endpoint.validation.userSchema import UserCreate as CreateValidation
-from app.endpoint.validation.userSchema import UserPatch as PatchValidation
-from app.endpoint.validation.userSchema import UserShow as ShowValidation
-from app.settings.connection import get_session
-from pwdlib import PasswordHash
+from app.config.database import get_session
+from app.endpoint.models.UserModel import User
+from app.endpoint.schemas.userSchema import UserCreate as CreateValidation
+from app.endpoint.schemas.userSchema import UserPatch as PatchValidation
+from app.endpoint.schemas.userSchema import UserShow as ShowValidation
 
 # Argon2 es el estándar de oro actual para contraseñas
 hasher = PasswordHash.recommended()
