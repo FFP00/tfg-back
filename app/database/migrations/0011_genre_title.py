@@ -1,5 +1,4 @@
 from sqlalchemy import (
-    Boolean,
     Column,
     DateTime,
     ForeignKey,
@@ -19,7 +18,6 @@ def upgrade():
     t = op.create_table("genre_title",
 
         Column("id", Integer, primary_key=True, nullable=True, default=None),
-        Column("status", Boolean, nullable=False),
 
         Column("title_id", Integer, ForeignKey("title.id"), nullable=True, default=None),
         Column("genre_id", Integer, ForeignKey("genre.id"), nullable=True, default=None),

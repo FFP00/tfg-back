@@ -1,10 +1,9 @@
 import logging
 import secrets
 
-from sqlmodel import Session, select
-
 from app.database.factories.userFactory import UserFactory
 from app.endpoint.models.RoleModel import Role
+from sqlmodel import Session, select
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

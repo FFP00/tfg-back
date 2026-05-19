@@ -1,9 +1,9 @@
 from sqlalchemy import (
     Column,
     DateTime,
-    Double,
     ForeignKey,
     Integer,
+    Numeric,
     func,
 )
 
@@ -19,7 +19,7 @@ def upgrade():
     t = op.create_table("title_transaction",
 
         Column("id", Integer, primary_key=True, nullable=True, default=None),
-        Column("price", Double, nullable=False),
+        Column("price", Numeric(precision=10, scale=2), nullable=False),
         Column("discount", Integer, nullable=False),
 
         Column("title_id", Integer, ForeignKey("title.id"), nullable=True, default=None),

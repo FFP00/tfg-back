@@ -5,6 +5,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
+    Numeric,
     String,
     func,
 )
@@ -25,7 +26,7 @@ def upgrade():
         Column("status", Boolean, nullable=False),
         Column("actual_discount", Integer, nullable=False),
         Column("release_date", Date, nullable=False),
-        Column("release_price", Integer, nullable=False),
+        Column("release_price", Numeric(precision=10, scale=2), nullable=False),
 
         Column("developer_id", Integer, ForeignKey("developer.id"), nullable=True, default=None),
         Column("media_id", Integer, ForeignKey("media.id"), nullable=True, default=None),

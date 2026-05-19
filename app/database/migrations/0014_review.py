@@ -23,7 +23,7 @@ def upgrade():
         Column("content", String, nullable=False),
         Column("votes", Integer, nullable=False),
         Column("recommends", Boolean, nullable=False),
-        Column("status", Boolean, nullable=False),
+        Column("status", Boolean, nullable=False, default=False),
 
         Column("customer_title_id", Integer, ForeignKey("customer_title.id"), nullable=True, default=None),
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),

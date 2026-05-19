@@ -21,7 +21,7 @@ def upgrade():
         Column("playtime", Integer, nullable=False),
 
         Column("title_id", Integer, ForeignKey("title.id"), nullable=True, default=None),
-        Column("genre_id", Integer, ForeignKey("genre.id"), nullable=True, default=None),
+        Column("customer_id", Integer, ForeignKey("customer.id"), nullable=True, default=None),
 
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
         Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),

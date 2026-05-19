@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
-
-from app.config.database import get_session
 from app.endpoint.models.RoleModel import Role
 from app.endpoint.schemas.roleSchema import RoleCreate as CreateValidation
 from app.endpoint.schemas.roleSchema import RolePatch as PatchValidation
 from app.endpoint.schemas.roleSchema import RoleShow as ShowValidation
+from fastapi import APIRouter, Depends, HTTPException
+from sqlmodel import Session, select
+
+from app.config.database import get_session
 
 router = APIRouter()
 

@@ -1,4 +1,12 @@
-from sqlalchemy import CheckConstraint, Column, DateTime, ForeignKey, Integer, func
+from sqlalchemy import (
+    CheckConstraint,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    func,
+)
 
 from alembic import op
 
@@ -12,7 +20,7 @@ def upgrade():
     t = op.create_table("wallet",
 
         Column("customer_id", Integer, ForeignKey("customer.id"), primary_key=True, nullable=True, default=None),
-        Column("balance", Integer, nullable=False, unique=True),
+        Column("balance", Numeric(precision=10, scale=2), nullable=False, unique=True),
 
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
         Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),

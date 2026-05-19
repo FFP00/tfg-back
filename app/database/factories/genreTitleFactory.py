@@ -2,14 +2,15 @@ from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.endpoint.models.RoleModel import Role
+from app.endpoint.models.GenreTitleModel import GenreTitle
 
 fake = Faker(['es_ES'])
 
-class RoleFactory(SQLAlchemyFactory[Role]):
-    __model__ = Role
-    id = Use(lambda: None)
+class GenreTitleFactory(SQLAlchemyFactory[GenreTitle]):
+    __model__ = GenreTitle
+    __set_relationships__ = False
 
-    name      = Use(fake.unique.job)
+    id          = Use(lambda: None)
+
     created_at  = Use(lambda: None)
     updated_at  = Use(lambda: None)
