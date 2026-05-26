@@ -11,3 +11,6 @@ __pycache__/
 .venv/
 .uv_cache/
 .ruff_cache/
+
+steam/
+context/
