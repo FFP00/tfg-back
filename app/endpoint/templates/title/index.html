@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Titles{% endblock %}
+
+{% block header %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Listado de Titles</h2>
+        <a href="/views/title/create"
+           class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
+            + Nuevo Title
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+        <!-- Buscador -->
+        <div class="bg-white p-6 shadow-sm rounded-lg mb-6 border border-gray-100">
+            <h3 class="font-bold mb-2 text-gray-700">Buscar titles</h3>
+            <form method="GET">
+                <input type="text" name="search" value="{{ search or '' }}"
+                       placeholder="Buscar por nombre..."
+                       class="w-full border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
+            </form>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            {% for title in titles %}
+            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+                <h1 class="text-xl"><strong>{{ title.name }}</strong></h1>
+                <br>
+                <div class="space-y-1 text-gray-700">
+                    <p><strong>ID:</strong> {{ title.id }}</p>
+                    <p>
+                        <strong>Estado:</strong>
+                        {% if title.status %}
+                            <span class="text-emerald-500 font-semibold">Activo</span>
+                        {% else %}
+                            <span class="text-red-500 font-semibold">Inactivo</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Descuento actual:</strong> {{ title.actual_discount }}%</p>
+                    <p><strong>Fecha de lanzamiento:</strong> {{ title.release_date }}</p>
+                    <p><strong>Precio de lanzamiento:</strong> ${{ title.release_price }}</p>
+                    <p><strong>Developer ID:</strong>
+                        {% if title.developer_id %}
+                            <a href="/views/developer/{{ title.developer_id }}" class="text-indigo-600 hover:underline">#{{ title.developer_id }}</a>
+                        {% else %}N/A{% endif %}
+                    </p>
+                    <p><strong>Media ID:</strong>
+                        {% if title.media_id %}
+                            <a href="/views/media/{{ title.media_id }}" class="text-indigo-600 hover:underline">#{{ title.media_id }}</a>
+                        {% else %}N/A{% endif %}
+                    </p>
+                    <p><span class="font-medium text-gray-600">created at:</span> {{ title.created_at }}</p>
+                    <p><span class="font-medium text-gray-600">updated at:</span> {{ title.updated_at }}</p>
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex gap-2">
+                        <a href="/views/title/{{ title.id }}"
+                           class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
+                        <a href="/views/title/{{ title.id }}/edit"
+                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
+                    </div>
+                    <form action="/views/title/{{ title.id }}/delete" method="POST"
+                          onsubmit="return confirm('¿Seguro?')">
+                        <button type="submit"
+                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">
+                No se encontraron titles.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

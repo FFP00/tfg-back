@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Title #{{ title.id }}{% endblock %}
+
+{% block header %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl font-semibold text-gray-800">Editar Title</h2>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-6">
+    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <form action="/views/title/{{ title.id }}/update" method="POST" class="space-y-4">
+
+                <div>
+                    <label class="block font-medium text-gray-700">Nombre</label>
+                    <input type="text" name="name"
+                           value="{{ form.name if form else title.name }}"
+                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Estado</label>
+                    <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+                        {% set cur = (form.status if form else title.status) %}
+                        <option value="true"  {{ 'selected' if cur == true }}>Activo</option>
+                        <option value="false" {{ 'selected' if cur == false }}>Inactivo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Descuento actual (%)</label>
+                    <input type="number" name="actual_discount"
+                           value="{{ form.actual_discount if form else title.actual_discount }}"
+                           min="0" max="100"
+                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Fecha de lanzamiento</label>
+                    <input type="date" name="release_date"
+                           value="{{ form.release_date if form else title.release_date }}"
+                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Precio de lanzamiento ($)</label>
+                    <input type="number" name="release_price"
+                           value="{{ form.release_price if form else title.release_price }}"
+                           step="0.01" min="0"
+                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Developer</label>
+                    <select name="developer_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+                        <option value="">— Sin developer —</option>
+                        {% set cur_dev = (form.developer_id if form else title.developer_id) %}
+                        {% for d in developers %}
+                        <option value="{{ d.id }}" {{ 'selected' if cur_dev == d.id }}>{{ d.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Media</label>
+                    <select name="media_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+                        <option value="">— Sin media —</option>
+                        {% set cur_media = (form.media_id if form else title.media_id) %}
+                        {% for m in medias %}
+                        <option value="{{ m.id }}" {{ 'selected' if cur_media == m.id }}>
+                            #{{ m.id }} — {{ m.path_300x450 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="pt-4 flex gap-3">
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+                        Actualizar
+                    </button>
+                    <a href="/views/title/{{ title.id }}"
+                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

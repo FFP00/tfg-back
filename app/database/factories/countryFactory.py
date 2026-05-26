@@ -11,8 +11,9 @@ class CountryFactory(SQLAlchemyFactory[Country]):
     __set_relationships__ = False
 
     id          = Use(lambda: None)
-    name        = Use(fake.unique.country)
-    code        = Use(fake.unique.country_code)
+    name        = Use(lambda: None)
+    en_name     = Use(lambda: None)
+    code        = Use(lambda: None)
 
     created_at  = Use(lambda: None)
     updated_at  = Use(lambda: None)

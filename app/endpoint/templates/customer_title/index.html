@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Customer‑Titles{% endblock %}
+
+{% block header %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Listado de Customer‑Titles</h2>
+        <a href="/views/customer_title/create"
+           class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
+            + Nuevo Customer‑Title
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-4">
+            {% for ct in customer_titles %}
+            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+                <h1 class="text-xl">
+                    <strong>Customer #{{ ct.customer_id }} — Title #{{ ct.title_id }}</strong>
+                </h1>
+                <br>
+                <div class="space-y-1 text-gray-700">
+                    <p><strong>ID:</strong> {{ ct.id }}</p>
+                    <p><strong>Customer:</strong>
+                        <a href="/views/customer/{{ ct.customer_id }}" class="text-indigo-600 hover:underline">#{{ ct.customer_id }}</a>
+                    </p>
+                    <p><strong>Title:</strong>
+                        <a href="/views/title/{{ ct.title_id }}" class="text-indigo-600 hover:underline">#{{ ct.title_id }}</a>
+                    </p>
+                    <p><strong>Playtime:</strong> {{ ct.playtime }} min</p>
+                    <p><span class="font-medium text-gray-600">created at:</span> {{ ct.created_at }}</p>
+                    <p><span class="font-medium text-gray-600">updated at:</span> {{ ct.updated_at }}</p>
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex gap-2">
+                        <a href="/views/customer_title/{{ ct.id }}"
+                           class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
+                        <a href="/views/customer_title/{{ ct.id }}/edit"
+                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
+                    </div>
+                    <form action="/views/customer_title/{{ ct.id }}/delete" method="POST"
+                          onsubmit="return confirm('¿Seguro?')">
+                        <button type="submit"
+                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">
+                No se encontraron customer‑titles.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

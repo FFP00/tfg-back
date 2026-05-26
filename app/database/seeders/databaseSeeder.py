@@ -3,8 +3,7 @@ import logging
 from sqlmodel import Session
 
 from app.config.database import engine
-from app.database.seeders.countrySeeder import seed_countries
-from app.database.seeders.currencySeeder import seed_currencies
+from app.database.seeders.countrySeeder import seed_currencies_countries
 from app.database.seeders.customerSeeder import seed_customers
 from app.database.seeders.customerTitleSeeder import seed_customers_titles
 from app.database.seeders.developerSeeder import seed_developers
@@ -28,11 +27,10 @@ def run_seed():
     with Session(engine) as session:
         try:
 
-            seed_currencies             (session, count=150)
+            seed_currencies_countries   (session)
             seed_images                 (session, count=150)
             seed_medias                 (session, count=150)
             seed_genres                 (session, count=15)
-            seed_countries              (session, count=150)
             seed_developers             (session, count=150)
             seed_customers              (session, count=150)
             seed_titles                 (session, count=150)

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Review #{{ review.id }}{% endblock %}
+
+{% block header %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl font-semibold text-gray-800">Editar Review</h2>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-6">
+    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <form action="/views/review/{{ review.id }}/update" method="POST" class="space-y-4">
+
+                <div>
+                    <label class="block font-medium text-gray-700">Contenido</label>
+                    <textarea name="content" rows="4"
+                              class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">{{ form.content if form else review.content }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Votos</label>
+                    <input type="number" name="votes"
+                           value="{{ form.votes if form else review.votes }}"
+                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">¿Recomienda?</label>
+                    <select name="recommends" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+                        {% set cur_r = (form.recommends if form else review.recommends) %}
+                        <option value="true"  {{ 'selected' if cur_r == true }}>Sí</option>
+                        <option value="false" {{ 'selected' if cur_r == false }}>No</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Estado</label>
+                    <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+                        {% set cur_s = (form.status if form else review.status) %}
+                        <option value="false" {{ 'selected' if cur_s == false }}>Pendiente</option>
+                        <option value="true"  {{ 'selected' if cur_s == true }}>Publicada</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700">Customer‑Title</label>
+                    <select name="customer_title_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+                        <option value="">— Sin customer‑title —</option>
+                        {% set cur_ct = (form.customer_title_id if form else review.customer_title_id) %}
+                        {% for ct in customer_titles %}
+                        <option value="{{ ct.id }}" {{ 'selected' if cur_ct == ct.id }}>
+                            #{{ ct.id }} — Customer #{{ ct.customer_id }} / Title #{{ ct.title_id }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="pt-4 flex gap-3">
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+                        Actualizar
+                    </button>
+                    <a href="/views/review/{{ review.id }}"
+                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

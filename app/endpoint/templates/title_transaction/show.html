@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Title‑Transaction #{{ title_transaction.id }}{% endblock %}
+
+{% block header %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl font-semibold text-gray-800">Detalles de Title‑Transaction</h2>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="flex flex-col">
+            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+                <h1 class="text-xl">
+                    <strong>Title #{{ title_transaction.title_id }} — Transaction #{{ title_transaction.transaction_id }}</strong>
+                </h1>
+                <br>
+                <div class="space-y-1 text-gray-700">
+                    <p><strong>ID:</strong> {{ title_transaction.id }}</p>
+                    <p><strong>Precio:</strong> ${{ title_transaction.price }}</p>
+                    <p><strong>Descuento:</strong> {{ title_transaction.discount }}%</p>
+                    <p><strong>Title:</strong>
+                        <a href="/views/title/{{ title_transaction.title_id }}" class="text-indigo-600 hover:underline">#{{ title_transaction.title_id }}</a>
+                    </p>
+                    <p><strong>Transaction:</strong>
+                        <a href="/views/transaction/{{ title_transaction.transaction_id }}" class="text-indigo-600 hover:underline">#{{ title_transaction.transaction_id }}</a>
+                    </p>
+                    <p><span class="font-medium text-gray-600">created at:</span> {{ title_transaction.created_at }}</p>
+                    <p><span class="font-medium text-gray-600">updated at:</span> {{ title_transaction.updated_at }}</p>
+                </div>
+                <br>
+                <div class="flex justify-between items-center">
+                    <div class="flex gap-2">
+                        <a href="/views/title_transaction/"
+                           class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
+                        <a href="/views/title_transaction/{{ title_transaction.id }}/edit"
+                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
+                    </div>
+                    <form action="/views/title_transaction/{{ title_transaction.id }}/delete" method="POST"
+                          onsubmit="return confirm('¿Seguro?')">
+                        <button type="submit"
+                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

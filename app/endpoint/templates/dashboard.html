@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block header %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Dashboard</h2>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
+            <div class="p-6 text-gray-900 text-lg">
+                Bienvenido al panel de administración de <strong>GameStore</strong>.
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {% set entities = [
+                ("Currency",          "/views/currency/"),
+                ("Genre",             "/views/genre/"),
+                ("Image",             "/views/image/"),
+                ("Media",             "/views/media/"),
+                ("Country",           "/views/country/"),
+                ("Developer",         "/views/developer/"),
+                ("Customer",          "/views/customer/"),
+                ("Title",             "/views/title/"),
+                ("Wallet",            "/views/wallet/"),
+                ("Friendship",        "/views/friendship/"),
+                ("Genre‑Title",       "/views/genre_title/"),
+                ("Customer‑Title",    "/views/customer_title/"),
+                ("Transaction",       "/views/transaction/"),
+                ("Review",            "/views/review/"),
+                ("Title‑Transaction", "/views/title_transaction/")
+            ] %}
+            {% for name, url in entities %}
+            <a href="{{ url }}"
+               class="bg-white p-6 shadow-sm rounded-lg border border-gray-100 hover:border-indigo-300 hover:shadow transition text-center">
+                <p class="text-sm font-semibold text-gray-700">{{ name }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

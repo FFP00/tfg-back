@@ -13,6 +13,7 @@ def upgrade():
 
         Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
         Column("name", String, nullable=False, unique=True),
+        Column("en_name", String, nullable=False, unique=True),
         Column("code", String, nullable=False, unique=True),
 
         Column("currency_id", Integer, ForeignKey("currency.id"), nullable=True, default=None),

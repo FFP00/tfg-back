@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} — GameStore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans antialiased min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="/views/" class="text-lg font-bold text-gray-900 shrink-0">🎮 GameStore</a>
+
+                <div class="flex flex-wrap gap-x-4 gap-y-1 justify-end text-xs font-medium text-gray-600">
+                    <a href="/views/currency/"          class="hover:text-indigo-600 transition">Currency</a>
+                    <a href="/views/genre/"             class="hover:text-indigo-600 transition">Genre</a>
+                    <a href="/views/image/"             class="hover:text-indigo-600 transition">Image</a>
+                    <a href="/views/media/"             class="hover:text-indigo-600 transition">Media</a>
+                    <a href="/views/country/"           class="hover:text-indigo-600 transition">Country</a>
+                    <a href="/views/developer/"         class="hover:text-indigo-600 transition">Developer</a>
+                    <a href="/views/customer/"          class="hover:text-indigo-600 transition">Customer</a>
+                    <a href="/views/title/"             class="hover:text-indigo-600 transition">Title</a>
+                    <a href="/views/wallet/"            class="hover:text-indigo-600 transition">Wallet</a>
+                    <a href="/views/friendship/"        class="hover:text-indigo-600 transition">Friendship</a>
+                    <a href="/views/genre_title/"       class="hover:text-indigo-600 transition">Genre‑Title</a>
+                    <a href="/views/customer_title/"    class="hover:text-indigo-600 transition">Customer‑Title</a>
+                    <a href="/views/transaction/"       class="hover:text-indigo-600 transition">Transaction</a>
+                    <a href="/views/review/"            class="hover:text-indigo-600 transition">Review</a>
+                    <a href="/views/title_transaction/" class="hover:text-indigo-600 transition">Title‑Transaction</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page header -->
+    {% block header %}{% endblock %}
+
+    <!-- Flash messages -->
+    {% if success %}
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+            <div class="p-3 bg-green-100 text-green-800 rounded shadow-sm">{{ success }}</div>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+            <div class="p-3 bg-red-100 text-red-800 rounded shadow-sm">{{ error }}</div>
+        </div>
+    {% endif %}
+    {% if errors %}
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+            <div class="p-4 bg-red-100 text-red-700 rounded">
+                <ul class="list-disc ml-5">
+                    {% for e in errors %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
