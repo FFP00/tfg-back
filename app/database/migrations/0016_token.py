@@ -1,26 +1,19 @@
-from sqlalchemy import Column, DateTime, Integer, LargeBinary, func
+from sqlalchemy import Column, DateTime, Integer, String, func
 
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision        = "003"
-down_revision   = "002"
+revision        = "016"
+down_revision   = "015"
 branch_labels   = None
 depends_on      = None
 
 def upgrade():
-    t = op.create_table("media",
+    t = op.create_table("token",
 
-        Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("capsule", LargeBinary(), nullable=False),
-        Column("header",  LargeBinary(), nullable=False),
-        Column("store_1", LargeBinary(), nullable=False),
-        Column("store_2", LargeBinary(), nullable=True),
-        Column("store_3", LargeBinary(), nullable=True),
-        Column("store_4", LargeBinary(), nullable=True),
-        Column("store_5", LargeBinary(), nullable=True),
-        Column("store_6", LargeBinary(), nullable=True),
-        Column("trailer", LargeBinary(), nullable=True),
+        Column("id",         Integer, primary_key=True, autoincrement=True, nullable=False),
+        Column("token",      String,  nullable=False, unique=True),
+        Column("user_id",    Integer, nullable=False),
 
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
         Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
@@ -43,4 +36,4 @@ def upgrade():
     """)
 
 def downgrade():
-    op.drop_table("media")
+    op.drop_table("token")

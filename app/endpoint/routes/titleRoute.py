@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 from app.config.database import get_session
@@ -8,6 +9,15 @@ from app.endpoint.schemas.titleSchema import TitlePatch as PatchValidation
 from app.endpoint.schemas.titleSchema import TitleShow as ShowValidation
 
 router = APIRouter()
+
+
+@router.get("/random", response_model=ShowValidation, status_code=200)
+def random_title(session: Session = Depends(get_session)):
+    title = session.exec(select(Title).where(Title.status).order_by(func.random()).limit(1)).first()
+    if not title:
+        raise HTTPException(status_code=404, detail="No titles available")
+    return title
+
 
 @router.post("/", response_model=ShowValidation, status_code=201)
 def create(payload: CreateValidation, session: Session = Depends(get_session)):

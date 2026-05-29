@@ -4,7 +4,7 @@ from decimal import Decimal
 from sqlmodel import SQLModel
 
 from app.endpoint.schemas.developerSchema import DeveloperShow
-from app.endpoint.schemas.mediaSchema import MediaShow
+from app.endpoint.schemas.mediaSchema import MediaShowLite
 
 
 class TitleCreate(SQLModel):
@@ -24,7 +24,7 @@ class TitleShow(SQLModel):
     release_price:    Decimal
 
     developer:        DeveloperShow | None = None
-    media:            MediaShow     | None = None
+    media:            MediaShowLite | None = None
     created_at:       datetime      | None = None
     updated_at:       datetime      | None = None
 

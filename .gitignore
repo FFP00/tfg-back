@@ -12,5 +12,6 @@ __pycache__/
 .uv_cache/
 .ruff_cache/
 
-steam/
+
+*/public/image/
 context/

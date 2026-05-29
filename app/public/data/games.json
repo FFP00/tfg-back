@@ -1,0 +1,2971 @@
+[
+  {
+    "name": "The WereCleaner",
+    "description": "Kyle is a Janitor. He's also a Werewolf. And now he's got the night shift. Try not to kill anyone while working to get your paycheck - in a stealth-comedy game with surprises around every corner.",
+    "release_date": "2024-05-07",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/the_werecleaner/header.jpg",
+      "library_capsule": "/workdir/app/public/image/the_werecleaner/capsule.jpg",
+      "trailer": "/workdir/app/public/image/the_werecleaner/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/the_werecleaner/store_1.jpg",
+        "/workdir/app/public/image/the_werecleaner/store_2.jpg",
+        "/workdir/app/public/image/the_werecleaner/store_3.jpg",
+        "/workdir/app/public/image/the_werecleaner/store_4.jpg",
+        "/workdir/app/public/image/the_werecleaner/store_5.jpg",
+        "/workdir/app/public/image/the_werecleaner/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "Strategy",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Howlin' Hugs",
+      "email": "thewerecleaner@gmail.com",
+      "website_url": "https://linktr.ee/thewerecleaner",
+      "support_email": "support@howlinhugs.com"
+    }
+  },
+  {
+    "name": "A Short Hike",
+    "description": "Hike, climb, and soar through the peaceful mountainside landscapes of Hawk Peak Provincial Park as you make your way to the summit.",
+    "release_date": "2019-07-30",
+    "release_price": 7.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/a_short_hike/header.jpg",
+      "library_capsule": "/workdir/app/public/image/a_short_hike/capsule.jpg",
+      "trailer": "/workdir/app/public/image/a_short_hike/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/a_short_hike/store_1.jpg",
+        "/workdir/app/public/image/a_short_hike/store_2.jpg",
+        "/workdir/app/public/image/a_short_hike/store_3.jpg",
+        "/workdir/app/public/image/a_short_hike/store_4.jpg",
+        "/workdir/app/public/image/a_short_hike/store_5.jpg",
+        "/workdir/app/public/image/a_short_hike/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "adamgryu",
+      "email": "adam@ashorthike.com",
+      "website_url": "http://www.ashorthike.com",
+      "support_email": "support@adamgryu.com"
+    }
+  },
+  {
+    "name": "Papa's Freezeria Deluxe",
+    "description": "Return to Calypso Island to serve seasonal sundae treats in Papa's Freezeria Deluxe! Craft sundaes in the Freezeria for all your quirky customers while earning tips, points and Special Recipes. Switch gears and take a trip in the Food Truck to concoct your own chilly creations and see who shows up!",
+    "release_date": "2023-03-31",
+    "release_price": 5.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/papa_s_freezeria_deluxe/header.jpg",
+      "library_capsule": "/workdir/app/public/image/papa_s_freezeria_deluxe/capsule.jpg",
+      "trailer": "/workdir/app/public/image/papa_s_freezeria_deluxe/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/papa_s_freezeria_deluxe/store_1.jpg",
+        "/workdir/app/public/image/papa_s_freezeria_deluxe/store_2.jpg",
+        "/workdir/app/public/image/papa_s_freezeria_deluxe/store_3.jpg",
+        "/workdir/app/public/image/papa_s_freezeria_deluxe/store_4.jpg",
+        "/workdir/app/public/image/papa_s_freezeria_deluxe/store_5.jpg",
+        "/workdir/app/public/image/papa_s_freezeria_deluxe/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "Simulation",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "Flipline Studios",
+      "email": "support@flipline.com",
+      "website_url": "https://www.fliplinestudios.com",
+      "support_email": "support@fliplinestudios.com"
+    }
+  },
+  {
+    "name": "Paper Lily - Chapter 1",
+    "description": "Paper Lily is an RPG horror game in which you can solve puzzles in different ways. Explore a hidden world, meet strange characters, and guide Lacie as she attempts to find answers about her unusual condition.",
+    "release_date": "2024-01-26",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/paper_lily_chapter_1/header.jpg",
+      "library_capsule": "/workdir/app/public/image/paper_lily_chapter_1/capsule.jpg",
+      "trailer": "/workdir/app/public/image/paper_lily_chapter_1/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/paper_lily_chapter_1/store_1.jpg",
+        "/workdir/app/public/image/paper_lily_chapter_1/store_2.jpg",
+        "/workdir/app/public/image/paper_lily_chapter_1/store_3.jpg",
+        "/workdir/app/public/image/paper_lily_chapter_1/store_4.jpg",
+        "/workdir/app/public/image/paper_lily_chapter_1/store_5.jpg",
+        "/workdir/app/public/image/paper_lily_chapter_1/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie",
+      "RPG",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Leef 6010",
+      "email": "leef6010@gmail.com",
+      "website_url": "https://www.leef6010.com",
+      "support_email": "support@leef6010.com"
+    }
+  },
+  {
+    "name": "Öoo",
+    "description": "A Bomb Caterpillar's Big Adventure! &quot;Öoo&quot; is a charming yet mysterious exploration puzzle platformer where you discover creative ways to use bombs!",
+    "release_date": "2025-08-07",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/oo/header.jpg",
+      "library_capsule": "/workdir/app/public/image/oo/capsule.jpg",
+      "trailer": "/workdir/app/public/image/oo/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/oo/store_1.jpg",
+        "/workdir/app/public/image/oo/store_2.jpg",
+        "/workdir/app/public/image/oo/store_3.jpg",
+        "/workdir/app/public/image/oo/store_4.jpg",
+        "/workdir/app/public/image/oo/store_5.jpg",
+        "/workdir/app/public/image/oo/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "NamaTakahashi",
+      "email": "namatakahashi@namatakahashi.com",
+      "website_url": "https://namatakahashi.notion.site/oooo",
+      "support_email": "support@namatakahashi.com"
+    }
+  },
+  {
+    "name": "Creature Kitchen",
+    "description": "A creepy-cozy cooking simulator where you befriend local wildlife and feed them their favorite snacks! With a strange house to search and forest to explore, the witching hour has only begun.",
+    "release_date": "2026-02-06",
+    "release_price": 7.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/creature_kitchen/header.jpg",
+      "library_capsule": "/workdir/app/public/image/creature_kitchen/capsule.jpg",
+      "trailer": "/workdir/app/public/image/creature_kitchen/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/creature_kitchen/store_1.jpg",
+        "/workdir/app/public/image/creature_kitchen/store_2.jpg",
+        "/workdir/app/public/image/creature_kitchen/store_3.jpg",
+        "/workdir/app/public/image/creature_kitchen/store_4.jpg",
+        "/workdir/app/public/image/creature_kitchen/store_5.jpg",
+        "/workdir/app/public/image/creature_kitchen/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "The Rat Zone",
+      "email": "support@therat.zone",
+      "website_url": "https://www.theratzone.com",
+      "support_email": "support@theratzone.com"
+    }
+  },
+  {
+    "name": "Please, Touch The Artwork 2",
+    "description": "A handpainted cozy hidden object adventure. Explore a surreal world. Collect items for its quirky inhabitants. Fix damaged paintings and solve casual puzzles. Help a lost skeleton painter find his way home. This game is short but 100% FREE (no ads, no IAP).",
+    "release_date": "2024-02-19",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/please_touch_the_artwork_2/header.jpg",
+      "library_capsule": "/workdir/app/public/image/please_touch_the_artwork_2/capsule.jpg",
+      "trailer": "/workdir/app/public/image/please_touch_the_artwork_2/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/please_touch_the_artwork_2/store_1.jpg",
+        "/workdir/app/public/image/please_touch_the_artwork_2/store_2.jpg",
+        "/workdir/app/public/image/please_touch_the_artwork_2/store_3.jpg",
+        "/workdir/app/public/image/please_touch_the_artwork_2/store_4.jpg",
+        "/workdir/app/public/image/please_touch_the_artwork_2/store_5.jpg",
+        "/workdir/app/public/image/please_touch_the_artwork_2/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Thomas Waterzooi",
+      "email": "info@studiowaterzooi.com",
+      "website_url": "https://www.studiowaterzooi.com",
+      "support_email": "support@thomaswaterzooi.com"
+    }
+  },
+  {
+    "name": "Poco",
+    "description": "Poco is the story of the world's smallest clown, who is banished from the circus and finds themself in a mysterious undergrowth full of lost and broken things. Explore, meet strange creatures, solve puzzles, and help Poco return to the circus in this charming 2D/3D hybrid point-and-click adventure.",
+    "release_date": "2025-05-20",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/poco/header.jpg",
+      "library_capsule": "/workdir/app/public/image/poco/capsule.jpg",
+      "trailer": "/workdir/app/public/image/poco/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/poco/store_1.jpg",
+        "/workdir/app/public/image/poco/store_2.jpg",
+        "/workdir/app/public/image/poco/store_3.jpg",
+        "/workdir/app/public/image/poco/store_4.jpg",
+        "/workdir/app/public/image/poco/store_5.jpg",
+        "/workdir/app/public/image/poco/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Whalefall",
+      "email": "micahboursier@gmail.com",
+      "website_url": "https://www.whalefall.com",
+      "support_email": "support@whalefall.com"
+    }
+  },
+  {
+    "name": "TOEM: A Photo Adventure",
+    "description": "Set off on a delightful expedition and use your photographic eye to uncover the mysteries of the magical TOEM in this hand-drawn adventure game. Chat with quirky characters, solve their problems by snapping neat photos, and make your way through a relaxing landscape!",
+    "release_date": "2021-09-17",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/toem_a_photo_adventure/header.jpg",
+      "library_capsule": "/workdir/app/public/image/toem_a_photo_adventure/capsule.jpg",
+      "trailer": "/workdir/app/public/image/toem_a_photo_adventure/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/toem_a_photo_adventure/store_1.jpg",
+        "/workdir/app/public/image/toem_a_photo_adventure/store_2.jpg",
+        "/workdir/app/public/image/toem_a_photo_adventure/store_3.jpg",
+        "/workdir/app/public/image/toem_a_photo_adventure/store_4.jpg",
+        "/workdir/app/public/image/toem_a_photo_adventure/store_5.jpg",
+        "/workdir/app/public/image/toem_a_photo_adventure/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Something We Made",
+      "email": "hello@somethingwemade.se",
+      "website_url": "http://www.somethingwemade.se/toem",
+      "support_email": "support@somethingwemade.com"
+    }
+  },
+  {
+    "name": "HoloCure - Save the Fans!",
+    "description": "Play as your favorite Vtubers from Hololive! Fight, explore, and clear your way through armies of fans and save them from their mind-control in this unofficial free fan-game.",
+    "release_date": "2023-08-16",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/holocure_save_the_fans/header.jpg",
+      "library_capsule": "/workdir/app/public/image/holocure_save_the_fans/capsule.jpg",
+      "trailer": "/workdir/app/public/image/holocure_save_the_fans/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/holocure_save_the_fans/store_1.jpg",
+        "/workdir/app/public/image/holocure_save_the_fans/store_2.jpg",
+        "/workdir/app/public/image/holocure_save_the_fans/store_3.jpg",
+        "/workdir/app/public/image/holocure_save_the_fans/store_4.jpg",
+        "/workdir/app/public/image/holocure_save_the_fans/store_5.jpg",
+        "/workdir/app/public/image/holocure_save_the_fans/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "KayAnimate",
+      "email": "holocure@gmail.com",
+      "website_url": "https://www.kayanimate.com",
+      "support_email": "support@kayanimate.com"
+    }
+  },
+  {
+    "name": "Project Kat - Paper Lily Prologue",
+    "description": "Project Kat is a short, unconventional RPG horror game in which there is always another way. Solve puzzles, make friends (or not), and guide Kat as she attempts to uncover the mystery behind a strange golden letter.",
+    "release_date": "2021-10-15",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/project_kat_paper_lily_prologue/header.jpg",
+      "library_capsule": "/workdir/app/public/image/project_kat_paper_lily_prologue/capsule.jpg",
+      "trailer": "/workdir/app/public/image/project_kat_paper_lily_prologue/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/project_kat_paper_lily_prologue/store_1.jpg",
+        "/workdir/app/public/image/project_kat_paper_lily_prologue/store_2.jpg",
+        "/workdir/app/public/image/project_kat_paper_lily_prologue/store_3.jpg",
+        "/workdir/app/public/image/project_kat_paper_lily_prologue/store_4.jpg",
+        "/workdir/app/public/image/project_kat_paper_lily_prologue/store_5.jpg",
+        "/workdir/app/public/image/project_kat_paper_lily_prologue/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie",
+      "RPG",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Leef 6010",
+      "email": "leef6010@gmail.com",
+      "website_url": "https://www.leef6010.com",
+      "support_email": "support@leef6010.com"
+    }
+  },
+  {
+    "name": "Kabuto Park",
+    "description": "Enjoy summer in Kabuto Park! Catch the cutest bugs, train them and win the Summer Beetle Battles Championship in this tiny bug collection game! Upgrade your equipment to find rarer, stronger and shinier little friends.",
+    "release_date": "2025-05-28",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/kabuto_park/header.jpg",
+      "library_capsule": "/workdir/app/public/image/kabuto_park/capsule.jpg",
+      "trailer": "/workdir/app/public/image/kabuto_park/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/kabuto_park/store_1.jpg",
+        "/workdir/app/public/image/kabuto_park/store_2.jpg",
+        "/workdir/app/public/image/kabuto_park/store_3.jpg",
+        "/workdir/app/public/image/kabuto_park/store_4.jpg",
+        "/workdir/app/public/image/kabuto_park/store_5.jpg",
+        "/workdir/app/public/image/kabuto_park/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG",
+      "Simulation",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "Doot",
+      "email": "dodoot.games+support@gmail.com",
+      "website_url": "https://drive.google.com/drive/u/0/folders/1IftJxOFlEcG9qUS6S0UPXxfzA0waIQZc",
+      "support_email": "support@doot.com"
+    }
+  },
+  {
+    "name": "Aventura Copilului Albastru și Urât",
+    "description": "Pornește într-o aventură scurtă de uitat în maxim 30min după ce ai închis jocul! Ce mai aștepți? Aventura îl urmărește pe Copilul Albastru și Urât într-o lume bizară, seara. 2D Visual Novel, Choices Matter, Multiple Endings.",
+    "release_date": "2021-02-08",
+    "release_price": 1.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/header.jpg",
+      "library_capsule": "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/capsule.jpg",
+      "trailer": "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/store_1.jpg",
+        "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/store_2.jpg",
+        "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/store_3.jpg",
+        "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/store_4.jpg",
+        "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/store_5.jpg",
+        "/workdir/app/public/image/aventura_copilului_albastru_i_ur_t/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Codrin Bradea",
+      "email": "contact@codrinbradea.com",
+      "website_url": "https://www.codrinbradea.com",
+      "support_email": "support@codrinbradea.com"
+    }
+  },
+  {
+    "name": "Patrick's Parabox",
+    "description": "A mind-bending recursive puzzle game about boxes within boxes within boxes within boxes. Learn to use infinity to your advantage as you explore a deep and elegant system.",
+    "release_date": "2022-03-29",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/patrick_s_parabox/header.jpg",
+      "library_capsule": "/workdir/app/public/image/patrick_s_parabox/capsule.jpg",
+      "trailer": "/workdir/app/public/image/patrick_s_parabox/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/patrick_s_parabox/store_1.jpg",
+        "/workdir/app/public/image/patrick_s_parabox/store_2.jpg",
+        "/workdir/app/public/image/patrick_s_parabox/store_3.jpg",
+        "/workdir/app/public/image/patrick_s_parabox/store_4.jpg",
+        "/workdir/app/public/image/patrick_s_parabox/store_5.jpg",
+        "/workdir/app/public/image/patrick_s_parabox/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "Patrick Traynor",
+      "email": "patricktraynor@patricktraynor.com",
+      "website_url": "https://www.patricksparabox.com/",
+      "support_email": "support@patricktraynor.com"
+    }
+  },
+  {
+    "name": "A Castle Full of Cats",
+    "description": "A Castle Full of Cats is a catvania hidden object game where you need to find all the cursed cats in the castle. Save each and every cat and unleash the power of love! ♡",
+    "release_date": "2022-11-09",
+    "release_price": 3.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/a_castle_full_of_cats/header.jpg",
+      "library_capsule": "/workdir/app/public/image/a_castle_full_of_cats/capsule.jpg",
+      "trailer": "/workdir/app/public/image/a_castle_full_of_cats/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/a_castle_full_of_cats/store_1.jpg",
+        "/workdir/app/public/image/a_castle_full_of_cats/store_2.jpg",
+        "/workdir/app/public/image/a_castle_full_of_cats/store_3.jpg",
+        "/workdir/app/public/image/a_castle_full_of_cats/store_4.jpg",
+        "/workdir/app/public/image/a_castle_full_of_cats/store_5.jpg",
+        "/workdir/app/public/image/a_castle_full_of_cats/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "Devcats",
+      "email": "devcats@devcats.com",
+      "website_url": "https://www.devcats.com",
+      "support_email": "support@devcats.com"
+    }
+  },
+  {
+    "name": "The Upturned",
+    "description": "A frantic adventure. Welcome to the Upturned Inn: a grand hotel for the dead! You just want to find your room.",
+    "release_date": "2022-03-23",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/the_upturned/header.jpg",
+      "library_capsule": "/workdir/app/public/image/the_upturned/capsule.jpg",
+      "trailer": "/workdir/app/public/image/the_upturned/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/the_upturned/store_1.jpg",
+        "/workdir/app/public/image/the_upturned/store_2.jpg",
+        "/workdir/app/public/image/the_upturned/store_3.jpg",
+        "/workdir/app/public/image/the_upturned/store_4.jpg",
+        "/workdir/app/public/image/the_upturned/store_5.jpg",
+        "/workdir/app/public/image/the_upturned/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Zeekerss",
+      "email": "zeekerssgames@gmail.com",
+      "website_url": "https://www.zeekerss.com",
+      "support_email": "support@zeekerss.com"
+    }
+  },
+  {
+    "name": "A Tower Full of Cats",
+    "description": "A Tower Full of Cats is a hidden object game where you need to gather cats through the whole history of catkind... and beyond!",
+    "release_date": "2024-05-20",
+    "release_price": 5.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/a_tower_full_of_cats/header.jpg",
+      "library_capsule": "/workdir/app/public/image/a_tower_full_of_cats/capsule.jpg",
+      "trailer": "/workdir/app/public/image/a_tower_full_of_cats/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/a_tower_full_of_cats/store_1.jpg",
+        "/workdir/app/public/image/a_tower_full_of_cats/store_2.jpg",
+        "/workdir/app/public/image/a_tower_full_of_cats/store_3.jpg",
+        "/workdir/app/public/image/a_tower_full_of_cats/store_4.jpg",
+        "/workdir/app/public/image/a_tower_full_of_cats/store_5.jpg",
+        "/workdir/app/public/image/a_tower_full_of_cats/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "Devcats",
+      "email": "devcats@devcats.com",
+      "website_url": "https://www.devcats.com",
+      "support_email": "support@devcats.com"
+    }
+  },
+  {
+    "name": "Smushi Come Home",
+    "description": "Play as a tiny lil' mushroom who's lost in the forest and can't find its way home. Explore unique areas freely at your own pace, chat with friendly inhabitants, and take on different adventures to get back home!",
+    "release_date": "2023-06-10",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/smushi_come_home/header.jpg",
+      "library_capsule": "/workdir/app/public/image/smushi_come_home/capsule.jpg",
+      "trailer": "/workdir/app/public/image/smushi_come_home/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/smushi_come_home/store_1.jpg",
+        "/workdir/app/public/image/smushi_come_home/store_2.jpg",
+        "/workdir/app/public/image/smushi_come_home/store_3.jpg",
+        "/workdir/app/public/image/smushi_come_home/store_4.jpg",
+        "/workdir/app/public/image/smushi_come_home/store_5.jpg",
+        "/workdir/app/public/image/smushi_come_home/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "SomeHumbleOnion",
+      "email": "somehumbleonion@gmail.com, support@mooneyestudios.com",
+      "website_url": "https://www.mooneyestudios.com/",
+      "support_email": "support@somehumbleonion.com"
+    }
+  },
+  {
+    "name": "Moonleap",
+    "description": "Explore a world full of mysteries that transform with each jump! Moonleap is a game about a moon boy on his journey to recover shooting stars. Change day to night with your jump and catch all the stars in this challenging puzzle-platformer!",
+    "release_date": "2023-04-11",
+    "release_price": 8.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/moonleap/header.jpg",
+      "library_capsule": "/workdir/app/public/image/moonleap/capsule.jpg",
+      "trailer": "/workdir/app/public/image/moonleap/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/moonleap/store_1.jpg",
+        "/workdir/app/public/image/moonleap/store_2.jpg",
+        "/workdir/app/public/image/moonleap/store_3.jpg",
+        "/workdir/app/public/image/moonleap/store_4.jpg",
+        "/workdir/app/public/image/moonleap/store_5.jpg",
+        "/workdir/app/public/image/moonleap/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual",
+      "Indie",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "guselect",
+      "email": "contato@guselect.com",
+      "website_url": "https://guselect.com/",
+      "support_email": "support@guselect.com"
+    }
+  },
+  {
+    "name": "DevilConnection",
+    "description": "Punish the little bastard demon and being punished too! Cemo-Summoning Adventure Game",
+    "release_date": "2025-10-30",
+    "release_price": 16.66,
+    "images": {
+      "library_header": "/workdir/app/public/image/devilconnection/header.jpg",
+      "library_capsule": "/workdir/app/public/image/devilconnection/capsule.jpg",
+      "trailer": "/workdir/app/public/image/devilconnection/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/devilconnection/store_1.jpg",
+        "/workdir/app/public/image/devilconnection/store_2.jpg",
+        "/workdir/app/public/image/devilconnection/store_3.jpg",
+        "/workdir/app/public/image/devilconnection/store_4.jpg",
+        "/workdir/app/public/image/devilconnection/store_5.jpg",
+        "/workdir/app/public/image/devilconnection/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "ChaoGames",
+      "email": "chaogames@bayachao.com",
+      "website_url": "https://bayachao.com/devil-connection/",
+      "support_email": "support@chaogames.com"
+    }
+  },
+  {
+    "name": "Seal World",
+    "description": "Meet silly seals, eat fibsh, swim, and relax!",
+    "release_date": "2023-12-26",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/seal_world/header.jpg",
+      "library_capsule": "/workdir/app/public/image/seal_world/capsule.jpg",
+      "trailer": "/workdir/app/public/image/seal_world/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/seal_world/store_1.jpg",
+        "/workdir/app/public/image/seal_world/store_2.jpg",
+        "/workdir/app/public/image/seal_world/store_3.jpg",
+        "/workdir/app/public/image/seal_world/store_4.jpg",
+        "/workdir/app/public/image/seal_world/store_5.jpg",
+        "/workdir/app/public/image/seal_world/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual"
+    ],
+    "developer": {
+      "name": "SealDev",
+      "email": "sealdev@sealdev.com",
+      "website_url": "https://www.patreon.com/SealDev",
+      "support_email": "support@sealdev.com"
+    }
+  },
+  {
+    "name": "DFHack - Dwarf Fortress Modding Engine",
+    "description": "Extensions for Dwarf Fortress, including bugfixes, interface improvements, automation agents, design blueprints, modding building blocks, and other tools.",
+    "release_date": "2023-04-13",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/header.jpg",
+      "library_capsule": "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/capsule.jpg",
+      "trailer": "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/store_1.jpg",
+        "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/store_2.jpg",
+        "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/store_3.jpg",
+        "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/store_4.jpg",
+        "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/store_5.jpg",
+        "/workdir/app/public/image/dfhack_dwarf_fortress_modding_engine/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "RPG",
+      "Simulation",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "The DFHack Team",
+      "email": "thedfhackteam@thedfhackteam.com",
+      "website_url": "https://docs.dfhack.org/en/stable/docs/Quickstart.html#quickstart",
+      "support_email": "support@thedfhackteam.com"
+    }
+  },
+  {
+    "name": "Flowers -Le volume sur ete-",
+    "description": "Summer has arrived early to Saint Angraecum Academy, and with it comes change. Follow the story of Erika in the second game in the Flowers series.",
+    "release_date": "2018-07-26",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/flowers_le_volume_sur_ete/header.jpg",
+      "library_capsule": "/workdir/app/public/image/flowers_le_volume_sur_ete/capsule.jpg",
+      "trailer": "/workdir/app/public/image/flowers_le_volume_sur_ete/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/flowers_le_volume_sur_ete/store_1.jpg",
+        "/workdir/app/public/image/flowers_le_volume_sur_ete/store_2.jpg",
+        "/workdir/app/public/image/flowers_le_volume_sur_ete/store_3.jpg",
+        "/workdir/app/public/image/flowers_le_volume_sur_ete/store_4.jpg",
+        "/workdir/app/public/image/flowers_le_volume_sur_ete/store_5.jpg",
+        "/workdir/app/public/image/flowers_le_volume_sur_ete/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual"
+    ],
+    "developer": {
+      "name": "Innocent Grey",
+      "email": "support@jastusa.com",
+      "website_url": "http://flowersgame.com",
+      "support_email": "support@innocentgrey.com"
+    }
+  },
+  {
+    "name": "Wagotabi: A Japanese Journey",
+    "description": "Wagotabi is an educational RPG teaching Japanese from the ground up. Immerse yourself in the language through interactive dialogues, quest-solving, and puzzles, all while exploring Japan and its rich culture. Will you become a Japanese master?",
+    "release_date": "2025-08-13",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/wagotabi_a_japanese_journey/header.jpg",
+      "library_capsule": "/workdir/app/public/image/wagotabi_a_japanese_journey/capsule.jpg",
+      "trailer": "/workdir/app/public/image/wagotabi_a_japanese_journey/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/wagotabi_a_japanese_journey/store_1.jpg",
+        "/workdir/app/public/image/wagotabi_a_japanese_journey/store_2.jpg",
+        "/workdir/app/public/image/wagotabi_a_japanese_journey/store_3.jpg",
+        "/workdir/app/public/image/wagotabi_a_japanese_journey/store_4.jpg",
+        "/workdir/app/public/image/wagotabi_a_japanese_journey/store_5.jpg",
+        "/workdir/app/public/image/wagotabi_a_japanese_journey/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "Wagotabi Limited",
+      "email": "kinoko.amaterasu@gmail.com",
+      "website_url": "https://www.wagotabi.com/",
+      "support_email": "support@wagotabilimited.com"
+    }
+  },
+  {
+    "name": "Dialtown: Phone Dating Sim",
+    "description": "If you've ever wanted to romantically pursue a phone, then hot DARN, do I have just the game for you.",
+    "release_date": "2022-02-14",
+    "release_price": 7.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/dialtown_phone_dating_sim/header.jpg",
+      "library_capsule": "/workdir/app/public/image/dialtown_phone_dating_sim/capsule.jpg",
+      "trailer": "/workdir/app/public/image/dialtown_phone_dating_sim/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/dialtown_phone_dating_sim/store_1.jpg",
+        "/workdir/app/public/image/dialtown_phone_dating_sim/store_2.jpg",
+        "/workdir/app/public/image/dialtown_phone_dating_sim/store_3.jpg",
+        "/workdir/app/public/image/dialtown_phone_dating_sim/store_4.jpg",
+        "/workdir/app/public/image/dialtown_phone_dating_sim/store_5.jpg",
+        "/workdir/app/public/image/dialtown_phone_dating_sim/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "DirectDoggo",
+      "email": "Dialtownsteam@gmail.com",
+      "website_url": "https://www.directdoggo.com",
+      "support_email": "support@directdoggo.com"
+    }
+  },
+  {
+    "name": "Aokana - Four Rhythms Across the Blue - EXTRA2",
+    "description": "Aokana - EXTRA2 is the official Misaki after story for Aokana.",
+    "release_date": "2022-12-16",
+    "release_price": 24.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/header.jpg",
+      "library_capsule": "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/capsule.jpg",
+      "trailer": "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/store_1.jpg",
+        "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/store_2.jpg",
+        "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/store_3.jpg",
+        "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/store_4.jpg",
+        "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/store_5.jpg",
+        "/workdir/app/public/image/aokana_four_rhythms_across_the_blue_extra2/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Sports"
+    ],
+    "developer": {
+      "name": "sprite",
+      "email": "hikarifield@gmail.com",
+      "website_url": "https://aokana.nekonyansoft.com/",
+      "support_email": "support@sprite.com"
+    }
+  },
+  {
+    "name": "Don't Escape Trilogy",
+    "description": "In this classic point-and-click adventure anthology by award-winning indie developer Scriptwelder, you'll protect an unsuspecting hamlet from yourself, try to prepare for an incoming undead horde, and search a seemingly empty spaceship for answers to a gruesome mystery.",
+    "release_date": "2019-07-29",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/don_t_escape_trilogy/header.jpg",
+      "library_capsule": "/workdir/app/public/image/don_t_escape_trilogy/capsule.jpg",
+      "trailer": "/workdir/app/public/image/don_t_escape_trilogy/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/don_t_escape_trilogy/store_1.jpg",
+        "/workdir/app/public/image/don_t_escape_trilogy/store_2.jpg",
+        "/workdir/app/public/image/don_t_escape_trilogy/store_3.jpg",
+        "/workdir/app/public/image/don_t_escape_trilogy/store_4.jpg",
+        "/workdir/app/public/image/don_t_escape_trilogy/store_5.jpg",
+        "/workdir/app/public/image/don_t_escape_trilogy/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "scriptwelder",
+      "email": "support@armorgames.com",
+      "website_url": "https://www.scriptwelder.com",
+      "support_email": "support@scriptwelder.com"
+    }
+  },
+  {
+    "name": "Super Lesbian Animal RPG",
+    "description": "Melody has decided to become a healer in this classic-inspired turn-based RPG about love, anxiety, and fighting funny-looking monsters in dungeons.",
+    "release_date": "2022-12-20",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/super_lesbian_animal_rpg/header.jpg",
+      "library_capsule": "/workdir/app/public/image/super_lesbian_animal_rpg/capsule.jpg",
+      "trailer": "/workdir/app/public/image/super_lesbian_animal_rpg/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/super_lesbian_animal_rpg/store_1.jpg",
+        "/workdir/app/public/image/super_lesbian_animal_rpg/store_2.jpg",
+        "/workdir/app/public/image/super_lesbian_animal_rpg/store_3.jpg",
+        "/workdir/app/public/image/super_lesbian_animal_rpg/store_4.jpg",
+        "/workdir/app/public/image/super_lesbian_animal_rpg/store_5.jpg",
+        "/workdir/app/public/image/super_lesbian_animal_rpg/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "ponett",
+      "email": "ponettplus@gmail.com",
+      "website_url": "https://slarpg.com",
+      "support_email": "support@ponett.com"
+    }
+  },
+  {
+    "name": "Moss II VR",
+    "description": "Quill is back—and she’s being hunted. To stand a chance, Quill will need a true partner by her side—and we hope that partner is you. Moss: Book II is an action-adventure puzzle game and award-winning sequel (The Game Awards &quot;Best VR/AR Game&quot;) to Moss.",
+    "release_date": "2022-10-20",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/moss_ii_vr/header.jpg",
+      "library_capsule": "/workdir/app/public/image/moss_ii_vr/capsule.jpg",
+      "trailer": "/workdir/app/public/image/moss_ii_vr/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/moss_ii_vr/store_1.jpg",
+        "/workdir/app/public/image/moss_ii_vr/store_2.jpg",
+        "/workdir/app/public/image/moss_ii_vr/store_3.jpg",
+        "/workdir/app/public/image/moss_ii_vr/store_4.jpg",
+        "/workdir/app/public/image/moss_ii_vr/store_5.jpg",
+        "/workdir/app/public/image/moss_ii_vr/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Polyarc",
+      "email": "support@polyarcgames.com",
+      "website_url": "http://polyarcgames.com",
+      "support_email": "support@polyarc.com"
+    }
+  },
+  {
+    "name": "Tall Trails",
+    "description": "A chill exploration game where EVERYTHING goes in the boot! You're Alp, a lil' golem on a quest to find his purpose. Run, climb, and use items as fuel in your Rocket Boot to blast yourself into the air!",
+    "release_date": "2025-08-04",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/tall_trails/header.jpg",
+      "library_capsule": "/workdir/app/public/image/tall_trails/capsule.jpg",
+      "trailer": "/workdir/app/public/image/tall_trails/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/tall_trails/store_1.jpg",
+        "/workdir/app/public/image/tall_trails/store_2.jpg",
+        "/workdir/app/public/image/tall_trails/store_3.jpg",
+        "/workdir/app/public/image/tall_trails/store_4.jpg",
+        "/workdir/app/public/image/tall_trails/store_5.jpg",
+        "/workdir/app/public/image/tall_trails/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Brady Soglin",
+      "email": "help.ovrfull@gmail.com",
+      "website_url": "https://www.bradysoglin.com",
+      "support_email": "support@bradysoglin.com"
+    }
+  },
+  {
+    "name": "her tears were my light",
+    "description": "a love story between time and space",
+    "release_date": "2022-09-28",
+    "release_price": 2.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/her_tears_were_my_light/header.jpg",
+      "library_capsule": "/workdir/app/public/image/her_tears_were_my_light/capsule.jpg",
+      "trailer": "/workdir/app/public/image/her_tears_were_my_light/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/her_tears_were_my_light/store_1.jpg",
+        "/workdir/app/public/image/her_tears_were_my_light/store_2.jpg",
+        "/workdir/app/public/image/her_tears_were_my_light/store_3.jpg",
+        "/workdir/app/public/image/her_tears_were_my_light/store_4.jpg",
+        "/workdir/app/public/image/her_tears_were_my_light/store_5.jpg",
+        "/workdir/app/public/image/her_tears_were_my_light/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Simulation"
+    ],
+    "developer": {
+      "name": "NomnomNami",
+      "email": "nomnomnamidev@gmail.com",
+      "website_url": "https://www.nomnomnami.com",
+      "support_email": "support@nomnomnami.com"
+    }
+  },
+  {
+    "name": "Platypus Reclayed",
+    "description": "22 years after its first appearance, the iconic Platypus is coming back, featuring updated gameplay, new weapons and additional content. Get ready to dive into the heart-pounding action of this fast, frantic, and incredibly fun arcade-style shoot-em-up!",
+    "release_date": "2025-09-17",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/platypus_reclayed/header.jpg",
+      "library_capsule": "/workdir/app/public/image/platypus_reclayed/capsule.jpg",
+      "trailer": "/workdir/app/public/image/platypus_reclayed/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/platypus_reclayed/store_1.jpg",
+        "/workdir/app/public/image/platypus_reclayed/store_2.jpg",
+        "/workdir/app/public/image/platypus_reclayed/store_3.jpg",
+        "/workdir/app/public/image/platypus_reclayed/store_4.jpg",
+        "/workdir/app/public/image/platypus_reclayed/store_5.jpg",
+        "/workdir/app/public/image/platypus_reclayed/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Claymatic Games",
+      "email": "claymaticgames@claymaticgames.com",
+      "website_url": "https://claymatic.games/platypus-reclayed",
+      "support_email": "support@claymaticgames.com"
+    }
+  },
+  {
+    "name": "Mr. Sleepy Man",
+    "description": "Mr. Sleepy Man is up way past his bedtime and out of control! Make a mess of everything you find and turn Bedtime Town against you! This sandbox adventure is filled with comical hijinks, outrageous characters, and platforming action!",
+    "release_date": "2026-03-10",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/mr_sleepy_man/header.jpg",
+      "library_capsule": "/workdir/app/public/image/mr_sleepy_man/capsule.jpg",
+      "trailer": "/workdir/app/public/image/mr_sleepy_man/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/mr_sleepy_man/store_1.jpg",
+        "/workdir/app/public/image/mr_sleepy_man/store_2.jpg",
+        "/workdir/app/public/image/mr_sleepy_man/store_3.jpg",
+        "/workdir/app/public/image/mr_sleepy_man/store_4.jpg",
+        "/workdir/app/public/image/mr_sleepy_man/store_5.jpg",
+        "/workdir/app/public/image/mr_sleepy_man/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Devin Santi",
+      "email": "devin@mrsleepyman.com, contact@monstertheater.games",
+      "website_url": "https://www.mrsleepyman.com/",
+      "support_email": "support@devinsanti.com"
+    }
+  },
+  {
+    "name": "Portal 2",
+    "description": "The &quot;Perpetual Testing Initiative&quot; has been expanded to allow you to design co-op puzzles for you and your friends!",
+    "release_date": "2011-04-18",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/portal_2/header.jpg",
+      "library_capsule": "/workdir/app/public/image/portal_2/capsule.jpg",
+      "trailer": "/workdir/app/public/image/portal_2/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/portal_2/store_1.jpg",
+        "/workdir/app/public/image/portal_2/store_2.jpg",
+        "/workdir/app/public/image/portal_2/store_3.jpg",
+        "/workdir/app/public/image/portal_2/store_4.jpg",
+        "/workdir/app/public/image/portal_2/store_5.jpg",
+        "/workdir/app/public/image/portal_2/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure"
+    ],
+    "developer": {
+      "name": "Valve",
+      "email": "valve@valve.com",
+      "website_url": "http://www.thinkwithportals.com/",
+      "support_email": "support@valve.com"
+    }
+  },
+  {
+    "name": "Wallpaper Engine",
+    "description": "Use stunning live wallpapers on your desktop. Animate your own images to create new wallpapers or import videos/websites and share them on the Steam Workshop!",
+    "release_date": "2018-11-16",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/wallpaper_engine/header.jpg",
+      "library_capsule": "/workdir/app/public/image/wallpaper_engine/capsule.jpg",
+      "trailer": "/workdir/app/public/image/wallpaper_engine/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/wallpaper_engine/store_1.jpg",
+        "/workdir/app/public/image/wallpaper_engine/store_2.jpg",
+        "/workdir/app/public/image/wallpaper_engine/store_3.jpg",
+        "/workdir/app/public/image/wallpaper_engine/store_4.jpg",
+        "/workdir/app/public/image/wallpaper_engine/store_5.jpg",
+        "/workdir/app/public/image/wallpaper_engine/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Animation & Modeling",
+      "Design & Illustration",
+      "Photo Editing",
+      "Utilities"
+    ],
+    "developer": {
+      "name": "Wallpaper Engine Team",
+      "email": "support@wallpaperengine.io",
+      "website_url": "https://www.wallpaperengine.io",
+      "support_email": "support@wallpaperengineteam.com"
+    }
+  },
+  {
+    "name": "Portal",
+    "description": "Portal™ is a new single player game from Valve. Set in the mysterious Aperture Science Laboratories, Portal has been called one of the most innovative new games on the horizon and will offer gamers hours of unique gameplay.",
+    "release_date": "2007-10-10",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/portal/header.jpg",
+      "library_capsule": "/workdir/app/public/image/portal/capsule.jpg",
+      "trailer": "/workdir/app/public/image/portal/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/portal/store_1.jpg",
+        "/workdir/app/public/image/portal/store_2.jpg",
+        "/workdir/app/public/image/portal/store_3.jpg",
+        "/workdir/app/public/image/portal/store_4.jpg",
+        "/workdir/app/public/image/portal/store_5.jpg",
+        "/workdir/app/public/image/portal/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action"
+    ],
+    "developer": {
+      "name": "Valve",
+      "email": "valve@valve.com",
+      "website_url": "http://www.whatistheorangebox.com/",
+      "support_email": "support@valve.com"
+    }
+  },
+  {
+    "name": "Vampire Survivors",
+    "description": "Mow down thousands of night creatures and survive until dawn! Vampire Survivors is a gothic horror casual game with rogue-lite elements, where your choices can allow you to quickly snowball against the hundreds of monsters that get thrown at you. Be the bullet hell!",
+    "release_date": "2022-10-20",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/vampire_survivors/header.jpg",
+      "library_capsule": "/workdir/app/public/image/vampire_survivors/capsule.jpg",
+      "trailer": "/workdir/app/public/image/vampire_survivors/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/vampire_survivors/store_1.jpg",
+        "/workdir/app/public/image/vampire_survivors/store_2.jpg",
+        "/workdir/app/public/image/vampire_survivors/store_3.jpg",
+        "/workdir/app/public/image/vampire_survivors/store_4.jpg",
+        "/workdir/app/public/image/vampire_survivors/store_5.jpg",
+        "/workdir/app/public/image/vampire_survivors/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "poncle",
+      "email": "support@poncle.co.uk",
+      "website_url": "https://www.poncle.com",
+      "support_email": "support@poncle.com"
+    }
+  },
+  {
+    "name": "People Playground",
+    "description": "Shoot, stab, burn, poison, tear, vaporise, or crush ragdolls in a large open space.",
+    "release_date": "2019-07-23",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/people_playground/header.jpg",
+      "library_capsule": "/workdir/app/public/image/people_playground/capsule.jpg",
+      "trailer": "/workdir/app/public/image/people_playground/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/people_playground/store_1.jpg",
+        "/workdir/app/public/image/people_playground/store_2.jpg",
+        "/workdir/app/public/image/people_playground/store_3.jpg",
+        "/workdir/app/public/image/people_playground/store_4.jpg",
+        "/workdir/app/public/image/people_playground/store_5.jpg",
+        "/workdir/app/public/image/people_playground/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "mestiez",
+      "email": "mestiez@studiominus.nl",
+      "website_url": "https://studiominus.nl/",
+      "support_email": "support@mestiez.com"
+    }
+  },
+  {
+    "name": "Hades",
+    "description": "Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion, Transistor, and Pyre.",
+    "release_date": "2020-09-17",
+    "release_price": 24.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/hades/header.jpg",
+      "library_capsule": "/workdir/app/public/image/hades/capsule.jpg",
+      "trailer": "/workdir/app/public/image/hades/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/hades/store_1.jpg",
+        "/workdir/app/public/image/hades/store_2.jpg",
+        "/workdir/app/public/image/hades/store_3.jpg",
+        "/workdir/app/public/image/hades/store_4.jpg",
+        "/workdir/app/public/image/hades/store_5.jpg",
+        "/workdir/app/public/image/hades/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "Supergiant Games",
+      "email": "support@supergiantgames.com",
+      "website_url": "http://www.supergiantgames.com",
+      "support_email": "support@supergiantgames.com"
+    }
+  },
+  {
+    "name": "DELTARUNE",
+    "description": "Dive into the parallel story to UNDERTALE! Fight or spare your way through action-packed battles as you explore a mysterious world alongside an endearing cast of new and familiar characters. Chapters 1-4 will be available on launch, with more planned as free updates!",
+    "release_date": "2025-06-04",
+    "release_price": 24.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/deltarune/header.jpg",
+      "library_capsule": "/workdir/app/public/image/deltarune/capsule.jpg",
+      "trailer": "/workdir/app/public/image/deltarune/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/deltarune/store_1.jpg",
+        "/workdir/app/public/image/deltarune/store_2.jpg",
+        "/workdir/app/public/image/deltarune/store_3.jpg",
+        "/workdir/app/public/image/deltarune/store_4.jpg",
+        "/workdir/app/public/image/deltarune/store_5.jpg",
+        "/workdir/app/public/image/deltarune/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "tobyfox",
+      "email": "tobyfox@tobyfox.com",
+      "website_url": "http://deltarune.com",
+      "support_email": "support@tobyfox.com"
+    }
+  },
+  {
+    "name": "Slime Rancher",
+    "description": "Slime Rancher is the tale of Beatrix LeBeau, a plucky, young rancher who sets out for a life a thousand light years away from Earth on the ‘Far, Far Range’ where she tries her hand at making a living wrangling slimes.",
+    "release_date": "2017-08-01",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/slime_rancher/header.jpg",
+      "library_capsule": "/workdir/app/public/image/slime_rancher/capsule.jpg",
+      "trailer": "/workdir/app/public/image/slime_rancher/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/slime_rancher/store_1.jpg",
+        "/workdir/app/public/image/slime_rancher/store_2.jpg",
+        "/workdir/app/public/image/slime_rancher/store_3.jpg",
+        "/workdir/app/public/image/slime_rancher/store_4.jpg",
+        "/workdir/app/public/image/slime_rancher/store_5.jpg",
+        "/workdir/app/public/image/slime_rancher/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "Monomi Park",
+      "email": "monomipark@monomipark.com",
+      "website_url": "http://slimerancher.com",
+      "support_email": "support@monomipark.com"
+    }
+  },
+  {
+    "name": "The Henry Stickmin Collection",
+    "description": "A choose-your-own-path where failing is more fun than succeeding.",
+    "release_date": "2020-08-07",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/the_henry_stickmin_collection/header.jpg",
+      "library_capsule": "/workdir/app/public/image/the_henry_stickmin_collection/capsule.jpg",
+      "trailer": "/workdir/app/public/image/the_henry_stickmin_collection/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/the_henry_stickmin_collection/store_1.jpg",
+        "/workdir/app/public/image/the_henry_stickmin_collection/store_2.jpg",
+        "/workdir/app/public/image/the_henry_stickmin_collection/store_3.jpg",
+        "/workdir/app/public/image/the_henry_stickmin_collection/store_4.jpg",
+        "/workdir/app/public/image/the_henry_stickmin_collection/store_5.jpg",
+        "/workdir/app/public/image/the_henry_stickmin_collection/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "PuffballsUnited",
+      "email": "us@innersloth.com",
+      "website_url": "http://innersloth.com/gameHenryCollection.php",
+      "support_email": "support@puffballsunited.com"
+    }
+  },
+  {
+    "name": "Pizza Tower",
+    "description": "Pizza Tower is a fast paced 2D platformer, with an emphasis on movement, exploration and score attack. Featuring highly stylized pixel art inspired by the cartoons from the '90s, and a highly energetic soundtrack.",
+    "release_date": "2023-01-26",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/pizza_tower/header.jpg",
+      "library_capsule": "/workdir/app/public/image/pizza_tower/capsule.jpg",
+      "trailer": "/workdir/app/public/image/pizza_tower/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/pizza_tower/store_1.jpg",
+        "/workdir/app/public/image/pizza_tower/store_2.jpg",
+        "/workdir/app/public/image/pizza_tower/store_3.jpg",
+        "/workdir/app/public/image/pizza_tower/store_4.jpg",
+        "/workdir/app/public/image/pizza_tower/store_5.jpg",
+        "/workdir/app/public/image/pizza_tower/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Tour De Pizza",
+      "email": "pizzatowergame@gmail.com",
+      "website_url": "https://www.tourdepizza.com",
+      "support_email": "support@tourdepizza.com"
+    }
+  },
+  {
+    "name": "Katana ZERO",
+    "description": "Katana ZERO is a stylish neo-noir, action-platformer featuring breakneck action and instant-death combat. Slash, dash, and manipulate time to unravel your past in a beautifully brutal acrobatic display.",
+    "release_date": "2019-04-18",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/katana_zero/header.jpg",
+      "library_capsule": "/workdir/app/public/image/katana_zero/capsule.jpg",
+      "trailer": "/workdir/app/public/image/katana_zero/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/katana_zero/store_1.jpg",
+        "/workdir/app/public/image/katana_zero/store_2.jpg",
+        "/workdir/app/public/image/katana_zero/store_3.jpg",
+        "/workdir/app/public/image/katana_zero/store_4.jpg",
+        "/workdir/app/public/image/katana_zero/store_5.jpg",
+        "/workdir/app/public/image/katana_zero/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Askiisoft",
+      "email": "askiisoft@askiisoft.com",
+      "website_url": "http://www.katanazero.com/",
+      "support_email": "support@askiisoft.com"
+    }
+  },
+  {
+    "name": "Half-Life: Alyx",
+    "description": "Half-Life: Alyx is Valve’s VR return to the Half-Life series. It’s the story of an impossible fight against a vicious alien race known as the Combine, set between the events of Half-Life and Half-Life 2. Playing as Alyx Vance, you are humanity’s only chance for survival.",
+    "release_date": "2020-03-23",
+    "release_price": 59.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/half_life_alyx/header.jpg",
+      "library_capsule": "/workdir/app/public/image/half_life_alyx/capsule.jpg",
+      "trailer": "/workdir/app/public/image/half_life_alyx/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/half_life_alyx/store_1.jpg",
+        "/workdir/app/public/image/half_life_alyx/store_2.jpg",
+        "/workdir/app/public/image/half_life_alyx/store_3.jpg",
+        "/workdir/app/public/image/half_life_alyx/store_4.jpg",
+        "/workdir/app/public/image/half_life_alyx/store_5.jpg",
+        "/workdir/app/public/image/half_life_alyx/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure"
+    ],
+    "developer": {
+      "name": "Valve",
+      "email": "valve@valve.com",
+      "website_url": "http://half-life.com",
+      "support_email": "support@valve.com"
+    }
+  },
+  {
+    "name": "Stardew Valley",
+    "description": "You've inherited your grandfather's old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?",
+    "release_date": "2016-02-26",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/stardew_valley/header.jpg",
+      "library_capsule": "/workdir/app/public/image/stardew_valley/capsule.jpg",
+      "trailer": "/workdir/app/public/image/stardew_valley/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/stardew_valley/store_1.jpg",
+        "/workdir/app/public/image/stardew_valley/store_2.jpg",
+        "/workdir/app/public/image/stardew_valley/store_3.jpg",
+        "/workdir/app/public/image/stardew_valley/store_4.jpg",
+        "/workdir/app/public/image/stardew_valley/store_5.jpg",
+        "/workdir/app/public/image/stardew_valley/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Indie",
+      "RPG",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "ConcernedApe",
+      "email": "support@stardewvalley.net",
+      "website_url": "http://www.stardewvalley.net",
+      "support_email": "support@concernedape.com"
+    }
+  },
+  {
+    "name": "OneShot",
+    "description": "OneShot is a surreal top down Puzzle/Adventure game with unique gameplay capabilities. You are to guide a child through a mysterious world on a mission to restore its long-dead sun. The world knows you exist.",
+    "release_date": "2016-12-08",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/oneshot/header.jpg",
+      "library_capsule": "/workdir/app/public/image/oneshot/capsule.jpg",
+      "trailer": "/workdir/app/public/image/oneshot/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/oneshot/store_1.jpg",
+        "/workdir/app/public/image/oneshot/store_2.jpg",
+        "/workdir/app/public/image/oneshot/store_3.jpg",
+        "/workdir/app/public/image/oneshot/store_4.jpg",
+        "/workdir/app/public/image/oneshot/store_5.jpg",
+        "/workdir/app/public/image/oneshot/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Future Cat LLC",
+      "email": "games@komodo.jp",
+      "website_url": "http://www.oneshot-game.com/",
+      "support_email": "support@futurecatllc.com"
+    }
+  },
+  {
+    "name": "Crime Scene Cleaner",
+    "description": "Once you get tangled with the mob, you will forever be a part of the mob. At least they pay a decent salary and all you have to do is clean up after their dirty work, but you know what you’re doing. So clean crime scenes, earn as much money as you can, and get ready for the next mission.",
+    "release_date": "2024-08-14",
+    "release_price": 29.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/crime_scene_cleaner/header.jpg",
+      "library_capsule": "/workdir/app/public/image/crime_scene_cleaner/capsule.jpg",
+      "trailer": "/workdir/app/public/image/crime_scene_cleaner/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/crime_scene_cleaner/store_1.jpg",
+        "/workdir/app/public/image/crime_scene_cleaner/store_2.jpg",
+        "/workdir/app/public/image/crime_scene_cleaner/store_3.jpg",
+        "/workdir/app/public/image/crime_scene_cleaner/store_4.jpg",
+        "/workdir/app/public/image/crime_scene_cleaner/store_5.jpg",
+        "/workdir/app/public/image/crime_scene_cleaner/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "President Studio",
+      "email": "mariusz@president-studio.com",
+      "website_url": "https://www.presidentstudio.com",
+      "support_email": "support@presidentstudio.com"
+    }
+  },
+  {
+    "name": "Rhythm Doctor",
+    "description": "Save patients with your rhythm mastery! Rhythm Doctor is a rhythm game where you heal patients by defibrillating in time to their heartbeats. Learn each patient's unique heartbeat and defeat boss viruses trying to sabotage your rhythm, all set to heart-pumping, soul-soothing music.",
+    "release_date": "2025-12-06",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/rhythm_doctor/header.jpg",
+      "library_capsule": "/workdir/app/public/image/rhythm_doctor/capsule.jpg",
+      "trailer": "/workdir/app/public/image/rhythm_doctor/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/rhythm_doctor/store_1.jpg",
+        "/workdir/app/public/image/rhythm_doctor/store_2.jpg",
+        "/workdir/app/public/image/rhythm_doctor/store_3.jpg",
+        "/workdir/app/public/image/rhythm_doctor/store_4.jpg",
+        "/workdir/app/public/image/rhythm_doctor/store_5.jpg",
+        "/workdir/app/public/image/rhythm_doctor/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "Strategy",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "7th Beat Games",
+      "email": "support@7thbe.at",
+      "website_url": "https://rhythmdr.com/",
+      "support_email": "support@7thbeatgames.com"
+    }
+  },
+  {
+    "name": "Chants of Sennaar",
+    "description": "In this award-winning puzzle adventure game, play as the Traveler on a quest to reunite the Peoples of the Tower. Observe, listen, and decipher ancient languages in a fascinating universe inspired by the Myth of Babel.",
+    "release_date": "2023-09-05",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/chants_of_sennaar/header.jpg",
+      "library_capsule": "/workdir/app/public/image/chants_of_sennaar/capsule.jpg",
+      "trailer": "/workdir/app/public/image/chants_of_sennaar/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/chants_of_sennaar/store_1.jpg",
+        "/workdir/app/public/image/chants_of_sennaar/store_2.jpg",
+        "/workdir/app/public/image/chants_of_sennaar/store_3.jpg",
+        "/workdir/app/public/image/chants_of_sennaar/store_4.jpg",
+        "/workdir/app/public/image/chants_of_sennaar/store_5.jpg",
+        "/workdir/app/public/image/chants_of_sennaar/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Rundisc",
+      "email": "support@focus-home.com",
+      "website_url": "https://www.focus-entmt.com/games/chants-of-sennaar",
+      "support_email": "support@rundisc.com"
+    }
+  },
+  {
+    "name": "Sheepy: A Short Adventure",
+    "description": "A Short Handcrafted Pixel Art Platformer that follows Sheepy, an abandoned plushy brought to life. Sheepy: A Short Adventure is the first short game from MrSuicideSheep.",
+    "release_date": "2024-02-06",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/sheepy_a_short_adventure/header.jpg",
+      "library_capsule": "/workdir/app/public/image/sheepy_a_short_adventure/capsule.jpg",
+      "trailer": "/workdir/app/public/image/sheepy_a_short_adventure/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/sheepy_a_short_adventure/store_1.jpg",
+        "/workdir/app/public/image/sheepy_a_short_adventure/store_2.jpg",
+        "/workdir/app/public/image/sheepy_a_short_adventure/store_3.jpg",
+        "/workdir/app/public/image/sheepy_a_short_adventure/store_4.jpg",
+        "/workdir/app/public/image/sheepy_a_short_adventure/store_5.jpg",
+        "/workdir/app/public/image/sheepy_a_short_adventure/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "MrSuicideSheep",
+      "email": "talktome@mrsuicidesheep.com",
+      "website_url": "https://sheepythegame.com",
+      "support_email": "support@mrsuicidesheep.com"
+    }
+  },
+  {
+    "name": "VPet-Simulator",
+    "description": "Feeling like the computer desktop is too dull? Need something cute to heal oneself? Come and try this new completely free and open source V-Pet simulator. A cute and adorable pet that supports various feeding interactions to accompany you in game learning is definitely your best choice!",
+    "release_date": "2023-08-13",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/vpet_simulator/header.jpg",
+      "library_capsule": "/workdir/app/public/image/vpet_simulator/capsule.jpg",
+      "trailer": "/workdir/app/public/image/vpet_simulator/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/vpet_simulator/store_1.jpg",
+        "/workdir/app/public/image/vpet_simulator/store_2.jpg",
+        "/workdir/app/public/image/vpet_simulator/store_3.jpg",
+        "/workdir/app/public/image/vpet_simulator/store_4.jpg",
+        "/workdir/app/public/image/vpet_simulator/store_5.jpg",
+        "/workdir/app/public/image/vpet_simulator/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "RPG",
+      "Simulation",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "LB Game",
+      "email": "service@exlb.net",
+      "website_url": "https://www.exlb.net/VPet",
+      "support_email": "support@lbgame.com"
+    }
+  },
+  {
+    "name": "A Date with Death",
+    "description": "Fight against &amp; romance the one hunting for your soul in A Date with Death, a romance chat simulator where you date(?) the Grim Reaper himself. Create your own character, decorate your apartment, and chat away with the charming yet dangerous Grim Reaper through text and video calls.",
+    "release_date": "2023-12-07",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/a_date_with_death/header.jpg",
+      "library_capsule": "/workdir/app/public/image/a_date_with_death/capsule.jpg",
+      "trailer": "/workdir/app/public/image/a_date_with_death/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/a_date_with_death/store_1.jpg",
+        "/workdir/app/public/image/a_date_with_death/store_2.jpg",
+        "/workdir/app/public/image/a_date_with_death/store_3.jpg",
+        "/workdir/app/public/image/a_date_with_death/store_4.jpg",
+        "/workdir/app/public/image/a_date_with_death/store_5.jpg",
+        "/workdir/app/public/image/a_date_with_death/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Indie",
+      "Simulation",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Two and a Half Studios",
+      "email": "twoandahalfstudios@twoandahalfstudios.com",
+      "website_url": "https://www.twoandahalfstudios.com",
+      "support_email": "support@twoandahalfstudios.com"
+    }
+  },
+  {
+    "name": "Grimm's Hollow",
+    "description": "A spooky, freeware RPG where you search the afterlife for your brother. Reap ghosts with your scythe, explore haunted caves, and eat ghostly treats on your journey through death.",
+    "release_date": "2019-10-30",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/grimm_s_hollow/header.jpg",
+      "library_capsule": "/workdir/app/public/image/grimm_s_hollow/capsule.jpg",
+      "trailer": "/workdir/app/public/image/grimm_s_hollow/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/grimm_s_hollow/store_1.jpg",
+        "/workdir/app/public/image/grimm_s_hollow/store_2.jpg",
+        "/workdir/app/public/image/grimm_s_hollow/store_3.jpg",
+        "/workdir/app/public/image/grimm_s_hollow/store_4.jpg",
+        "/workdir/app/public/image/grimm_s_hollow/store_5.jpg",
+        "/workdir/app/public/image/grimm_s_hollow/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Free To Play",
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "ghosthunter",
+      "email": "grimmshollowgame@gmail.com",
+      "website_url": "https://grimmshollow.tumblr.com/",
+      "support_email": "support@ghosthunter.com"
+    }
+  },
+  {
+    "name": "The Room 4: Old Sins",
+    "description": "The disappearance of an ambitious engineer and his high-society wife provokes a hunt for a precious artefact. The trail leads you to the attic of their home, and the discovery of an old, peculiar dollhouse. What secrets lie within these walls?",
+    "release_date": "2021-02-11",
+    "release_price": 8.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/the_room_4_old_sins/header.jpg",
+      "library_capsule": "/workdir/app/public/image/the_room_4_old_sins/capsule.jpg",
+      "trailer": "/workdir/app/public/image/the_room_4_old_sins/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/the_room_4_old_sins/store_1.jpg",
+        "/workdir/app/public/image/the_room_4_old_sins/store_2.jpg",
+        "/workdir/app/public/image/the_room_4_old_sins/store_3.jpg",
+        "/workdir/app/public/image/the_room_4_old_sins/store_4.jpg",
+        "/workdir/app/public/image/the_room_4_old_sins/store_5.jpg",
+        "/workdir/app/public/image/the_room_4_old_sins/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure"
+    ],
+    "developer": {
+      "name": "Fireproof Games",
+      "email": "info@fireproofgames.com",
+      "website_url": "http://www.fireproofgames.com/",
+      "support_email": "support@fireproofgames.com"
+    }
+  },
+  {
+    "name": "ATRI -My Dear Moments-",
+    "description": "&quot;As the world sank, I found you.&quot; In the near future, a sudden and unexplained sea rise has left much of human civilization underwater. In a little town slowly being enveloped by the ocean, an unforgettable summer is about to begin for a boy and a mysterious robot girl...",
+    "release_date": "2020-06-18",
+    "release_price": 20.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/atri_my_dear_moments/header.jpg",
+      "library_capsule": "/workdir/app/public/image/atri_my_dear_moments/capsule.jpg",
+      "trailer": "/workdir/app/public/image/atri_my_dear_moments/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/atri_my_dear_moments/store_1.jpg",
+        "/workdir/app/public/image/atri_my_dear_moments/store_2.jpg",
+        "/workdir/app/public/image/atri_my_dear_moments/store_3.jpg",
+        "/workdir/app/public/image/atri_my_dear_moments/store_4.jpg",
+        "/workdir/app/public/image/atri_my_dear_moments/store_5.jpg",
+        "/workdir/app/public/image/atri_my_dear_moments/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "Frontwing",
+      "email": "frontwing@frontwing.com",
+      "website_url": "https://atri-mdm.com/",
+      "support_email": "support@frontwing.com"
+    }
+  },
+  {
+    "name": "Senren＊Banka",
+    "description": "Senren＊Banka is a Japanese-style visual novel produced by Yuzusoft, a Japanese developer of romance VNs. This game commemorated Yuzusoft's 10th anniversary. It won numerous awards on the year of its release in Japan for its art, music, and characters.",
+    "release_date": "2020-02-14",
+    "release_price": 34.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/senren_banka/header.jpg",
+      "library_capsule": "/workdir/app/public/image/senren_banka/capsule.jpg",
+      "trailer": "/workdir/app/public/image/senren_banka/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/senren_banka/store_1.jpg",
+        "/workdir/app/public/image/senren_banka/store_2.jpg",
+        "/workdir/app/public/image/senren_banka/store_3.jpg",
+        "/workdir/app/public/image/senren_banka/store_4.jpg",
+        "/workdir/app/public/image/senren_banka/store_5.jpg",
+        "/workdir/app/public/image/senren_banka/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "YUZUSOFT",
+      "email": "hikarifield@gmail.com",
+      "website_url": "http://hikarifield.co.jp/senren/",
+      "support_email": "support@yuzusoft.com"
+    }
+  },
+  {
+    "name": "Wobbledogs",
+    "description": "A 3D pet simulation where you raise your own personal hive of mutating dogs, physically simulated all the way down to their guts! Wobbledogs is a casual and chill sandbox for players of all ages who want to care for their very own virtual pets in a surprising, unique, and stress-free environment.",
+    "release_date": "2022-03-15",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/wobbledogs/header.jpg",
+      "library_capsule": "/workdir/app/public/image/wobbledogs/capsule.jpg",
+      "trailer": "/workdir/app/public/image/wobbledogs/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/wobbledogs/store_1.jpg",
+        "/workdir/app/public/image/wobbledogs/store_2.jpg",
+        "/workdir/app/public/image/wobbledogs/store_3.jpg",
+        "/workdir/app/public/image/wobbledogs/store_4.jpg",
+        "/workdir/app/public/image/wobbledogs/store_5.jpg",
+        "/workdir/app/public/image/wobbledogs/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "Animal Uprising",
+      "email": "support@wobbledogs.com",
+      "website_url": "http://www.wobbledogs.com/",
+      "support_email": "support@animaluprising.com"
+    }
+  },
+  {
+    "name": "Look Outside",
+    "description": "Look Outside is a survival horror RPG set in a single apartment building. A mysterious event turns anyone who looks out the window into grotesque monsters, leaving the world in absolute chaos. Scavenge the building to seek food, supplies, and weapons while encountering strange characters.",
+    "release_date": "2025-03-21",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/look_outside/header.jpg",
+      "library_capsule": "/workdir/app/public/image/look_outside/capsule.jpg",
+      "trailer": "/workdir/app/public/image/look_outside/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/look_outside/store_1.jpg",
+        "/workdir/app/public/image/look_outside/store_2.jpg",
+        "/workdir/app/public/image/look_outside/store_3.jpg",
+        "/workdir/app/public/image/look_outside/store_4.jpg",
+        "/workdir/app/public/image/look_outside/store_5.jpg",
+        "/workdir/app/public/image/look_outside/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "RPG"
+    ],
+    "developer": {
+      "name": "Francis Coulombe",
+      "email": "franciscoulombe@franciscoulombe.com",
+      "website_url": "https://www.franciscoulombe.com",
+      "support_email": "support@franciscoulombe.com"
+    }
+  },
+  {
+    "name": "Bomb Rush Cyberfunk",
+    "description": "Bomb Rush Cyberfunk is 1 second per second of advanced funkstyle. Battle rival crews and dispatch militarized police to conquer the five boroughs of New Amsterdam. Become All City.",
+    "release_date": "2023-08-18",
+    "release_price": 39.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/bomb_rush_cyberfunk/header.jpg",
+      "library_capsule": "/workdir/app/public/image/bomb_rush_cyberfunk/capsule.jpg",
+      "trailer": "/workdir/app/public/image/bomb_rush_cyberfunk/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/bomb_rush_cyberfunk/store_1.jpg",
+        "/workdir/app/public/image/bomb_rush_cyberfunk/store_2.jpg",
+        "/workdir/app/public/image/bomb_rush_cyberfunk/store_3.jpg",
+        "/workdir/app/public/image/bomb_rush_cyberfunk/store_4.jpg",
+        "/workdir/app/public/image/bomb_rush_cyberfunk/store_5.jpg",
+        "/workdir/app/public/image/bomb_rush_cyberfunk/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Team Reptile",
+      "email": "contact@team-reptile.com",
+      "website_url": "https://www.teamreptile.com",
+      "support_email": "support@teamreptile.com"
+    }
+  },
+  {
+    "name": "White Knuckle",
+    "description": "White Knuckle is a first-person roguelite speed-climbing game. Ascend through the guts of SUB-STRUCTURE 17 using precision movement mechanics. Sharp reflexes and resource management will bring you out from under ten thousand meters of concrete and decay.",
+    "release_date": "2025-04-17",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/white_knuckle/header.jpg",
+      "library_capsule": "/workdir/app/public/image/white_knuckle/capsule.jpg",
+      "trailer": "/workdir/app/public/image/white_knuckle/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/white_knuckle/store_1.jpg",
+        "/workdir/app/public/image/white_knuckle/store_2.jpg",
+        "/workdir/app/public/image/white_knuckle/store_3.jpg",
+        "/workdir/app/public/image/white_knuckle/store_4.jpg",
+        "/workdir/app/public/image/white_knuckle/store_5.jpg",
+        "/workdir/app/public/image/white_knuckle/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Early Access"
+    ],
+    "developer": {
+      "name": "Dark Machine Games",
+      "email": "darkmachinedev@gmail.com",
+      "website_url": "https://whiteknuckle.net/",
+      "support_email": "support@darkmachinegames.com"
+    }
+  },
+  {
+    "name": "CLANNAD",
+    "description": "From the world renowned visual novel studio Key, the highly rated story of CLANNAD is now available on Steam! Improved visuals, achievement integration, and Dangopedia make this the best version of CLANNAD to date.",
+    "release_date": "2015-11-23",
+    "release_price": 44.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/clannad/header.jpg",
+      "library_capsule": "/workdir/app/public/image/clannad/capsule.jpg",
+      "trailer": "/workdir/app/public/image/clannad/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/clannad/store_1.jpg",
+        "/workdir/app/public/image/clannad/store_2.jpg",
+        "/workdir/app/public/image/clannad/store_3.jpg",
+        "/workdir/app/public/image/clannad/store_4.jpg",
+        "/workdir/app/public/image/clannad/store_5.jpg",
+        "/workdir/app/public/image/clannad/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "VisualArts/Key",
+      "email": "visualartskey@visualartskey.com",
+      "website_url": "https://www.visualartskey.com",
+      "support_email": "support@visualartskey.com"
+    }
+  },
+  {
+    "name": "An Arcade Full of Cats",
+    "description": "Journey through gaming history's time and space, while searching for adorable feline companions in 'An Arcade Full of Cats,' the ultimate pet'em up hidden object game.",
+    "release_date": "2023-11-16",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/an_arcade_full_of_cats/header.jpg",
+      "library_capsule": "/workdir/app/public/image/an_arcade_full_of_cats/capsule.jpg",
+      "trailer": "/workdir/app/public/image/an_arcade_full_of_cats/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/an_arcade_full_of_cats/store_1.jpg",
+        "/workdir/app/public/image/an_arcade_full_of_cats/store_2.jpg",
+        "/workdir/app/public/image/an_arcade_full_of_cats/store_3.jpg",
+        "/workdir/app/public/image/an_arcade_full_of_cats/store_4.jpg",
+        "/workdir/app/public/image/an_arcade_full_of_cats/store_5.jpg",
+        "/workdir/app/public/image/an_arcade_full_of_cats/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Devcats",
+      "email": "innerself.indiegames@gmail.com",
+      "website_url": "https://www.devcats.com",
+      "support_email": "support@devcats.com"
+    }
+  },
+  {
+    "name": "VTOL VR",
+    "description": "VTOL VR is a near-futuristic combat flight game built for Virtual Reality. Pilot advanced multi-role jets, using your hands to flip switches, press buttons, and manipulate the virtual flight controls.",
+    "release_date": "2017-08-03",
+    "release_price": 29.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/vtol_vr/header.jpg",
+      "library_capsule": "/workdir/app/public/image/vtol_vr/capsule.jpg",
+      "trailer": "/workdir/app/public/image/vtol_vr/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/vtol_vr/store_1.jpg",
+        "/workdir/app/public/image/vtol_vr/store_2.jpg",
+        "/workdir/app/public/image/vtol_vr/store_3.jpg",
+        "/workdir/app/public/image/vtol_vr/store_4.jpg",
+        "/workdir/app/public/image/vtol_vr/store_5.jpg",
+        "/workdir/app/public/image/vtol_vr/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "Boundless Dynamics, LLC",
+      "email": "contact@bdynamicsstudio.com",
+      "website_url": "http://vtolvr.bdynamicsstudio.com",
+      "support_email": "support@boundlessdynamicsllc.com"
+    }
+  },
+  {
+    "name": "Trombone Champ",
+    "description": "Honk, blow, &amp; toot your way through over 60 songs, collect all 50 unique Tromboner Cards, and uncover the mysteries of the Trombiverse. Do you have what it takes to become the true Trombone Champ?",
+    "release_date": "2022-09-15",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/trombone_champ/header.jpg",
+      "library_capsule": "/workdir/app/public/image/trombone_champ/capsule.jpg",
+      "trailer": "/workdir/app/public/image/trombone_champ/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/trombone_champ/store_1.jpg",
+        "/workdir/app/public/image/trombone_champ/store_2.jpg",
+        "/workdir/app/public/image/trombone_champ/store_3.jpg",
+        "/workdir/app/public/image/trombone_champ/store_4.jpg",
+        "/workdir/app/public/image/trombone_champ/store_5.jpg",
+        "/workdir/app/public/image/trombone_champ/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Holy Wow Studios LLC",
+      "email": "holywowstudios@gmail.com",
+      "website_url": "https://www.trombonechamp.com",
+      "support_email": "support@holywowstudiosllc.com"
+    }
+  },
+  {
+    "name": "Our Life: Beginnings & Always",
+    "description": "A twenty-dollar bill, four summers, fifteen years, and a one of a kind life. Create an experience that’s all your own in this near-fully customizable visual novel where you grow from childhood to adulthood with the lonely boy next door.",
+    "release_date": "2020-11-16",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/our_life_beginnings_always/header.jpg",
+      "library_capsule": "/workdir/app/public/image/our_life_beginnings_always/capsule.jpg",
+      "trailer": "/workdir/app/public/image/our_life_beginnings_always/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/our_life_beginnings_always/store_1.jpg",
+        "/workdir/app/public/image/our_life_beginnings_always/store_2.jpg",
+        "/workdir/app/public/image/our_life_beginnings_always/store_3.jpg",
+        "/workdir/app/public/image/our_life_beginnings_always/store_4.jpg",
+        "/workdir/app/public/image/our_life_beginnings_always/store_5.jpg",
+        "/workdir/app/public/image/our_life_beginnings_always/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "GB Patch Games",
+      "email": "contact@gbpatchgames.com",
+      "website_url": "https://www.gbpatchgames.com/",
+      "support_email": "support@gbpatchgames.com"
+    }
+  },
+  {
+    "name": "100 hidden frogs",
+    "description": "The frogs hid. Can you find them?",
+    "release_date": "2021-11-15",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/100_hidden_frogs/header.jpg",
+      "library_capsule": "/workdir/app/public/image/100_hidden_frogs/capsule.jpg",
+      "trailer": "/workdir/app/public/image/100_hidden_frogs/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/100_hidden_frogs/store_1.jpg",
+        "/workdir/app/public/image/100_hidden_frogs/store_2.jpg",
+        "/workdir/app/public/image/100_hidden_frogs/store_3.jpg",
+        "/workdir/app/public/image/100_hidden_frogs/store_4.jpg",
+        "/workdir/app/public/image/100_hidden_frogs/store_5.jpg",
+        "/workdir/app/public/image/100_hidden_frogs/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Free To Play",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Anatoliy Loginovskikh",
+      "email": "anatoliy_loginovskikh@mail.ru",
+      "website_url": "https://www.anatoliyloginovskikh.com",
+      "support_email": "support@anatoliyloginovskikh.com"
+    }
+  },
+  {
+    "name": "Cube Escape Collection",
+    "description": "In this classic point-and-click adventure anthology you follow the path of Dale and Laura and other famous Rusty lake characters such as Mr. Crow and Mr. Owl. The series will be updated, preserved and bundled to survive the end of the Flash Games era.",
+    "release_date": "2020-10-14",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/cube_escape_collection/header.jpg",
+      "library_capsule": "/workdir/app/public/image/cube_escape_collection/capsule.jpg",
+      "trailer": "/workdir/app/public/image/cube_escape_collection/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/cube_escape_collection/store_1.jpg",
+        "/workdir/app/public/image/cube_escape_collection/store_2.jpg",
+        "/workdir/app/public/image/cube_escape_collection/store_3.jpg",
+        "/workdir/app/public/image/cube_escape_collection/store_4.jpg",
+        "/workdir/app/public/image/cube_escape_collection/store_5.jpg",
+        "/workdir/app/public/image/cube_escape_collection/store_6.jpg"
+      ]
+    },
+    "genres": [],
+    "developer": {
+      "name": "Rusty Lake",
+      "email": "http://www.rustylake.com/contact/",
+      "website_url": "http://www.rustylake.com",
+      "support_email": "support@rustylake.com"
+    }
+  },
+  {
+    "name": "Kind Words (lo fi chill beats to write to)",
+    "description": "A game about writing nice letters to real people. Write and receive encouraging letters in a cozy room. Trade stickers and listen to chill music. We're all in this together. Sometimes all you need are a few kind words.",
+    "release_date": "2019-09-12",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/header.jpg",
+      "library_capsule": "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/capsule.jpg",
+      "trailer": "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/store_1.jpg",
+        "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/store_2.jpg",
+        "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/store_3.jpg",
+        "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/store_4.jpg",
+        "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/store_5.jpg",
+        "/workdir/app/public/image/kind_words_lo_fi_chill_beats_to_write_to/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Popcannibal",
+      "email": "support@popcannibal.com",
+      "website_url": "https://www.popcannibal.com",
+      "support_email": "support@popcannibal.com"
+    }
+  },
+  {
+    "name": "Lost in Play",
+    "description": "Solve puzzles, riddles, and embark on an exciting journey of discovery! Join Toto and Gal as they explore dreamscapes and befriend magical creatures. Lost in their imagination, the brother and sister must stick together and solve puzzles to find their way home.",
+    "release_date": "2022-08-10",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/lost_in_play/header.jpg",
+      "library_capsule": "/workdir/app/public/image/lost_in_play/capsule.jpg",
+      "trailer": "/workdir/app/public/image/lost_in_play/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/lost_in_play/store_1.jpg",
+        "/workdir/app/public/image/lost_in_play/store_2.jpg",
+        "/workdir/app/public/image/lost_in_play/store_3.jpg",
+        "/workdir/app/public/image/lost_in_play/store_4.jpg",
+        "/workdir/app/public/image/lost_in_play/store_5.jpg",
+        "/workdir/app/public/image/lost_in_play/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Happy Juice Games",
+      "email": "ivan@joystickventures.com",
+      "website_url": "https://www.happyjuice.games/",
+      "support_email": "support@happyjuicegames.com"
+    }
+  },
+  {
+    "name": "One Finger Death Punch",
+    "description": "Experience cinematic kung-fu battles in the fastest, most intense brawler the indie world has ever seen! With the unique 1:1 response system of One Finger Death Punch, players will feel the immediate feedback of every bone-crunching hit. Pay tribute to the masters using five classic kung-fu styles mixed with additional weapons.",
+    "release_date": "2014-03-03",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/one_finger_death_punch/header.jpg",
+      "library_capsule": "/workdir/app/public/image/one_finger_death_punch/capsule.jpg",
+      "trailer": "/workdir/app/public/image/one_finger_death_punch/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/one_finger_death_punch/store_1.jpg",
+        "/workdir/app/public/image/one_finger_death_punch/store_2.jpg",
+        "/workdir/app/public/image/one_finger_death_punch/store_3.jpg",
+        "/workdir/app/public/image/one_finger_death_punch/store_4.jpg",
+        "/workdir/app/public/image/one_finger_death_punch/store_5.jpg",
+        "/workdir/app/public/image/one_finger_death_punch/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Silver Dollar Games",
+      "email": "jonathan@silverdollargames.com",
+      "website_url": "http://www.silverdollargames.com/",
+      "support_email": "support@silverdollargames.com"
+    }
+  },
+  {
+    "name": "Monument Valley",
+    "description": "Embark on a journey of forgiveness through impossible environments and illusionary puzzles. Experience this meditative and calming puzzle game by manipulating monuments and creating evolving paths to explore new, surreal, and mysterious worlds.",
+    "release_date": "2022-07-12",
+    "release_price": 7.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/monument_valley/header.jpg",
+      "library_capsule": "/workdir/app/public/image/monument_valley/capsule.jpg",
+      "trailer": "/workdir/app/public/image/monument_valley/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/monument_valley/store_1.jpg",
+        "/workdir/app/public/image/monument_valley/store_2.jpg",
+        "/workdir/app/public/image/monument_valley/store_3.jpg",
+        "/workdir/app/public/image/monument_valley/store_4.jpg",
+        "/workdir/app/public/image/monument_valley/store_5.jpg",
+        "/workdir/app/public/image/monument_valley/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "ustwo games",
+      "email": "support@monumentvalleygame.com",
+      "website_url": "https://www.monumentvalleygame.com/mv1",
+      "support_email": "support@ustwogames.com"
+    }
+  },
+  {
+    "name": "Crow Country",
+    "description": "The year is 1990. It’s been two years since the mysterious disappearance of Edward Crow and the abrupt closure of his theme park, Crow Country. But your arrival has broken the silence, Mara Forest. If you want answers, you’ll have to venture deep into the darkness of Crow Country to find them…",
+    "release_date": "2024-05-09",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/crow_country/header.jpg",
+      "library_capsule": "/workdir/app/public/image/crow_country/capsule.jpg",
+      "trailer": "/workdir/app/public/image/crow_country/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/crow_country/store_1.jpg",
+        "/workdir/app/public/image/crow_country/store_2.jpg",
+        "/workdir/app/public/image/crow_country/store_3.jpg",
+        "/workdir/app/public/image/crow_country/store_4.jpg",
+        "/workdir/app/public/image/crow_country/store_5.jpg",
+        "/workdir/app/public/image/crow_country/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie"
+    ],
+    "developer": {
+      "name": "SFB Games",
+      "email": "support@sfbgames.com",
+      "website_url": "https://www.sfbgames.com",
+      "support_email": "support@sfbgames.com"
+    }
+  },
+  {
+    "name": "Underground Blossom",
+    "description": "Underground Blossom is a new adventure game by Rusty Lake. Fulfil various tasks at every station to find the metro that will take you through each important event from Laura Vanderboom's life.",
+    "release_date": "2023-09-27",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/underground_blossom/header.jpg",
+      "library_capsule": "/workdir/app/public/image/underground_blossom/capsule.jpg",
+      "trailer": "/workdir/app/public/image/underground_blossom/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/underground_blossom/store_1.jpg",
+        "/workdir/app/public/image/underground_blossom/store_2.jpg",
+        "/workdir/app/public/image/underground_blossom/store_3.jpg",
+        "/workdir/app/public/image/underground_blossom/store_4.jpg",
+        "/workdir/app/public/image/underground_blossom/store_5.jpg",
+        "/workdir/app/public/image/underground_blossom/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Rusty Lake",
+      "email": "https://www.rustylake.com/contact/",
+      "website_url": "https://www.rustylake.com",
+      "support_email": "support@rustylake.com"
+    }
+  },
+  {
+    "name": "Epic Battle Fantasy 5",
+    "description": "A turn-based RPG adventure, full of video game references, juvenile dialogue, and anime fanservice... and also strategic combat, monster catching, and tons of treasure hunting! Updated with tons of new content!",
+    "release_date": "2018-11-30",
+    "release_price": 24.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/epic_battle_fantasy_5/header.jpg",
+      "library_capsule": "/workdir/app/public/image/epic_battle_fantasy_5/capsule.jpg",
+      "trailer": "/workdir/app/public/image/epic_battle_fantasy_5/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/epic_battle_fantasy_5/store_1.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_5/store_2.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_5/store_3.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_5/store_4.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_5/store_5.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_5/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "RPG",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "Matt Roszak",
+      "email": "kupo707@hotmail.com",
+      "website_url": "http://kupogames.com/",
+      "support_email": "support@mattroszak.com"
+    }
+  },
+  {
+    "name": "Purrgatory",
+    "description": "A slice-of-death visual novel about making friends, cracking cat puns, and waiting for eternity to pass.",
+    "release_date": "2021-08-22",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/purrgatory/header.jpg",
+      "library_capsule": "/workdir/app/public/image/purrgatory/capsule.jpg",
+      "trailer": "/workdir/app/public/image/purrgatory/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/purrgatory/store_1.jpg",
+        "/workdir/app/public/image/purrgatory/store_2.jpg",
+        "/workdir/app/public/image/purrgatory/store_3.jpg",
+        "/workdir/app/public/image/purrgatory/store_4.jpg",
+        "/workdir/app/public/image/purrgatory/store_5.jpg",
+        "/workdir/app/public/image/purrgatory/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Niv",
+      "email": "darvinheo@gmail.com",
+      "website_url": "https://www.niv.com",
+      "support_email": "support@niv.com"
+    }
+  },
+  {
+    "name": "Ib",
+    "description": "A 2D exploration adventure game set in a creepy, mysterious art gallery.",
+    "release_date": "2022-04-11",
+    "release_price": 12.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/ib/header.jpg",
+      "library_capsule": "/workdir/app/public/image/ib/capsule.jpg",
+      "trailer": "/workdir/app/public/image/ib/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/ib/store_1.jpg",
+        "/workdir/app/public/image/ib/store_2.jpg",
+        "/workdir/app/public/image/ib/store_3.jpg",
+        "/workdir/app/public/image/ib/store_4.jpg",
+        "/workdir/app/public/image/ib/store_5.jpg",
+        "/workdir/app/public/image/ib/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "kouri",
+      "email": "kouri@kouri.com",
+      "website_url": "https://playism.com/game/ib/",
+      "support_email": "support@kouri.com"
+    }
+  },
+  {
+    "name": "WITCH ON THE HOLY NIGHT",
+    "description": "A tale told with vivid colors and rich sound in a classic TYPE-MOON visual novel.",
+    "release_date": "2023-12-14",
+    "release_price": 39.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/witch_on_the_holy_night/header.jpg",
+      "library_capsule": "/workdir/app/public/image/witch_on_the_holy_night/capsule.jpg",
+      "trailer": "/workdir/app/public/image/witch_on_the_holy_night/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/witch_on_the_holy_night/store_1.jpg",
+        "/workdir/app/public/image/witch_on_the_holy_night/store_2.jpg",
+        "/workdir/app/public/image/witch_on_the_holy_night/store_3.jpg",
+        "/workdir/app/public/image/witch_on_the_holy_night/store_4.jpg",
+        "/workdir/app/public/image/witch_on_the_holy_night/store_5.jpg",
+        "/workdir/app/public/image/witch_on_the_holy_night/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure"
+    ],
+    "developer": {
+      "name": "TYPE-MOON",
+      "email": "typemoon@typemoon.com",
+      "website_url": "http://typemoon.com/products/mahoyo/",
+      "support_email": "support@typemoon.com"
+    }
+  },
+  {
+    "name": "I Am Your Beast",
+    "description": "Hunt the military-industrial complex across stylish comic book micro-sandboxes in this fast-paced covert revenge thriller FPS from the developers of El Paso, Elsewhere.",
+    "release_date": "2024-09-10",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/i_am_your_beast/header.jpg",
+      "library_capsule": "/workdir/app/public/image/i_am_your_beast/capsule.jpg",
+      "trailer": "/workdir/app/public/image/i_am_your_beast/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/i_am_your_beast/store_1.jpg",
+        "/workdir/app/public/image/i_am_your_beast/store_2.jpg",
+        "/workdir/app/public/image/i_am_your_beast/store_3.jpg",
+        "/workdir/app/public/image/i_am_your_beast/store_4.jpg",
+        "/workdir/app/public/image/i_am_your_beast/store_5.jpg",
+        "/workdir/app/public/image/i_am_your_beast/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action"
+    ],
+    "developer": {
+      "name": "Strange Scaffold",
+      "email": "press@strangescaffold.com",
+      "website_url": "https://www.strangescaffold.com/",
+      "support_email": "support@strangescaffold.com"
+    }
+  },
+  {
+    "name": "Riddle Joker",
+    "description": "For decades, superpowers and psychic abilities were thought to be mere science fiction, but the discovery of a certain particle called the &quot;Astron&quot; at the end of the 20th century proved to the world that these wondrous phenomena were real.",
+    "release_date": "2020-12-18",
+    "release_price": 34.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/riddle_joker/header.jpg",
+      "library_capsule": "/workdir/app/public/image/riddle_joker/capsule.jpg",
+      "trailer": "/workdir/app/public/image/riddle_joker/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/riddle_joker/store_1.jpg",
+        "/workdir/app/public/image/riddle_joker/store_2.jpg",
+        "/workdir/app/public/image/riddle_joker/store_3.jpg",
+        "/workdir/app/public/image/riddle_joker/store_4.jpg",
+        "/workdir/app/public/image/riddle_joker/store_5.jpg",
+        "/workdir/app/public/image/riddle_joker/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "YUZUSOFT",
+      "email": "hikarifield@gmail.com",
+      "website_url": "http://riddle.nekonyansoft.com/",
+      "support_email": "support@yuzusoft.com"
+    }
+  },
+  {
+    "name": "Threefold Recital",
+    "description": "Threefold Recital is set in an oriental fantasy world where the metropolis of Bluescales faces turmoil after a long golden age. The mix of magic, modern, and ancient technologies challenges governance, while tensions between humans, beastlings, and dragons grow. In the shadows, a crisis looms...",
+    "release_date": "2025-01-13",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/threefold_recital/header.jpg",
+      "library_capsule": "/workdir/app/public/image/threefold_recital/capsule.jpg",
+      "trailer": "/workdir/app/public/image/threefold_recital/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/threefold_recital/store_1.jpg",
+        "/workdir/app/public/image/threefold_recital/store_2.jpg",
+        "/workdir/app/public/image/threefold_recital/store_3.jpg",
+        "/workdir/app/public/image/threefold_recital/store_4.jpg",
+        "/workdir/app/public/image/threefold_recital/store_5.jpg",
+        "/workdir/app/public/image/threefold_recital/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Everscape Games",
+      "email": "mrup@indienova.com",
+      "website_url": "https://www.everscapegames.com",
+      "support_email": "support@everscapegames.com"
+    }
+  },
+  {
+    "name": "Kindergarten 2",
+    "description": "Welcome to Kindergarten 2, which takes place on Tuesday! After the events of Monday, you'll find yourself in a new school with new friends...and new ways to get ruthlessly murdered.",
+    "release_date": "2019-07-29",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/kindergarten_2/header.jpg",
+      "library_capsule": "/workdir/app/public/image/kindergarten_2/capsule.jpg",
+      "trailer": "/workdir/app/public/image/kindergarten_2/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/kindergarten_2/store_1.jpg",
+        "/workdir/app/public/image/kindergarten_2/store_2.jpg",
+        "/workdir/app/public/image/kindergarten_2/store_3.jpg",
+        "/workdir/app/public/image/kindergarten_2/store_4.jpg",
+        "/workdir/app/public/image/kindergarten_2/store_5.jpg",
+        "/workdir/app/public/image/kindergarten_2/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Con Man Games",
+      "email": "admin@conmangames.com",
+      "website_url": "https://www.conmangames.com",
+      "support_email": "support@conmangames.com"
+    }
+  },
+  {
+    "name": "A Building Full of Cats",
+    "description": "A Building Full of Cats is a hidden object game where you need to pet all the cats in the building. Don't leave any cats behind!",
+    "release_date": "2022-07-07",
+    "release_price": 1.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/a_building_full_of_cats/header.jpg",
+      "library_capsule": "/workdir/app/public/image/a_building_full_of_cats/capsule.jpg",
+      "trailer": "/workdir/app/public/image/a_building_full_of_cats/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/a_building_full_of_cats/store_1.jpg",
+        "/workdir/app/public/image/a_building_full_of_cats/store_2.jpg",
+        "/workdir/app/public/image/a_building_full_of_cats/store_3.jpg",
+        "/workdir/app/public/image/a_building_full_of_cats/store_4.jpg",
+        "/workdir/app/public/image/a_building_full_of_cats/store_5.jpg",
+        "/workdir/app/public/image/a_building_full_of_cats/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Casual"
+    ],
+    "developer": {
+      "name": "Devcats",
+      "email": "devcats@devcats.com",
+      "website_url": "https://www.devcats.com",
+      "support_email": "support@devcats.com"
+    }
+  },
+  {
+    "name": "Felvidek",
+    "description": "In Felvidek, a JRPG set in 15th century Slovakia, you embrace the role of an alcoholic knight Pavol. Meet diverse and interesting characters to help you drive out the Hussites and Ottomans who blight this land.",
+    "release_date": "2024-03-29",
+    "release_price": 10.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/felvidek/header.jpg",
+      "library_capsule": "/workdir/app/public/image/felvidek/capsule.jpg",
+      "trailer": "/workdir/app/public/image/felvidek/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/felvidek/store_1.jpg",
+        "/workdir/app/public/image/felvidek/store_2.jpg",
+        "/workdir/app/public/image/felvidek/store_3.jpg",
+        "/workdir/app/public/image/felvidek/store_4.jpg",
+        "/workdir/app/public/image/felvidek/store_5.jpg",
+        "/workdir/app/public/image/felvidek/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "Jozef Pavelka",
+      "email": "jpavelka14@gmail.com",
+      "website_url": "https://www.jozefpavelka.com",
+      "support_email": "support@jozefpavelka.com"
+    }
+  },
+  {
+    "name": "Picayune Dreams",
+    "description": "Picayune Dreams is a roguelike blend of bullet heaven horde survival, and bullet hell gameplay. Adrift across the endless void, you must fend off thousands of nightmarish and otherwordly creatures. Uncover a mysterious and surreal story. And don't forget. You mu [TRANSMISSION INTERRUPTED...]",
+    "release_date": "2023-12-04",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/picayune_dreams/header.jpg",
+      "library_capsule": "/workdir/app/public/image/picayune_dreams/capsule.jpg",
+      "trailer": "/workdir/app/public/image/picayune_dreams/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/picayune_dreams/store_1.jpg",
+        "/workdir/app/public/image/picayune_dreams/store_2.jpg",
+        "/workdir/app/public/image/picayune_dreams/store_3.jpg",
+        "/workdir/app/public/image/picayune_dreams/store_4.jpg",
+        "/workdir/app/public/image/picayune_dreams/store_5.jpg",
+        "/workdir/app/public/image/picayune_dreams/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action"
+    ],
+    "developer": {
+      "name": "Stepford",
+      "email": "stepford@stepford.com",
+      "website_url": "https://2leftthumbs.manakeep.com/picayune-dreams",
+      "support_email": "support@stepford.com"
+    }
+  },
+  {
+    "name": "Lil Gator Game",
+    "description": "Embark on an adorable adventure, discover new friends and uncover everything the island has to offer. Climb, Swim, Glide and slide your way into the hearts of the many different characters you meet on your travels!",
+    "release_date": "2022-12-14",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/lil_gator_game/header.jpg",
+      "library_capsule": "/workdir/app/public/image/lil_gator_game/capsule.jpg",
+      "trailer": "/workdir/app/public/image/lil_gator_game/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/lil_gator_game/store_1.jpg",
+        "/workdir/app/public/image/lil_gator_game/store_2.jpg",
+        "/workdir/app/public/image/lil_gator_game/store_3.jpg",
+        "/workdir/app/public/image/lil_gator_game/store_4.jpg",
+        "/workdir/app/public/image/lil_gator_game/store_5.jpg",
+        "/workdir/app/public/image/lil_gator_game/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "MegaWobble",
+      "email": "lilgatorgame@gmail.com",
+      "website_url": "https://www.playtonicgames.com/game/lil-gator-game/",
+      "support_email": "support@megawobble.com"
+    }
+  },
+  {
+    "name": "Papa's Pizzeria Deluxe",
+    "description": "Top, bake, and serve delicious pizzas in Papa's Pizzeria Deluxe! Craft pizzas for Papa Louie's loyal customers while earning tips, points, and Special Recipes. Unlock holiday ingredients for seasonal pies, and take a trip in the Food Truck to serve your own unique creations!",
+    "release_date": "2024-11-19",
+    "release_price": 5.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/papa_s_pizzeria_deluxe/header.jpg",
+      "library_capsule": "/workdir/app/public/image/papa_s_pizzeria_deluxe/capsule.jpg",
+      "trailer": "/workdir/app/public/image/papa_s_pizzeria_deluxe/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/papa_s_pizzeria_deluxe/store_1.jpg",
+        "/workdir/app/public/image/papa_s_pizzeria_deluxe/store_2.jpg",
+        "/workdir/app/public/image/papa_s_pizzeria_deluxe/store_3.jpg",
+        "/workdir/app/public/image/papa_s_pizzeria_deluxe/store_4.jpg",
+        "/workdir/app/public/image/papa_s_pizzeria_deluxe/store_5.jpg",
+        "/workdir/app/public/image/papa_s_pizzeria_deluxe/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Casual",
+      "Indie",
+      "Simulation",
+      "Strategy"
+    ],
+    "developer": {
+      "name": "Flipline Studios",
+      "email": "support@flipline.com",
+      "website_url": "https://www.fliplinestudios.com",
+      "support_email": "support@fliplinestudios.com"
+    }
+  },
+  {
+    "name": "Loddlenaut",
+    "description": "Play as an interstellar custodian sent to clean up a polluted ocean planet. Pick up trash, explore the vibrant waters, and take care of axolotl-like alien creatures!",
+    "release_date": "2023-11-16",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/loddlenaut/header.jpg",
+      "library_capsule": "/workdir/app/public/image/loddlenaut/capsule.jpg",
+      "trailer": "/workdir/app/public/image/loddlenaut/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/loddlenaut/store_1.jpg",
+        "/workdir/app/public/image/loddlenaut/store_2.jpg",
+        "/workdir/app/public/image/loddlenaut/store_3.jpg",
+        "/workdir/app/public/image/loddlenaut/store_4.jpg",
+        "/workdir/app/public/image/loddlenaut/store_5.jpg",
+        "/workdir/app/public/image/loddlenaut/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Moon Lagoon",
+      "email": "help@loddlenaut.com",
+      "website_url": "https://www.loddlenaut.com/",
+      "support_email": "support@moonlagoon.com"
+    }
+  },
+  {
+    "name": "Milo and the Magpies",
+    "description": "Milo and the Magpies is a point-and-click, hidden object game following the story of a little cat named Milo who is trying to find his way home after getting turned around by an unfortunate encounter with some pesky magpies.",
+    "release_date": "2021-09-07",
+    "release_price": 2.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/milo_and_the_magpies/header.jpg",
+      "library_capsule": "/workdir/app/public/image/milo_and_the_magpies/capsule.jpg",
+      "trailer": "/workdir/app/public/image/milo_and_the_magpies/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/milo_and_the_magpies/store_1.jpg",
+        "/workdir/app/public/image/milo_and_the_magpies/store_2.jpg",
+        "/workdir/app/public/image/milo_and_the_magpies/store_3.jpg",
+        "/workdir/app/public/image/milo_and_the_magpies/store_4.jpg",
+        "/workdir/app/public/image/milo_and_the_magpies/store_5.jpg",
+        "/workdir/app/public/image/milo_and_the_magpies/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Johan Scherft",
+      "email": "support@secondmaze.com",
+      "website_url": "https://www.johanscherft.com",
+      "support_email": "support@johanscherft.com"
+    }
+  },
+  {
+    "name": "eden*",
+    "description": "A tale of the planet's final love story told using the full force of minori's critically acclaimed illustrative style, engaging musical compositions, and the highly talented staff that has led fans coming back for more every single time!",
+    "release_date": "2015-01-30",
+    "release_price": 19.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/eden/header.jpg",
+      "library_capsule": "/workdir/app/public/image/eden/capsule.jpg",
+      "trailer": "/workdir/app/public/image/eden/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/eden/store_1.jpg",
+        "/workdir/app/public/image/eden/store_2.jpg",
+        "/workdir/app/public/image/eden/store_3.jpg",
+        "/workdir/app/public/image/eden/store_4.jpg",
+        "/workdir/app/public/image/eden/store_5.jpg",
+        "/workdir/app/public/image/eden/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure"
+    ],
+    "developer": {
+      "name": "minori",
+      "email": "support@mangagamer.com",
+      "website_url": "http://www.mangagamer.org/eden",
+      "support_email": "support@minori.com"
+    }
+  },
+  {
+    "name": "Summer Pockets",
+    "description": "From the creators of Angel Beats! and CLANNAD, Key, comes their latest emotional, award-winning journey. Follow protagonist Takahara Hairi as he travels to the secluded island Torishirojima, where he rediscovers what it means to enjoy summer vacation.",
+    "release_date": "2020-02-05",
+    "release_price": 44.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/summer_pockets/header.jpg",
+      "library_capsule": "/workdir/app/public/image/summer_pockets/capsule.jpg",
+      "trailer": "/workdir/app/public/image/summer_pockets/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/summer_pockets/store_1.jpg",
+        "/workdir/app/public/image/summer_pockets/store_2.jpg",
+        "/workdir/app/public/image/summer_pockets/store_3.jpg",
+        "/workdir/app/public/image/summer_pockets/store_4.jpg",
+        "/workdir/app/public/image/summer_pockets/store_5.jpg",
+        "/workdir/app/public/image/summer_pockets/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual"
+    ],
+    "developer": {
+      "name": "VisualArts/Key",
+      "email": "vausa@product.co.jp",
+      "website_url": "http://key.visualarts.gr.jp/summer/",
+      "support_email": "support@visualartskey.com"
+    }
+  },
+  {
+    "name": "Just a To the Moon Series Beach Episode",
+    "description": "The Beach Episode™ of To the Moon, Finding Paradise, and Impostor Factory. But something's off.",
+    "release_date": "2024-09-20",
+    "release_price": 7.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/header.jpg",
+      "library_capsule": "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/capsule.jpg",
+      "trailer": "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/store_1.jpg",
+        "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/store_2.jpg",
+        "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/store_3.jpg",
+        "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/store_4.jpg",
+        "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/store_5.jpg",
+        "/workdir/app/public/image/just_a_to_the_moon_series_beach_episode/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie",
+      "RPG"
+    ],
+    "developer": {
+      "name": "Freebird Games",
+      "email": "kan@freebirdgames.com",
+      "website_url": "https://freebirdgames.com/",
+      "support_email": "support@freebirdgames.com"
+    }
+  },
+  {
+    "name": "Cureocity",
+    "description": "“People think battles need powerful weapons, but strategy at hand is key.&quot;The story follows a rookie adventurer and a new healer in a dungeon quest, with the core gameplay involving hand-picked methods using weapons and items. Fight or purify? Heal or alter? The choice is in your hands.",
+    "release_date": "2024-03-21",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/cureocity/header.jpg",
+      "library_capsule": "/workdir/app/public/image/cureocity/capsule.jpg",
+      "trailer": "/workdir/app/public/image/cureocity/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/cureocity/store_1.jpg",
+        "/workdir/app/public/image/cureocity/store_2.jpg",
+        "/workdir/app/public/image/cureocity/store_3.jpg",
+        "/workdir/app/public/image/cureocity/store_4.jpg",
+        "/workdir/app/public/image/cureocity/store_5.jpg",
+        "/workdir/app/public/image/cureocity/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Bread On Board",
+      "email": "publishing@gcores.com",
+      "website_url": "https://www.gcores.com/games/104913",
+      "support_email": "support@breadonboard.com"
+    }
+  },
+  {
+    "name": "Path of Achra",
+    "description": "Path of Achra is a dark fantasy roguelike of the ancient earth, with a focus on streamlined controls and rapid hero customization. A &quot;broken build sandbox.&quot; Fight through the deadly lands of Achra to reach the horrors of the Obelisk, and discover what lies beyond...",
+    "release_date": "2024-05-07",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/path_of_achra/header.jpg",
+      "library_capsule": "/workdir/app/public/image/path_of_achra/capsule.jpg",
+      "trailer": "/workdir/app/public/image/path_of_achra/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/path_of_achra/store_1.jpg",
+        "/workdir/app/public/image/path_of_achra/store_2.jpg",
+        "/workdir/app/public/image/path_of_achra/store_3.jpg",
+        "/workdir/app/public/image/path_of_achra/store_4.jpg",
+        "/workdir/app/public/image/path_of_achra/store_5.jpg",
+        "/workdir/app/public/image/path_of_achra/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "RPG"
+    ],
+    "developer": {
+      "name": "Ulfsire",
+      "email": "slouchingbeastllc@gmail.com",
+      "website_url": "https://pathofachra.com/",
+      "support_email": "support@ulfsire.com"
+    }
+  },
+  {
+    "name": "The Powder Toy",
+    "description": "The Powder Toy is a classic physics sandbox game, which simulates air pressure and velocity, heat, gravity and a countless number of interactions between different substances",
+    "release_date": "2024-06-14",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/the_powder_toy/header.jpg",
+      "library_capsule": "/workdir/app/public/image/the_powder_toy/capsule.jpg",
+      "trailer": "/workdir/app/public/image/the_powder_toy/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/the_powder_toy/store_1.jpg",
+        "/workdir/app/public/image/the_powder_toy/store_2.jpg",
+        "/workdir/app/public/image/the_powder_toy/store_3.jpg",
+        "/workdir/app/public/image/the_powder_toy/store_4.jpg",
+        "/workdir/app/public/image/the_powder_toy/store_5.jpg",
+        "/workdir/app/public/image/the_powder_toy/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Simulation"
+    ],
+    "developer": {
+      "name": "The Powder Toy Team",
+      "email": "apps@powdertoy.co.uk",
+      "website_url": "https://powdertoy.co.uk/",
+      "support_email": "support@thepowdertoyteam.com"
+    }
+  },
+  {
+    "name": "planetarian HD",
+    "description": "planetarian HD is an engaging and emotional visual novel from legendary game studio, Key. A sub-brand of VISUAL ARTS, Key are also famed for creating Kanon, AIR, CLANNAD, Little Busters!, Rewrite, Angel Beats!, and Summer Pockets.",
+    "release_date": "2017-05-08",
+    "release_price": 9.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/planetarian_hd/header.jpg",
+      "library_capsule": "/workdir/app/public/image/planetarian_hd/capsule.jpg",
+      "trailer": "/workdir/app/public/image/planetarian_hd/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/planetarian_hd/store_1.jpg",
+        "/workdir/app/public/image/planetarian_hd/store_2.jpg",
+        "/workdir/app/public/image/planetarian_hd/store_3.jpg",
+        "/workdir/app/public/image/planetarian_hd/store_4.jpg",
+        "/workdir/app/public/image/planetarian_hd/store_5.jpg",
+        "/workdir/app/public/image/planetarian_hd/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "Casual",
+      "Simulation"
+    ],
+    "developer": {
+      "name": "VisualArts/Key",
+      "email": "vausa@visual-arts.jp",
+      "website_url": "https://www.visualartskey.com",
+      "support_email": "support@visualartskey.com"
+    }
+  },
+  {
+    "name": "Mirage Feathers",
+    "description": "「Maybe one day, I won't have to fight when I fly.」",
+    "release_date": "2024-09-06",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/mirage_feathers/header.jpg",
+      "library_capsule": "/workdir/app/public/image/mirage_feathers/capsule.jpg",
+      "trailer": "/workdir/app/public/image/mirage_feathers/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/mirage_feathers/store_1.jpg",
+        "/workdir/app/public/image/mirage_feathers/store_2.jpg",
+        "/workdir/app/public/image/mirage_feathers/store_3.jpg",
+        "/workdir/app/public/image/mirage_feathers/store_4.jpg",
+        "/workdir/app/public/image/mirage_feathers/store_5.jpg",
+        "/workdir/app/public/image/mirage_feathers/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie"
+    ],
+    "developer": {
+      "name": "oyasumi Workshop",
+      "email": "oyasumiworkshop@gmail.com",
+      "website_url": "https://www.oyasumiworkshop.com",
+      "support_email": "support@oyasumiworkshop.com"
+    }
+  },
+  {
+    "name": "It Steals",
+    "description": "AROUND EVERY CORNER. Face against stealthy antagonists that will take advantage of your expectations.",
+    "release_date": "2020-07-22",
+    "release_price": 4.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/it_steals/header.jpg",
+      "library_capsule": "/workdir/app/public/image/it_steals/capsule.jpg",
+      "trailer": "/workdir/app/public/image/it_steals/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/it_steals/store_1.jpg",
+        "/workdir/app/public/image/it_steals/store_2.jpg",
+        "/workdir/app/public/image/it_steals/store_3.jpg",
+        "/workdir/app/public/image/it_steals/store_4.jpg",
+        "/workdir/app/public/image/it_steals/store_5.jpg",
+        "/workdir/app/public/image/it_steals/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Action",
+      "Indie"
+    ],
+    "developer": {
+      "name": "Zeekerss",
+      "email": "zeekerssgames@gmail.com",
+      "website_url": "https://www.zeekerss.com",
+      "support_email": "support@zeekerss.com"
+    }
+  },
+  {
+    "name": "BLACK BOX LSS - The Shining Immortal",
+    "description": "Immerse yourself in a pixel-art visual novel that blends thrilling crime, romantic comedy, and the pursuit of love. This game depicts the story of a new employee pursuing his female boss.",
+    "release_date": "2023-10-19",
+    "release_price": 0.0,
+    "images": {
+      "library_header": "/workdir/app/public/image/black_box_lss_the_shining_immortal/header.jpg",
+      "library_capsule": "/workdir/app/public/image/black_box_lss_the_shining_immortal/capsule.jpg",
+      "trailer": "/workdir/app/public/image/black_box_lss_the_shining_immortal/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/black_box_lss_the_shining_immortal/store_1.jpg",
+        "/workdir/app/public/image/black_box_lss_the_shining_immortal/store_2.jpg",
+        "/workdir/app/public/image/black_box_lss_the_shining_immortal/store_3.jpg",
+        "/workdir/app/public/image/black_box_lss_the_shining_immortal/store_4.jpg",
+        "/workdir/app/public/image/black_box_lss_the_shining_immortal/store_5.jpg",
+        "/workdir/app/public/image/black_box_lss_the_shining_immortal/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Indie",
+      "RPG",
+      "Free To Play"
+    ],
+    "developer": {
+      "name": "Fif",
+      "email": "boxeye@qq.com",
+      "website_url": "https://www.fif.com",
+      "support_email": "support@fif.com"
+    }
+  },
+  {
+    "name": "Epic Battle Fantasy 4",
+    "description": "A light-hearted turn-based RPG, heavily inspired by old 2D classics. You will battle through waves of cute enemies, grow your characters, explore a diverse world, solve puzzles, and of course, save the world. (Just updated to version 3!)",
+    "release_date": "2014-02-25",
+    "release_price": 14.99,
+    "images": {
+      "library_header": "/workdir/app/public/image/epic_battle_fantasy_4/header.jpg",
+      "library_capsule": "/workdir/app/public/image/epic_battle_fantasy_4/capsule.jpg",
+      "trailer": "/workdir/app/public/image/epic_battle_fantasy_4/trailer.mp4",
+      "store": [
+        "/workdir/app/public/image/epic_battle_fantasy_4/store_1.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_4/store_2.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_4/store_3.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_4/store_4.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_4/store_5.jpg",
+        "/workdir/app/public/image/epic_battle_fantasy_4/store_6.jpg"
+      ]
+    },
+    "genres": [
+      "Adventure",
+      "RPG"
+    ],
+    "developer": {
+      "name": "Matt Roszak",
+      "email": "kupo707@hotmail.com",
+      "website_url": "http://kupogames.com/",
+      "support_email": "support@mattroszak.com"
+    }
+  }
+]

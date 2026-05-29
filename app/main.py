@@ -1,6 +1,10 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.config.settings import settings
+
+# ── Auth ──────────────────────────────────────────────────────────────────────
+from app.endpoint.routes.authRoute import router as auth_router
 
 # ── API routes ────────────────────────────────────────────────────────────────
 from app.endpoint.routes.countryRoute import router as country_router
@@ -41,6 +45,12 @@ from app.endpoint.views.walletView import router as wallet_view_router
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
+app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
+
+# ── Auth Routers ──────────────────────────────────────────────────────────────
+
+app.include_router(auth_router,              prefix="/auth",              tags=["Auth"])
+
 # ── API Routers ───────────────────────────────────────────────────────────────
 
 app.include_router(currency_router,          prefix="/api/currency",          tags=["Currency"])
@@ -61,19 +71,19 @@ app.include_router(title_transaction_router, prefix="/api/title_transaction", ta
 
 # ── View Routers (HTML) ───────────────────────────────────────────────────────
 
-app.include_router(dashboard_view_router,        prefix="/views",                       tags=["Views"])
-app.include_router(currency_view_router,         prefix="/views/currency",              tags=["Views"])
-app.include_router(image_view_router,            prefix="/views/image",                 tags=["Views"])
-app.include_router(media_view_router,            prefix="/views/media",                 tags=["Views"])
-app.include_router(genre_view_router,            prefix="/views/genre",                 tags=["Views"])
-app.include_router(country_view_router,          prefix="/views/country",               tags=["Views"])
-app.include_router(developer_view_router,        prefix="/views/developer",             tags=["Views"])
-app.include_router(customer_view_router,         prefix="/views/customer",              tags=["Views"])
-app.include_router(title_view_router,            prefix="/views/title",                 tags=["Views"])
-app.include_router(wallet_view_router,           prefix="/views/wallet",                tags=["Views"])
-app.include_router(friendship_view_router,       prefix="/views/friendship",            tags=["Views"])
-app.include_router(genre_title_view_router,      prefix="/views/genre_title",           tags=["Views"])
-app.include_router(customer_title_view_router,   prefix="/views/customer_title",        tags=["Views"])
-app.include_router(transaction_view_router,      prefix="/views/transaction",           tags=["Views"])
-app.include_router(review_view_router,           prefix="/views/review",                tags=["Views"])
-app.include_router(title_transaction_view_router, prefix="/views/title_transaction",    tags=["Views"])
+app.include_router(dashboard_view_router,         prefix="/views",                        tags=["Views"])
+app.include_router(currency_view_router,          prefix="/views/currency",               tags=["Views"])
+app.include_router(image_view_router,             prefix="/views/image",                  tags=["Views"])
+app.include_router(media_view_router,             prefix="/views/media",                  tags=["Views"])
+app.include_router(genre_view_router,             prefix="/views/genre",                  tags=["Views"])
+app.include_router(country_view_router,           prefix="/views/country",                tags=["Views"])
+app.include_router(developer_view_router,         prefix="/views/developer",              tags=["Views"])
+app.include_router(customer_view_router,          prefix="/views/customer",               tags=["Views"])
+app.include_router(title_view_router,             prefix="/views/title",                  tags=["Views"])
+app.include_router(wallet_view_router,            prefix="/views/wallet",                 tags=["Views"])
+app.include_router(friendship_view_router,        prefix="/views/friendship",             tags=["Views"])
+app.include_router(genre_title_view_router,       prefix="/views/genre_title",            tags=["Views"])
+app.include_router(customer_title_view_router,    prefix="/views/customer_title",         tags=["Views"])
+app.include_router(transaction_view_router,       prefix="/views/transaction",            tags=["Views"])
+app.include_router(review_view_router,            prefix="/views/review",                 tags=["Views"])
+app.include_router(title_transaction_view_router, prefix="/views/title_transaction",      tags=["Views"])
