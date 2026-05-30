@@ -15,7 +15,6 @@ class CustomerCreate(SQLModel):
 
 
 class CustomerShow(SQLModel):
-    id:             int | None = None
     name:           str
     email:          str
     status:         bool

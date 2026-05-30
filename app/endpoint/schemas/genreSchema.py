@@ -6,7 +6,6 @@ class GenreCreate(SQLModel):
 
 
 class GenreShow(SQLModel):
-    id:     int | None = None
     name:   str
 
 

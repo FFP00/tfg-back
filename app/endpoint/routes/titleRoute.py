@@ -4,12 +4,9 @@ from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.endpoint.models.TitleModel import Title
-from app.endpoint.models.GenreModel import Genre
-from app.endpoint.models.GenreTitleModel import GenreTitle
 from app.endpoint.schemas.titleSchema import TitleCreate as CreateValidation
 from app.endpoint.schemas.titleSchema import TitlePatch as PatchValidation
 from app.endpoint.schemas.titleSchema import TitleShow as ShowValidation
-from app.endpoint.schemas.titleSchema import TitleStoreItem
 
 router = APIRouter()
 
@@ -37,35 +34,6 @@ def index(session: Session = Depends(get_session)):
     titles = session.exec(select(Title).where(Title.status)).all()
     return titles
 
-
-
-@router.get("/store", response_model=list[TitleStoreItem], status_code=200)
-def store(session: Session = Depends(get_session)):
-    titles = session.exec(select(Title).where(Title.status)).all()
-    title_ids = [t.id for t in titles]
-
-    genre_rows = session.exec(
-        select(GenreTitle.title_id, Genre.name)
-        .join(Genre, Genre.id == GenreTitle.genre_id)
-        .where(GenreTitle.title_id.in_(title_ids))
-    ).all()
-
-    genres_by_title = {}
-    for title_id, genre_name in genre_rows:
-        genres_by_title.setdefault(title_id, []).append(genre_name)
-
-    return [
-        TitleStoreItem(
-            id=t.id,
-            name=t.name,
-            actual_discount=t.actual_discount,
-            release_price=t.release_price,
-            developer_name=t.developer.name if t.developer else None,
-            media_id=t.media_id,
-            genres=genres_by_title.get(t.id, []),
-        )
-        for t in titles
-    ]
 
 
 @router.get("/{id}", response_model=ShowValidation, status_code=200)

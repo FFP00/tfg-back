@@ -15,7 +15,6 @@ class DeveloperCreate(SQLModel):
 
 
 class DeveloperShow(SQLModel):
-    id:             int | None = None
     name:           str
     email:          str
     support_email:  str
