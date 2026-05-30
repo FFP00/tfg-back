@@ -13,6 +13,7 @@ class CustomerTitleCreate(SQLModel):
 
 
 class CustomerTitleShow(SQLModel):
+    id:             int | None = None
     playtime:       int | None = None
 
     title:          TitleShow    | None = None

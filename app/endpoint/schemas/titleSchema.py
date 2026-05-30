@@ -17,6 +17,7 @@ class TitleCreate(SQLModel):
 
 
 class TitleShow(SQLModel):
+    id:               int | None = None
     name:             str
     status:           bool
     actual_discount:  int
@@ -27,6 +28,16 @@ class TitleShow(SQLModel):
     media:            MediaShowLite | None = None
     created_at:       datetime      | None = None
     updated_at:       datetime      | None = None
+
+
+class TitleStoreItem(SQLModel):
+    id:               int
+    name:             str
+    actual_discount:  int
+    release_price:    Decimal
+    developer_name:   str | None = None
+    media_id:         int | None = None
+    genres:           list[str] = []
 
 
 class TitlePatch(SQLModel):
