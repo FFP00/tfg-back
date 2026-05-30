@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config.settings import settings
@@ -45,13 +44,6 @@ from app.endpoint.views.transactionView import router as transaction_view_router
 from app.endpoint.views.walletView import router as wallet_view_router
 
 app = FastAPI(title=settings.PROJECT_NAME)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 

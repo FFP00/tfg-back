@@ -44,7 +44,7 @@ def store(session: Session = Depends(get_session)):
     titles = session.exec(select(Title).where(Title.status)).all()
     title_ids = [t.id for t in titles]
 
-    genre_rows = session.execute(
+    genre_rows = session.exec(
         select(GenreTitle.title_id, Genre.name)
         .join(Genre, Genre.id == GenreTitle.genre_id)
         .where(GenreTitle.title_id.in_(title_ids))
