@@ -12,34 +12,32 @@ from app.database.seeders.imageSeeder import seed_images
 from app.database.seeders.reviewSeeder import seed_reviews
 from app.database.seeders.titleTransactionSeeder import seed_titles_transactions
 from app.database.seeders.transactionSeeder import seed_transactions
-from app.database.seeders.walletSeeder import seed_wallets
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def run_seed():
+def run_seed() -> None:
 
     logger.info("Iniciando databaseSeeder.py")
     with Session(engine) as session:
         try:
-
-            seed_currencies_countries   (session)
-            seed_images                 (session, count=150)
-            seed_games                  (session)
-            seed_customers              (session, count=150)
-            seed_wallets                (session, count=150)
-            seed_friendships            (session, count=300)
-            seed_customers_titles       (session, count=300)
-            seed_transactions           (session, count=500)
-            seed_reviews                (session, count=500)
-            seed_titles_transactions    (session, count=500)
+            seed_currencies_countries(session)
+            seed_images(session, count=150)
+            seed_games(session)
+            seed_customers(session, count=150)
+            seed_friendships(session, count=300)
+            seed_customers_titles(session, count=300)
+            seed_transactions(session, count=500)
+            seed_reviews(session, count=500)
+            seed_titles_transactions(session, count=500)
             session.commit()
 
         except Exception as e:
             logger.error(e)
             session.rollback()
             raise e
+
 
 if __name__ == "__main__":
     run_seed()

@@ -1,66 +1,21 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, field, badge, actions %}
 {% block title %}Review #{{ review.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Detalles de Review</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Detalles de Review") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-col">
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>Review #{{ review.id }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ review.id }}</p>
-                    <p><strong>Contenido:</strong> {{ review.content }}</p>
-                    <p><strong>Votos:</strong> {{ review.votes }}</p>
-                    <p>
-                        <strong>Recomienda:</strong>
-                        {% if review.recommends %}
-                            <span class="text-emerald-500 font-semibold">Sí</span>
-                        {% else %}
-                            <span class="text-red-500 font-semibold">No</span>
-                        {% endif %}
-                    </p>
-                    <p>
-                        <strong>Estado:</strong>
-                        {% if review.status %}
-                            <span class="text-emerald-500 font-semibold">Publicada</span>
-                        {% else %}
-                            <span class="text-yellow-500 font-semibold">Pendiente</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Customer‑Title:</strong>
-                        {% if review.customer_title_id %}
-                            <a href="/views/customer_title/{{ review.customer_title_id }}" class="text-indigo-600 hover:underline">#{{ review.customer_title_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ review.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ review.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/review/"
-                           class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
-                        <a href="/views/review/{{ review.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/review/{{ review.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+        <h1 class="text-xl font-semibold">Review #{{ review.id }}</h1>
+        <div class="space-y-1 text-gray-700 mt-2">
+            {{ field("Contenido", review.content) }}
+            {{ field("Votos", review.votes) }}
+            <p><strong>Recomienda:</strong> {{ badge(review.recommends, "Sí", "No") }}</p>
+            <p><strong>Estado:</strong> {{ badge(review.status, "Publicada", "Pendiente", "emerald", "yellow") }}</p>
+            {{ field("Customer‑Title ID", review.customer_title_id) }}
+            {{ field("created at", review.created_at) }}
+            {{ field("updated at", review.updated_at) }}
         </div>
+        {{ actions("/views/review", review.id, show=False, back=True) }}
     </div>
-</div>
+</div></div>
 {% endblock %}

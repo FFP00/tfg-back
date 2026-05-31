@@ -1,182 +1,161 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Form, HTTPException
+from fastapi.responses import Response
 from pwdlib import PasswordHash
-from sqlmodel import Session, select
+from sqlmodel import Session, col, select
 
+from app.config.auth import get_current_developer, oauth2_developer
 from app.config.database import get_session
-from app.endpoint.models.DeveloperModel import Developer
-from app.endpoint.schemas.developerSchema import DeveloperPatch as PatchValidation
-from app.endpoint.schemas.developerSchema import DeveloperShow as ShowValidation
+from app.database.models.DeveloperModel import Developer
+from app.database.models.ImageModel import Image
+from app.endpoint.schemas.developerSchema import (
+    DeveloperImageUpload,
+    DeveloperPatch,
+    DeveloperPublic,
+    DeveloperShow,
+    LoginDeveloperResponse,
+)
 
-# Argon2 es el estándar de oro actual para contraseñas
 hasher = PasswordHash.recommended()
 router = APIRouter()
 
-
-@router.get("/", response_model=list[ShowValidation], status_code=200)
-def index(session: Session = Depends(get_session)):
-    developers = session.exec(select(Developer).where(Developer.status)).all()
-    return developers
+_IMAGE_FIELDS = ("profile", "banner")
 
 
-@router.get("/{id}", response_model=ShowValidation, status_code=200)
-def show_by_id(id: int, session: Session = Depends(get_session)):
-    developer = session.exec(
-        select(Developer).where(Developer.id == id, Developer.status)
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified ID doesn't exist"
-        )
-    return developer
+# ── Static routes first (before /{name}) ─────────────────────────────────────
 
 
-@router.get("/name/{name}", response_model=ShowValidation, status_code=200)
-def show_by_name(name: str, session: Session = Depends(get_session)):
-    developer = session.exec(
-        select(Developer).where(Developer.name == name, Developer.status)
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified NAME doesn't exist"
-        )
-    return developer
+@router.get("/me", response_model=LoginDeveloperResponse)
+def me(
+    token: str = Depends(oauth2_developer),
+    current: Developer = Depends(get_current_developer),
+) -> LoginDeveloperResponse:
+    return LoginDeveloperResponse(
+        access_token=token,
+        developer=DeveloperShow.model_validate(current, from_attributes=True),
+    )
 
 
-@router.get("/email/{email}", response_model=ShowValidation, status_code=200)
-def show_by_email(email: str, session: Session = Depends(get_session)):
-    developer = session.exec(
-        select(Developer).where(Developer.email == email, Developer.status)
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified EMAIL doesn't exist"
-        )
-    return developer
+@router.get("/", response_model=list[DeveloperPublic])
+def index(search: str = "", session: Session = Depends(get_session)) -> list[Developer]:
+    q = select(Developer).where(Developer.status)
+    if search:
+        q = q.where(col(Developer.name).ilike(f"%{search}%"))
+    return list(session.exec(q).all())
 
 
-@router.get(
-    "/support_email/{support_email}", response_model=ShowValidation, status_code=200
-)
-def show_by_support_email(support_email: str, session: Session = Depends(get_session)):
-    developer = session.exec(
-        select(Developer).where(
-            Developer.support_email == support_email, Developer.status
-        )
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404,
-            detail="Developer with specified SUPPORT_EMAIL doesn't exist",
-        )
-    return developer
-
-
-@router.patch("/{id}", response_model=ShowValidation)
-def update(id: int, payload: PatchValidation, session: Session = Depends(get_session)):
-    developer = session.exec(
-        select(Developer).where(Developer.id == id, Developer.status)
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified ID doesn't exist"
-        )
-
-    developer.sqlmodel_update(payload.model_dump(exclude_unset=True))
-
-    if payload.password is not None:
-        developer.password = hasher.hash(developer.password)
-    session.add(developer)
-    session.commit()
-    session.refresh(developer)
-    return developer
-
-
-@router.patch("/name/{name}", response_model=ShowValidation)
-def update_by_name(
-    name: str, payload: PatchValidation, session: Session = Depends(get_session)
-):
-    developer = session.exec(
-        select(Developer).where(Developer.name == name, Developer.status)
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified NAME doesn't exist"
-        )
-
-    developer.sqlmodel_update(payload.model_dump(exclude_unset=True))
-
-    if payload.password is not None:
-        developer.password = hasher.hash(developer.password)
-    session.add(developer)
-    session.commit()
-    session.refresh(developer)
-    return developer
-
-
-@router.patch("/email/{email}", response_model=ShowValidation)
-def update_by_email(
-    email: str, payload: PatchValidation, session: Session = Depends(get_session)
-):
-    developer = session.exec(
-        select(Developer).where(Developer.email == email, Developer.status)
-    ).first()
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified EMAIL doesn't exist"
-        )
-
-    developer.sqlmodel_update(payload.model_dump(exclude_unset=True))
-
-    if payload.password is not None:
-        developer.password = hasher.hash(developer.password)
-    session.add(developer)
-    session.commit()
-    session.refresh(developer)
-    return developer
-
-
-@router.patch("/support_email/{support_email}", response_model=ShowValidation)
-def update_by_support_email(
-    support_email: str,
-    payload: PatchValidation,
+@router.patch("/me", response_model=DeveloperShow)
+def update_me(
+    payload: DeveloperPatch,
+    current: Developer = Depends(get_current_developer),
     session: Session = Depends(get_session),
-):
-    developer = session.exec(
-        select(Developer).where(
-            Developer.support_email == support_email, Developer.status
+) -> Developer:
+    data = payload.model_dump(exclude_unset=True)
+
+    if (
+        "name" in data
+        and session.exec(
+            select(Developer).where(
+                Developer.name == data["name"], Developer.id != current.id
+            )
+        ).first()
+    ):
+        raise HTTPException(status_code=409, detail="Nombre ya en uso")
+
+    if (
+        "email" in data
+        and session.exec(
+            select(Developer).where(
+                Developer.email == data["email"], Developer.id != current.id
+            )
+        ).first()
+    ):
+        raise HTTPException(status_code=409, detail="Email ya en uso")
+
+    if (
+        "support_email" in data
+        and session.exec(
+            select(Developer).where(
+                Developer.support_email == data["support_email"],
+                Developer.id != current.id,
+            )
+        ).first()
+    ):
+        raise HTTPException(status_code=409, detail="Support email ya en uso")
+
+    if "password" in data:
+        current.password = hasher.hash(data.pop("password"))
+
+    current.sqlmodel_update(data)
+    session.add(current)
+    session.commit()
+    session.refresh(current)
+    return current
+
+
+@router.patch("/me/image", status_code=204)
+async def upload_image(
+    body:    Annotated[DeveloperImageUpload, Form()],
+    current: Developer = Depends(get_current_developer),
+    session: Session   = Depends(get_session),
+) -> Response:
+    if not body.profile and not body.banner:
+        raise HTTPException(
+            status_code=400, detail="Se requiere al menos un campo: profile o banner"
         )
+
+    if current.image_id:
+        image = session.get(Image, current.image_id)
+        if not image:
+            raise HTTPException(status_code=404, detail="Imagen no encontrada")
+    else:
+        image = Image()
+        session.add(image)
+        session.flush()
+        current.image_id = image.id
+        session.add(current)
+
+    if body.profile:
+        image.profile = await body.profile.read()
+    if body.banner:
+        image.banner = await body.banner.read()
+
+    session.add(image)
+    session.commit()
+    return Response(status_code=204)
+
+
+# ── Dynamic routes ────────────────────────────────────────────────────────────
+
+
+@router.get("/{name}/image/{field}")
+def get_image(
+    name: str, field: str, session: Session = Depends(get_session)
+) -> Response:
+    if field not in _IMAGE_FIELDS:
+        raise HTTPException(
+            status_code=400, detail=f"Campo inválido. Válidos: {list(_IMAGE_FIELDS)}"
+        )
+    developer = session.exec(
+        select(Developer).where(Developer.name == name, Developer.status)
+    ).first()
+    if not developer or not developer.image_id:
+        raise HTTPException(status_code=404, detail="Developer o imagen no encontrada")
+    image = session.get(Image, developer.image_id)
+    if not image:
+        raise HTTPException(status_code=404, detail="Imagen no encontrada")
+    data: bytes | None = getattr(image, field, None)
+    if not data:
+        raise HTTPException(status_code=404, detail=f"Campo '{field}' vacío")
+    return Response(content=data, media_type="image/jpeg")
+
+
+@router.get("/{name}", response_model=DeveloperPublic)
+def show(name: str, session: Session = Depends(get_session)) -> Developer:
+    developer = session.exec(
+        select(Developer).where(Developer.name == name, Developer.status)
     ).first()
     if not developer:
-        raise HTTPException(
-            status_code=404,
-            detail="Developer with specified SUPPORT_EMAIL doesn't exist",
-        )
-
-    developer.sqlmodel_update(payload.model_dump(exclude_unset=True))
-
-    if payload.password is not None:
-        developer.password = hasher.hash(developer.password)
-    session.add(developer)
-    session.commit()
-    session.refresh(developer)
+        raise HTTPException(status_code=404, detail="Developer no encontrado")
     return developer
-
-
-@router.delete("/{id}")
-def delete(id: int, session: Session = Depends(get_session)):
-    developer = session.exec(
-        select(Developer).where(Developer.id == id, Developer.status)
-    ).first()
-
-    if not developer:
-        raise HTTPException(
-            status_code=404, detail="Developer with specified ID doesn't exist"
-        )
-
-    developer.status = False
-
-    session.add(developer)
-    session.commit()
-    session.refresh(developer)
-
-    return {"status": "ok"}

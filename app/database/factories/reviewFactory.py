@@ -2,7 +2,7 @@ from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.endpoint.models.ReviewModel import Review
+from app.database.models.ReviewModel import Review
 
 fake = Faker(['es_ES'])
 

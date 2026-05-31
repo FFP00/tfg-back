@@ -9,7 +9,8 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = ""
     POSTGRES_PORT: int = 0
 
-    JWT_SECRET_KEY: str = ""
+    JWT_SECRET_KEY:  str = ""
+    JWT_EXPIRATION:  int = 0
 
     @property
     def DATABASE_URL(self) -> str:

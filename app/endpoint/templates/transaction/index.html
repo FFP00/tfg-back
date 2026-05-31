@@ -1,58 +1,19 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import page_header, field, actions, empty_state, pagination %}
 {% block title %}Transactions{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Listado de Transactions</h2>
-        <a href="/views/transaction/create"
-           class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
-            + Nueva Transaction
-        </a>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ page_header("Listado de Transactions") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-4">
-            {% for tx in transactions %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>Transaction #{{ tx.id }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ tx.id }}</p>
-                    <p><strong>Wallet (Customer):</strong>
-                        {% if tx.wallet_customer_id %}
-                            <a href="/views/wallet/{{ tx.wallet_customer_id }}" class="text-indigo-600 hover:underline">#{{ tx.wallet_customer_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ tx.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ tx.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/transaction/{{ tx.id }}"
-                           class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
-                        <a href="/views/transaction/{{ tx.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/transaction/{{ tx.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">
-                No se encontraron transactions.
-            </div>
-            {% endfor %}
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="flex flex-col gap-4">
+        {% for tx in transactions %}
+        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+            <h1 class="text-xl font-semibold">Transaction #{{ tx.id }}</h1>
+            <div class="space-y-1 text-gray-700 mt-2">
+                {{ field("Customer", "#" ~ tx.customer_id, "/views/customer/" ~ tx.customer_id) }}            </div>
+            {{ actions("/views/transaction", tx.id, edit=False) }}
         </div>
+        {% else %}{{ empty_state("No se encontraron transactions.") }}{% endfor %}
     </div>
-</div>
+    {{ pagination(page, has_prev, has_next) }}
+</div></div>
 {% endblock %}

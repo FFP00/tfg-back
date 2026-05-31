@@ -1,65 +1,43 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, field, badge, actions %}
 {% block title %}Title #{{ title.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Detalles de Title</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Detalles de Title") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-col">
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>{{ title.name }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ title.id }}</p>
-                    <p><strong>Nombre:</strong> {{ title.name }}</p>
-                    <p>
-                        <strong>Estado:</strong>
-                        {% if title.status %}
-                            <span class="text-emerald-500 font-semibold">Activo</span>
-                        {% else %}
-                            <span class="text-red-500 font-semibold">Inactivo</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Descuento actual:</strong> {{ title.actual_discount }}%</p>
-                    <p><strong>Fecha de lanzamiento:</strong> {{ title.release_date }}</p>
-                    <p><strong>Precio de lanzamiento:</strong> ${{ title.release_price }}</p>
-                    <p><strong>Developer:</strong>
-                        {% if title.developer_id %}
-                            <a href="/views/developer/{{ title.developer_id }}" class="text-indigo-600 hover:underline">#{{ title.developer_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><strong>Media:</strong>
-                        {% if title.media_id %}
-                            <a href="/views/media/{{ title.media_id }}" class="text-indigo-600 hover:underline">#{{ title.media_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ title.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ title.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/title/"
-                           class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
-                        <a href="/views/title/{{ title.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/title/{{ title.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+        <h1 class="text-xl font-semibold">{{ title.name }}</h1>
+        <div class="space-y-1 text-gray-700 mt-2">
+            {{ field("ID", title.id) }}
+            <p><strong>Estado:</strong> {{ badge(title.status) }}</p>
+            {{ field("Descuento", title.actual_discount ~ "%") }}
+            {{ field("Fecha de lanzamiento", title.release_date) }}
+            {{ field("Precio", "$" ~ title.release_price) }}
+            {{ field("Developer", "#" ~ title.developer_id, "/views/developer/" ~ title.developer_id) }}
+            {{ field("Media ID", title.media_id) }}
+            {{ field("created at", title.created_at) }}
+            {{ field("updated at", title.updated_at) }}
+        </div>
+        {% if photo_fields %}
+        <div class="mt-6">
+            <p class="font-semibold text-gray-700 mb-2">Fotos</p>
+            <div class="flex flex-wrap gap-3">
+                {% for f in photo_fields %}
+                <img src="/views/title/{{ title.id }}/media/{{ f }}"
+                     alt="{{ f }}"
+                     class="h-32 object-cover rounded border border-gray-200">
+                {% endfor %}
             </div>
         </div>
+        {% endif %}
+        {% if has_trailer %}
+        <div class="mt-6">
+            <p class="font-semibold text-gray-700 mb-2">Trailer</p>
+            <video controls class="w-full max-w-2xl rounded border border-gray-200">
+                <source src="/views/title/{{ title.id }}/media/trailer" type="video/mp4">
+            </video>
+        </div>
+        {% endif %}
+        {{ actions("/views/title", title.id, show=False, back=True) }}
     </div>
-</div>
+</div></div>
 {% endblock %}

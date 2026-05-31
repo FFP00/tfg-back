@@ -6,12 +6,13 @@ from sqlmodel import Session, select
 
 from app.database.factories.countryFactory import CountryFactory
 from app.database.factories.currencyFactory import CurrencyFactory
-from app.endpoint.models.CurrencyModel import Currency
+from app.database.models.CurrencyModel import Currency
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def seed_currencies_countries(session: Session):
+
+def seed_currencies_countries(session: Session) -> None:
     json_path = Path("/workdir/app/public/data/currencies_countries.json")
 
     if not json_path.exists():
@@ -24,22 +25,24 @@ def seed_currencies_countries(session: Session):
     currencies_unicas = set()
 
     for currency in data:
-
-        moneda= currency["currency_name"]
+        moneda = currency["currency_name"]
         codigo = currency["currency_code"]
 
-        monedas = (moneda,codigo)
+        monedas = (moneda, codigo)
 
         currencies_unicas.add(monedas)
 
-
     currencies = []
 
-    for moneda, codigo in currencies_unicas:
+    symbols_map = {
+        entry["currency_code"]: entry.get("currency_symbol", "$") for entry in data
+    }
 
+    for moneda, codigo in currencies_unicas:
         currency = CurrencyFactory.build()
-        currency.name=moneda
-        currency.code=codigo
+        currency.name = moneda
+        currency.code = codigo
+        currency.symbol = symbols_map.get(codigo, "$")
         currencies.append(currency)
 
     session.add_all(currencies)
@@ -49,13 +52,14 @@ def seed_currencies_countries(session: Session):
     countries = []
 
     for pais in data:
-
         country = CountryFactory.build()
-        country.name= pais["official_name"]
-        country.en_name= pais["name_en"]
-        country.code=pais["code"]
+        country.name = pais["official_name"]
+        country.en_name = pais["name_en"]
+        country.code = pais["code"]
 
-        currency_id = session.exec(select(Currency.id).where(Currency.code == pais["currency_code"])).first()
+        currency_id = session.exec(
+            select(Currency.id).where(Currency.code == pais["currency_code"])
+        ).first()
 
         if currency_id is not None:
             country.currency_id = currency_id

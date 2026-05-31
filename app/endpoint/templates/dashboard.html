@@ -15,27 +15,22 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
             <div class="p-6 text-gray-900 text-lg">
-                Bienvenido al panel de administración de <strong>GameStore</strong>.
+                Bienvenido al panel de administración de <strong>Burnt</strong>.
             </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {% set entities = [
-                ("Currency",          "/views/currency/"),
-                ("Genre",             "/views/genre/"),
-                ("Image",             "/views/image/"),
-                ("Media",             "/views/media/"),
-                ("Country",           "/views/country/"),
-                ("Developer",         "/views/developer/"),
-                ("Customer",          "/views/customer/"),
-                ("Title",             "/views/title/"),
-                ("Wallet",            "/views/wallet/"),
-                ("Friendship",        "/views/friendship/"),
-                ("Genre‑Title",       "/views/genre_title/"),
-                ("Customer‑Title",    "/views/customer_title/"),
-                ("Transaction",       "/views/transaction/"),
-                ("Review",            "/views/review/"),
-                ("Title‑Transaction", "/views/title_transaction/")
+                ("Currency",     "/views/currency/"),
+                ("Genre",        "/views/genre/"),
+                ("Country",      "/views/country/"),
+                ("Developer",    "/views/developer/"),
+                ("Customer",     "/views/customer/"),
+                ("Title",        "/views/title/"),
+("Friendship",   "/views/friendship/"),
+                ("Transaction",  "/views/transaction/"),
+                ("Review",       "/views/review/"),
+                ("Token",        "/views/token/")
             ] %}
             {% for name, url in entities %}
             <a href="{{ url }}"

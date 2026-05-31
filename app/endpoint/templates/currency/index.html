@@ -1,74 +1,21 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import page_header, field, actions, search_bar, empty_state, pagination %}
 {% block title %}Currencies{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Listado de Currencies</h2>
-        <a href="/views/currency/create"
-           class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
-            + Nueva Currency
-        </a>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ page_header("Listado de Currencies", "/views/currency/create") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-        <!-- Buscador -->
-        <div class="bg-white p-6 shadow-sm rounded-lg mb-6 border border-gray-100">
-            <h3 class="font-bold mb-2 text-gray-700">Buscar currencies</h3>
-            <p class="text-xs text-gray-500 uppercase mb-2">Nombre o Código</p>
-            <form method="GET">
-                <input type="text" name="search" value="{{ search or '' }}"
-                       placeholder="Buscar por nombre, código..."
-                       class="w-full border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
-            </form>
-            <p class="mt-2 text-xs text-gray-400">
-                {% if search %}
-                    Mostrando resultados para: "<strong>{{ search }}</strong>"
-                {% else %}
-                    Mostrando todas las currencies
-                {% endif %}
-            </p>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    {{ search_bar(search, "Buscar por nombre o código...") }}
+    <div class="flex flex-col gap-4">
+        {% for currency in currencies %}
+        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+            <h1 class="text-xl font-semibold">{{ currency.name }}</h1>
+            <div class="space-y-1 text-gray-700 mt-2">
+                {{ field("Código", currency.code) }}
+                {{ field("Símbolo", currency.symbol) }}            </div>
+            {{ actions("/views/currency", currency.id) }}
         </div>
-
-        <!-- Cards -->
-        <div class="flex flex-col gap-4">
-            {% for currency in currencies %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>{{ currency.name }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ currency.id }}</p>
-                    <p><strong>Código:</strong> {{ currency.code }}</p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ currency.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ currency.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/currency/{{ currency.id }}"
-                           class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
-                        <a href="/views/currency/{{ currency.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/currency/{{ currency.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro que quieres eliminar esta currency?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">
-                No se encontraron currencies.
-            </div>
-            {% endfor %}
-        </div>
+        {% else %}{{ empty_state("No se encontraron currencies.") }}{% endfor %}
     </div>
-</div>
+    {{ pagination(page, has_prev, has_next, search) }}
+</div></div>
 {% endblock %}

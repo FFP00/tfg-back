@@ -3,7 +3,7 @@ from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 from pwdlib import PasswordHash
 
-from app.endpoint.models.CustomerModel import Customer
+from app.database.models.CustomerModel import Customer
 
 fake = Faker(['es_ES'])
 password_hasher = PasswordHash.recommended()

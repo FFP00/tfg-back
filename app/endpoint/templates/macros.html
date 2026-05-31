@@ -1,0 +1,145 @@
+{# ── Inputs ─────────────────────────────────────────────────────────────────── #}
+
+{% macro input(label, name, value="", type="text", placeholder="") %}
+<div>
+    <label class="block font-medium text-gray-700">{{ label }}</label>
+    <input type="{{ type }}" name="{{ name }}" value="{{ value or '' }}" placeholder="{{ placeholder }}"
+           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+</div>
+{% endmacro %}
+
+{% macro textarea(label, name, value="", rows=4) %}
+<div>
+    <label class="block font-medium text-gray-700">{{ label }}</label>
+    <textarea name="{{ name }}" rows="{{ rows }}"
+              class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">{{ value or '' }}</textarea>
+</div>
+{% endmacro %}
+
+{% macro file_input(label, name, accept="image/*", hint="") %}
+<div>
+    <label class="block font-medium text-gray-700">{{ label }}</label>
+    <input type="file" name="{{ name }}" accept="{{ accept }}"
+           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+    {% if hint %}<p class="text-xs text-gray-400 mt-1">{{ hint }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{#
+  Select wrapper — use with {% call %}:
+    {% call select_field("Currency", "currency_id") %}
+        {% for c in currencies %}
+        <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur|string }}>{{ c.name }}</option>
+        {% endfor %}
+    {% endcall %}
+#}
+{% macro select_field(label, name, placeholder="— Seleccionar —") %}
+<div>
+    <label class="block font-medium text-gray-700">{{ label }}</label>
+    <select name="{{ name }}" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
+        {% if placeholder %}<option value="">{{ placeholder }}</option>{% endif %}
+        {{ caller() }}
+    </select>
+</div>
+{% endmacro %}
+
+{# ── Display ────────────────────────────────────────────────────────────────── #}
+
+{% macro field(label, value, link=None) %}
+<p>
+    <strong>{{ label }}:</strong>
+    {% if link and value %}
+        <a href="{{ link }}" class="text-indigo-600 hover:underline">{{ value }}</a>
+    {% elif value is not none and value != "" %}
+        {{ value }}
+    {% else %}
+        <span class="text-gray-400">N/A</span>
+    {% endif %}
+</p>
+{% endmacro %}
+
+{% macro badge(value, true_label="Activo", false_label="Inactivo", true_color="emerald", false_color="red") %}
+{% if value %}<span class="text-{{ true_color }}-500 font-semibold">{{ true_label }}</span>
+{% else %}<span class="text-{{ false_color }}-500 font-semibold">{{ false_label }}</span>{% endif %}
+{% endmacro %}
+
+{# ── Layout ─────────────────────────────────────────────────────────────────── #}
+
+{% macro page_header(title, create_url=None) %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-gray-800 leading-tight">{{ title }}</h2>
+        {% if create_url %}
+        <a href="{{ create_url }}" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">+ Nuevo</a>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro form_header(title) %}
+<div class="bg-white shadow-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl font-semibold text-gray-800">{{ title }}</h2>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro search_bar(search="", placeholder="Buscar...") %}
+<div class="bg-white p-4 shadow-sm rounded-lg mb-6 border border-gray-100">
+    <form method="GET">
+        <input type="text" name="search" value="{{ search or '' }}" placeholder="{{ placeholder }}"
+               class="w-full border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
+    </form>
+</div>
+{% endmacro %}
+
+{% macro empty_state(text) %}
+<div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">{{ text }}</div>
+{% endmacro %}
+
+{# ── Actions ────────────────────────────────────────────────────────────────── #}
+
+{% macro actions(base, id, show=True, edit=True, delete=True, back=False) %}
+<div class="flex justify-between items-center mt-4">
+    <div class="flex gap-2">
+        {% if back %}
+        <a href="{{ base }}/" class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
+        {% endif %}
+        {% if show %}
+        <a href="{{ base }}/{{ id }}" class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
+        {% endif %}
+        {% if edit %}
+        <a href="{{ base }}/{{ id }}/edit" class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
+        {% endif %}
+    </div>
+    {% if delete %}
+    <form action="{{ base }}/{{ id }}/delete" method="POST" onsubmit="return confirm('¿Seguro?')">
+        <button type="submit" class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
+    </form>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro form_buttons(submit_label="Guardar", cancel_url="#") %}
+<div class="pt-4 flex gap-3">
+    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">{{ submit_label }}</button>
+    <a href="{{ cancel_url }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">Cancelar</a>
+</div>
+{% endmacro %}
+
+{% macro pagination(page, has_prev, has_next, search="") %}
+{% set extra = ("&search=" ~ search) if search else "" %}
+<div class="flex justify-center items-center gap-2 mt-6">
+    {% if has_prev %}
+    <a href="?page={{ page - 1 }}{{ extra }}" class="px-4 py-2 bg-white border border-gray-200 rounded text-sm hover:bg-gray-50 transition">Anterior</a>
+    {% else %}
+    <span class="px-4 py-2 bg-gray-50 border border-gray-100 rounded text-sm text-gray-400">Anterior</span>
+    {% endif %}
+    <span class="px-3 py-2 text-sm text-gray-500">{{ page }}</span>
+    {% if has_next %}
+    <a href="?page={{ page + 1 }}{{ extra }}" class="px-4 py-2 bg-white border border-gray-200 rounded text-sm hover:bg-gray-50 transition">Siguiente</a>
+    {% else %}
+    <span class="px-4 py-2 bg-gray-50 border border-gray-100 rounded text-sm text-gray-400">Siguiente</span>
+    {% endif %}
+</div>
+{% endmacro %}

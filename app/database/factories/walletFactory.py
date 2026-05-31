@@ -4,7 +4,7 @@ from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.endpoint.models.WalletModel import Wallet
+from app.database.models.WalletModel import Wallet
 
 fake = Faker(['es_ES'])
 

@@ -1,59 +1,26 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, field, actions %}
 {% block title %}Friendship #{{ friendship.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Detalles de Friendship</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Detalles de Friendship") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-col">
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl">
-                    <strong>Customer #{{ friendship.customer_id_1 }} ↔ Customer #{{ friendship.customer_id_2 }}</strong>
-                </h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ friendship.id }}</p>
-                    <p>
-                        <strong>Estado:</strong>
-                        {% if friendship.status %}
-                            <span class="text-emerald-500 font-semibold">Aceptada</span>
-                        {% else %}
-                            <span class="text-yellow-500 font-semibold">Pendiente</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Customer 1:</strong>
-                        <a href="/views/customer/{{ friendship.customer_id_1 }}" class="text-indigo-600 hover:underline">#{{ friendship.customer_id_1 }}</a>
-                    </p>
-                    <p><strong>Customer 2:</strong>
-                        <a href="/views/customer/{{ friendship.customer_id_2 }}" class="text-indigo-600 hover:underline">#{{ friendship.customer_id_2 }}</a>
-                    </p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ friendship.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ friendship.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/friendship/"
-                           class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
-                        <a href="/views/friendship/{{ friendship.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/friendship/{{ friendship.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+        <h1 class="text-xl font-semibold">Customer #{{ friendship.customer_id_1 }} ↔ Customer #{{ friendship.customer_id_2 }}</h1>
+        <div class="space-y-1 text-gray-700 mt-2">
+            {{ field("ID", friendship.id) }}
+            <p><strong>Estado:</strong>
+                {% if friendship.status == 'accepted' %}<span class="text-emerald-500 font-semibold">Aceptada</span>
+                {% elif friendship.status == 'pending' %}<span class="text-yellow-500 font-semibold">Pendiente</span>
+                {% elif friendship.status == 'rejected' %}<span class="text-red-400 font-semibold">Rechazada</span>
+                {% elif friendship.status == 'blocked' %}<span class="text-red-700 font-semibold">Bloqueada</span>
+                {% else %}<span class="text-gray-400">{{ friendship.status }}</span>{% endif %}
+            </p>
+            {{ field("Customer 1", "#" ~ friendship.customer_id_1, "/views/customer/" ~ friendship.customer_id_1) }}
+            {{ field("Customer 2", "#" ~ friendship.customer_id_2, "/views/customer/" ~ friendship.customer_id_2) }}
+            {{ field("created at", friendship.created_at) }}
+            {{ field("updated at", friendship.updated_at) }}
         </div>
+        {{ actions("/views/friendship", friendship.id, show=False, back=True) }}
     </div>
-</div>
+</div></div>
 {% endblock %}

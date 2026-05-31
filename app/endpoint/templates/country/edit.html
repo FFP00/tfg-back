@@ -1,61 +1,22 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, input, select_field, form_buttons %}
 {% block title %}Editar Country #{{ country.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Editar Country</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Editar Country") }}{% endblock %}
 {% block content %}
-<div class="py-6">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
-            <form action="/views/country/{{ country.id }}/update" method="POST" class="space-y-4">
-
-                <div>
-                    <label class="block font-medium text-gray-700">Nombre</label>
-                    <input type="text" name="name"
-                           value="{{ form.name if form else country.name }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Código</label>
-                    <input type="text" name="code"
-                           value="{{ form.code if form else country.code }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Currency</label>
-                    <select name="currency_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin currency —</option>
-                        {% for c in currencies %}
-                        {% set selected_id = (form.currency_id if form else country.currency_id) %}
-                        <option value="{{ c.id }}" {{ 'selected' if selected_id == c.id }}>
-                            {{ c.name }} ({{ c.code }})
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="pt-4 flex gap-3">
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                        Actualizar
-                    </button>
-                    <a href="/views/country/{{ country.id }}"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <form action="/views/country/{{ country.id }}/update" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name if form else country.name) }}
+            {{ input("Nombre EN", "en_name", form.en_name if form else country.en_name) }}
+            {{ input("Código ISO", "code", form.code if form else country.code) }}
+            {% call select_field("Currency", "currency_id", "— Sin currency —") %}
+                {% set cur = (form.currency_id if form else country.currency_id)|string %}
+                {% for c in currencies %}
+                <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur }}>{{ c.name }} ({{ c.code }})</option>
+                {% endfor %}
+            {% endcall %}
+            {{ form_buttons("Actualizar", "/views/country/" ~ country.id) }}
+        </form>
     </div>
-</div>
+</div></div>
 {% endblock %}

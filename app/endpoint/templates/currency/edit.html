@@ -1,46 +1,16 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, input, form_buttons %}
 {% block title %}Editar Currency #{{ currency.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Editar Currency</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Editar Currency") }}{% endblock %}
 {% block content %}
-<div class="py-6">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
-            <form action="/views/currency/{{ currency.id }}/update" method="POST" class="space-y-4">
-
-                <div>
-                    <label class="block font-medium text-gray-700">Nombre</label>
-                    <input type="text" name="name" value="{{ form.name if form else currency.name }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Código</label>
-                    <input type="text" name="code" value="{{ form.code if form else currency.code }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div class="pt-4 flex gap-3">
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                        Actualizar
-                    </button>
-                    <a href="/views/currency/{{ currency.id }}"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <form action="/views/currency/{{ currency.id }}/update" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name if form else currency.name) }}
+            {{ input("Código", "code", form.code if form else currency.code) }}
+            {{ input("Símbolo", "symbol", form.symbol if form else currency.symbol, placeholder="$, €, £...") }}
+            {{ form_buttons("Actualizar", "/views/currency/" ~ currency.id) }}
+        </form>
     </div>
-</div>
+</div></div>
 {% endblock %}

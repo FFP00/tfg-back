@@ -1,19 +1,25 @@
 from datetime import datetime
+from decimal import Decimal
 
 from sqlmodel import SQLModel
 
-from app.endpoint.schemas.walletSchema import WalletShow
+
+class PurchasePayload(SQLModel):
+    titles: list[str]
 
 
-class TransactionCreate(SQLModel):
-    wallet_customer_id: int
+class PurchasedTitleItem(SQLModel):
+    name:             str
+    price_paid:       Decimal
+    discount_applied: int
 
 
-class TransactionShow(SQLModel):
-    wallet:             WalletShow | None = None
-    created_at:         datetime   | None = None
-    updated_at:         datetime   | None = None
+class TransactionHistoryItem(SQLModel):
+    created_at: datetime
+    titles:     list[PurchasedTitleItem] = []
 
 
-class TransactionPatch(SQLModel):
-    wallet_customer_id: int | None = None
+class PurchaseResponse(SQLModel):
+    titles_purchased: int
+    total_spent:      Decimal
+    wallet_balance:   Decimal

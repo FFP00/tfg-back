@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.config.templates import templates
-from app.endpoint.models.CustomerTitleModel import CustomerTitle
-from app.endpoint.models.ReviewModel import Review
+from app.database.models.CustomerTitleModel import CustomerTitle
+from app.database.models.ReviewModel import Review
+
+_PAGE = 20
 
 router = APIRouter()
 
@@ -25,9 +28,13 @@ def _get_customer_titles(session: Session):
 
 
 @router.get("/")
-def index(request: Request, session: Session = Depends(get_session)):
-    reviews = session.exec(select(Review)).all()
-    return templates.TemplateResponse(request, "review/index.html", _ctx(request, reviews=reviews))
+def index(request: Request, page: int = 1, session: Session = Depends(get_session)):
+    total   = session.exec(select(func.count()).select_from(Review)).one()
+    reviews = session.exec(select(Review).offset((page - 1) * _PAGE).limit(_PAGE)).all()
+    return templates.TemplateResponse(request, "review/index.html", _ctx(request,
+        reviews=reviews, page=page,
+        has_prev=page > 1, has_next=(page * _PAGE) < total,
+    ))
 
 
 @router.get("/create")

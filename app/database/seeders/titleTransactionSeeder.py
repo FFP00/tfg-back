@@ -4,17 +4,19 @@ import secrets
 from sqlmodel import Session, select
 
 from app.database.factories.titleTransactionFactory import TitleTransactionFactory
-from app.endpoint.models.TitleModel import Title
-from app.endpoint.models.TransactionModel import Transaction
+from app.database.models.TitleModel import Title
+from app.database.models.TransactionModel import Transaction
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def seed_titles_transactions(session: Session, count: int):
-    titles_transactions = []
-    titles = session.exec(select(Title.id)).all()
-    transactions = session.exec(select(Transaction.id)).all()
 
+def seed_titles_transactions(session: Session, count: int) -> None:
+    titles_transactions = []
+    titles = [t for t in session.exec(select(Title.id)).all() if t is not None]
+    transactions = [
+        t for t in session.exec(select(Transaction.id)).all() if t is not None
+    ]
 
     if not titles:
         logger.info("No encontramos juegos")
@@ -29,7 +31,7 @@ def seed_titles_transactions(session: Session, count: int):
         transaction = secrets.choice(transactions)
 
         title_transaction = TitleTransactionFactory.build()
-        title_transaction.title_id=title
+        title_transaction.title_id = title
         title_transaction.transaction_id = transaction
         titles_transactions.append(title_transaction)
 

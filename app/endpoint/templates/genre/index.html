@@ -1,64 +1,19 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import page_header, field, actions, search_bar, empty_state, pagination %}
 {% block title %}Genres{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Listado de Genres</h2>
-        <a href="/views/genre/create"
-           class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
-            + Nuevo Genre
-        </a>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ page_header("Listado de Genres", "/views/genre/create") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-        <!-- Buscador -->
-        <div class="bg-white p-6 shadow-sm rounded-lg mb-6 border border-gray-100">
-            <h3 class="font-bold mb-2 text-gray-700">Buscar genres</h3>
-            <form method="GET">
-                <input type="text" name="search" value="{{ search or '' }}"
-                       placeholder="Buscar por nombre..."
-                       class="w-full border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
-            </form>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    {{ search_bar(search, "Buscar por nombre...") }}
+    <div class="flex flex-col gap-4">
+        {% for genre in genres %}
+        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+            <h1 class="text-xl font-semibold">{{ genre.name }}</h1>
+            <div class="space-y-1 text-gray-700 mt-2">            </div>
+            {{ actions("/views/genre", genre.id) }}
         </div>
-
-        <div class="flex flex-col gap-4">
-            {% for genre in genres %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>{{ genre.name }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ genre.id }}</p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ genre.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ genre.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/genre/{{ genre.id }}"
-                           class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
-                        <a href="/views/genre/{{ genre.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/genre/{{ genre.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">
-                No se encontraron genres.
-            </div>
-            {% endfor %}
-        </div>
+        {% else %}{{ empty_state("No se encontraron genres.") }}{% endfor %}
     </div>
-</div>
+    {{ pagination(page, has_prev, has_next, search) }}
+</div></div>
 {% endblock %}

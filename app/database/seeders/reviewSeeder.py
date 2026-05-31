@@ -4,10 +4,11 @@ import secrets
 from sqlmodel import Session, select
 
 from app.database.factories.reviewFactory import ReviewFactory
-from app.endpoint.models.CustomerTitleModel import CustomerTitle
+from app.database.models.CustomerTitleModel import CustomerTitle
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 def seed_reviews(session: Session, count: int):
     reviews = []
@@ -21,7 +22,7 @@ def seed_reviews(session: Session, count: int):
         customer_title = secrets.choice(customers_titles)
 
         review = ReviewFactory.build()
-        review.customer_title_id=customer_title
+        review.customer_title_id = customer_title
         reviews.append(review)
 
     session.add_all(reviews)

@@ -1,45 +1,19 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, field, actions %}
 {% block title %}Currency #{{ currency.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Detalles de Currency</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Detalles de Currency") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-col">
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>{{ currency.name }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ currency.id }}</p>
-                    <p><strong>Nombre:</strong> {{ currency.name }}</p>
-                    <p><strong>Código:</strong> {{ currency.code }}</p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ currency.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ currency.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/currency/"
-                           class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
-                        <a href="/views/currency/{{ currency.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/currency/{{ currency.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro que quieres eliminar esta currency?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+        <h1 class="text-xl font-semibold">{{ currency.name }}</h1>
+        <div class="space-y-1 text-gray-700 mt-2">
+            {{ field("ID", currency.id) }}
+            {{ field("Código", currency.code) }}
+            {{ field("Símbolo", currency.symbol) }}
+            {{ field("created at", currency.created_at) }}
+            {{ field("updated at", currency.updated_at) }}
         </div>
+        {{ actions("/views/currency", currency.id, show=False, back=True) }}
     </div>
-</div>
+</div></div>
 {% endblock %}

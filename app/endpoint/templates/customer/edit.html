@@ -1,89 +1,36 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, input, select_field, form_buttons %}
 {% block title %}Editar Customer #{{ customer.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Editar Customer</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Editar Customer") }}{% endblock %}
 {% block content %}
-<div class="py-6">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
-            <form action="/views/customer/{{ customer.id }}/update" method="POST" class="space-y-4">
-
-                <div>
-                    <label class="block font-medium text-gray-700">Nombre</label>
-                    <input type="text" name="name"
-                           value="{{ form.name if form else customer.name }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Email</label>
-                    <input type="email" name="email"
-                           value="{{ form.email if form else customer.email }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Contraseña <span class="text-xs text-gray-400">(dejar vacío para no cambiar)</span></label>
-                    <input type="password" name="password"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Estado</label>
-                    <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        {% set cur_status = (form.status if form else customer.status) %}
-                        <option value="true"  {{ 'selected' if cur_status == true }}>Activo</option>
-                        <option value="false" {{ 'selected' if cur_status == false }}>Inactivo</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Country</label>
-                    <select name="country_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin country —</option>
-                        {% set cur_country = (form.country_id if form else customer.country_id) %}
-                        {% for c in countries %}
-                        <option value="{{ c.id }}" {{ 'selected' if cur_country == c.id }}>
-                            {{ c.name }} ({{ c.code }})
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Image</label>
-                    <select name="image_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin imagen —</option>
-                        {% set cur_img = (form.image_id if form else customer.image_id) %}
-                        {% for img in images %}
-                        <option value="{{ img.id }}" {{ 'selected' if cur_img == img.id }}>
-                            #{{ img.id }} — {{ img.path_256x256 }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="pt-4 flex gap-3">
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                        Actualizar
-                    </button>
-                    <a href="/views/customer/{{ customer.id }}"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <form action="/views/customer/{{ customer.id }}/update" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name if form else customer.name) }}
+            {{ input("Email", "email", form.email if form else customer.email, type="email") }}
+            {{ input("Nueva contraseña", "password", type="password", placeholder="Dejar vacío para no cambiar") }}
+            {% call select_field("Estado", "status") %}
+                {% set cur = (form.status if form else customer.status)|string %}
+                <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Activo</option>
+                <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>Inactivo</option>
+            {% endcall %}
+            {% call select_field("Country", "country_id", "— Sin country —") %}
+                {% set cur = (form.country_id if form else customer.country_id)|string %}
+                {% for c in countries %}
+                <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur }}>{{ c.name }} ({{ c.code }})</option>
+                {% endfor %}
+            {% endcall %}
+            {% call select_field("Image", "image_id", "— Sin imagen —") %}
+                {% set cur = (form.image_id if form else customer.image_id)|string %}
+                {% for img in images %}
+                <option value="{{ img.id }}" {{ 'selected' if img.id|string == cur }}>Image #{{ img.id }}</option>
+                {% endfor %}
+            {% endcall %}
+            {% if wallet %}
+            {{ input("Balance ($)", "balance", form.balance if form else wallet.balance, type="number", placeholder="0.00") }}
+            {% endif %}
+            {{ form_buttons("Actualizar", "/views/customer/" ~ customer.id) }}
+        </form>
     </div>
-</div>
+</div></div>
 {% endblock %}

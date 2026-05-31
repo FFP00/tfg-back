@@ -1,62 +1,22 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, field, badge, actions %}
 {% block title %}Developer #{{ developer.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Detalles de Developer</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Detalles de Developer") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-col">
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>{{ developer.name }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ developer.id }}</p>
-                    <p><strong>Nombre:</strong> {{ developer.name }}</p>
-                    <p><strong>Email:</strong> {{ developer.email }}</p>
-                    <p><strong>Support Email:</strong> {{ developer.support_email }}</p>
-                    <p><strong>Website:</strong>
-                        <a href="{{ developer.website_url }}" target="_blank" class="text-indigo-600 hover:underline">{{ developer.website_url }}</a>
-                    </p>
-                    <p>
-                        <strong>Estado:</strong>
-                        {% if developer.status %}
-                            <span class="text-emerald-500 font-semibold">Activo</span>
-                        {% else %}
-                            <span class="text-red-500 font-semibold">Inactivo</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Image:</strong>
-                        {% if developer.image_id %}
-                            <a href="/views/image/{{ developer.image_id }}" class="text-indigo-600 hover:underline">#{{ developer.image_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ developer.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ developer.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/developer/"
-                           class="px-6 py-1.5 bg-gray-400 text-white font-medium rounded hover:bg-gray-500 transition text-sm">← Volver</a>
-                        <a href="/views/developer/{{ developer.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/developer/{{ developer.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+        <h1 class="text-xl font-semibold">{{ developer.name }}</h1>
+        <div class="space-y-1 text-gray-700 mt-2">
+            {{ field("ID", developer.id) }}
+            {{ field("Email", developer.email) }}
+            {{ field("Support Email", developer.support_email) }}
+            {{ field("Website", developer.website_url) }}
+            <p><strong>Estado:</strong> {{ badge(developer.status) }}</p>
+            {{ field("Image ID", developer.image_id) }}
+            {{ field("created at", developer.created_at) }}
+            {{ field("updated at", developer.updated_at) }}
         </div>
+        {{ actions("/views/developer", developer.id, show=False, back=True) }}
     </div>
-</div>
+</div></div>
 {% endblock %}

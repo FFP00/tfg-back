@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.config.templates import templates
-from app.endpoint.models.DeveloperModel import Developer
-from app.endpoint.models.ImageModel import Image
+from app.database.models.DeveloperModel import Developer
+from app.database.models.ImageModel import Image
+
+_PAGE = 20
 
 router = APIRouter()
 
@@ -25,15 +28,19 @@ def _get_images(session: Session):
 
 
 @router.get("/")
-def index(request: Request, search: str = "", session: Session = Depends(get_session)):
-    q = select(Developer)
+def index(request: Request, search: str = "", page: int = 1, session: Session = Depends(get_session)):
+    q       = select(Developer)
+    count_q = select(func.count()).select_from(Developer)
     if search:
-        q = q.where(
-            (Developer.name.ilike(f"%{search}%")) | (Developer.email.ilike(f"%{search}%"))
-        )
-    developers = session.exec(q).all()
-    return templates.TemplateResponse(request, "developer/index.html", _ctx(request, developers=developers, search=search)
-    )
+        cond    = (Developer.name.ilike(f"%{search}%")) | (Developer.email.ilike(f"%{search}%"))
+        q       = q.where(cond)
+        count_q = count_q.where(cond)
+    total      = session.exec(count_q).one()
+    developers = session.exec(q.offset((page - 1) * _PAGE).limit(_PAGE)).all()
+    return templates.TemplateResponse(request, "developer/index.html", _ctx(request,
+        developers=developers, search=search, page=page,
+        has_prev=page > 1, has_next=(page * _PAGE) < total,
+    ))
 
 
 @router.get("/create")

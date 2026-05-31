@@ -1,90 +1,29 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, input, select_field, form_buttons %}
 {% block title %}Editar Developer #{{ developer.id }}{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Editar Developer</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Editar Developer") }}{% endblock %}
 {% block content %}
-<div class="py-6">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
-            <form action="/views/developer/{{ developer.id }}/update" method="POST" class="space-y-4">
-
-                <div>
-                    <label class="block font-medium text-gray-700">Nombre</label>
-                    <input type="text" name="name"
-                           value="{{ form.name if form else developer.name }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Email</label>
-                    <input type="email" name="email"
-                           value="{{ form.email if form else developer.email }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Support Email</label>
-                    <input type="email" name="support_email"
-                           value="{{ form.support_email if form else developer.support_email }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Contraseña <span class="text-xs text-gray-400">(dejar vacío para no cambiar)</span></label>
-                    <input type="password" name="password"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Website URL</label>
-                    <input type="url" name="website_url"
-                           value="{{ form.website_url if form else developer.website_url }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Estado</label>
-                    <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        {% set cur_status = (form.status if form else developer.status) %}
-                        <option value="true"  {{ 'selected' if cur_status == true }}>Activo</option>
-                        <option value="false" {{ 'selected' if cur_status == false }}>Inactivo</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Image</label>
-                    <select name="image_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin imagen —</option>
-                        {% set cur_img = (form.image_id if form else developer.image_id) %}
-                        {% for img in images %}
-                        <option value="{{ img.id }}" {{ 'selected' if cur_img == img.id }}>
-                            #{{ img.id }} — {{ img.path_256x256 }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="pt-4 flex gap-3">
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                        Actualizar
-                    </button>
-                    <a href="/views/developer/{{ developer.id }}"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <form action="/views/developer/{{ developer.id }}/update" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name if form else developer.name) }}
+            {{ input("Email", "email", form.email if form else developer.email, type="email") }}
+            {{ input("Support Email", "support_email", form.support_email if form else developer.support_email, type="email") }}
+            {{ input("Nueva contraseña", "password", type="password", placeholder="Dejar vacío para no cambiar") }}
+            {{ input("Website URL", "website_url", form.website_url if form else developer.website_url, placeholder="https://...") }}
+            {% call select_field("Estado", "status") %}
+                {% set cur = (form.status if form else developer.status)|string %}
+                <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Activo</option>
+                <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>Inactivo</option>
+            {% endcall %}
+            {% call select_field("Image", "image_id", "— Sin imagen —") %}
+                {% set cur = (form.image_id if form else developer.image_id)|string %}
+                {% for img in images %}
+                <option value="{{ img.id }}" {{ 'selected' if img.id|string == cur }}>Image #{{ img.id }}</option>
+                {% endfor %}
+            {% endcall %}
+            {{ form_buttons("Actualizar", "/views/developer/" ~ developer.id) }}
+        </form>
     </div>
-</div>
+</div></div>
 {% endblock %}

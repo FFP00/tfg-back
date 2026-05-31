@@ -1,63 +1,37 @@
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.config.templates import templates
-from app.endpoint.models.CustomerModel import Customer
-from app.endpoint.models.FriendshipModel import Friendship
+from app.database.models.FriendshipModel import Friendship
 
 router = APIRouter()
+
+_PAGE     = 20
+_STATUSES = ("pending", "accepted", "rejected", "blocked")
 
 
 def _ctx(request: Request, **kwargs):
     return {
-        "request": request,
-        "success": request.query_params.get("success"),
-        "error": request.query_params.get("error"),
-        "form": {},
+        "request":  request,
+        "success":  request.query_params.get("success"),
+        "error":    request.query_params.get("error"),
+        "form":     {},
+        "statuses": _STATUSES,
         **kwargs,
     }
 
 
-def _get_customers(session: Session):
-    return session.exec(select(Customer)).all()
-
-
 @router.get("/")
-def index(request: Request, session: Session = Depends(get_session)):
-    friendships = session.exec(select(Friendship)).all()
-    return templates.TemplateResponse(request, "friendship/index.html", _ctx(request, friendships=friendships))
-
-
-@router.get("/create")
-def create(request: Request, session: Session = Depends(get_session)):
-    return templates.TemplateResponse(request, "friendship/create.html", _ctx(request, customers=_get_customers(session))
-    )
-
-
-@router.post("/")
-def store(
-    request: Request,
-    customer_id_1: str = Form(...),
-    customer_id_2: str = Form(...),
-    status: str = Form("false"),
-    session: Session = Depends(get_session),
-):
-    try:
-        session.add(Friendship(
-            customer_id_1=int(customer_id_1),
-            customer_id_2=int(customer_id_2),
-            status=status == "true",
-        ))
-        session.commit()
-        return RedirectResponse("/views/friendship/?success=Friendship+creada+correctamente", status_code=302)
-    except Exception as e:
-        return templates.TemplateResponse(request, "friendship/create.html",
-            _ctx(request, error=str(e), customers=_get_customers(session),
-                 form={"customer_id_1": customer_id_1, "customer_id_2": customer_id_2,
-                       "status": status == "true"}),
-        )
+def index(request: Request, page: int = 1, session: Session = Depends(get_session)):
+    total       = session.exec(select(func.count()).select_from(Friendship)).one()
+    friendships = session.exec(select(Friendship).offset((page - 1) * _PAGE).limit(_PAGE)).all()
+    return templates.TemplateResponse(request, "friendship/index.html", _ctx(request,
+        friendships=friendships, page=page,
+        has_prev=page > 1, has_next=(page * _PAGE) < total,
+    ))
 
 
 @router.get("/{id}")
@@ -73,32 +47,29 @@ def edit(id: int, request: Request, session: Session = Depends(get_session)):
     friendship = session.get(Friendship, id)
     if not friendship:
         return RedirectResponse("/views/friendship/?error=Friendship+no+encontrada", status_code=302)
-    return templates.TemplateResponse(request, "friendship/edit.html", _ctx(request, friendship=friendship, customers=_get_customers(session))
-    )
+    return templates.TemplateResponse(request, "friendship/edit.html", _ctx(request, friendship=friendship))
 
 
 @router.post("/{id}/update")
 def update(
-    id: int,
+    id:      int,
     request: Request,
-    customer_id_1: str = Form(...),
-    customer_id_2: str = Form(...),
-    status: str = Form("false"),
+    status:  str     = Form("pending"),
     session: Session = Depends(get_session),
 ):
     friendship = session.get(Friendship, id)
     if not friendship:
         return RedirectResponse("/views/friendship/?error=Friendship+no+encontrada", status_code=302)
+    if status not in _STATUSES:
+        status = "pending"
     try:
-        friendship.customer_id_1 = int(customer_id_1)
-        friendship.customer_id_2 = int(customer_id_2)
-        friendship.status = status == "true"
+        friendship.status = status
         session.add(friendship)
         session.commit()
         return RedirectResponse(f"/views/friendship/{id}?success=Friendship+actualizada", status_code=302)
     except Exception as e:
         return templates.TemplateResponse(request, "friendship/edit.html",
-            _ctx(request, friendship=friendship, error=str(e), customers=_get_customers(session)),
+            _ctx(request, friendship=friendship, error=str(e)),
         )
 
 

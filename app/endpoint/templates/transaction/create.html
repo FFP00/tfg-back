@@ -1,46 +1,21 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, select_field, form_buttons %}
 {% block title %}Nueva Transaction{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Crear Transaction</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Crear Transaction") }}{% endblock %}
 {% block content %}
-<div class="py-6">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
-            <form action="/views/transaction/" method="POST" class="space-y-4">
-
-                <div>
-                    <label class="block font-medium text-gray-700">Wallet (Customer)</label>
-                    <select name="wallet_customer_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin wallet —</option>
-                        {% for w in wallets %}
-                        <option value="{{ w.customer_id }}" {{ 'selected' if form and form.wallet_customer_id == w.customer_id }}>
-                            Customer #{{ w.customer_id }} — Balance: ${{ w.balance }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="pt-4 flex gap-3">
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                        Crear Transaction
-                    </button>
-                    <a href="/views/transaction/"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <form action="/views/transaction/" method="POST" class="space-y-4">
+            {% call select_field("Wallet (Customer)", "customer_id") %}
+                {% set cur = (form.customer_id if form else "")|string %}
+                {% for w in wallets %}
+                <option value="{{ w.customer_id }}" {{ 'selected' if w.customer_id|string == cur }}>
+                    Customer #{{ w.customer_id }} — Balance: ${{ w.balance }}
+                </option>
+                {% endfor %}
+            {% endcall %}
+            {{ form_buttons("Crear Transaction", "/views/transaction/") }}
+        </form>
     </div>
-</div>
+</div></div>
 {% endblock %}

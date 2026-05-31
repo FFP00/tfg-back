@@ -1,92 +1,27 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import form_header, input, select_field, form_buttons %}
 {% block title %}Nuevo Title{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-gray-800">Crear Title</h2>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ form_header("Crear Title") }}{% endblock %}
 {% block content %}
-<div class="py-6">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white shadow-sm sm:rounded-lg p-6">
-            <form action="/views/title/" method="POST" class="space-y-4">
-
-                <div>
-                    <label class="block font-medium text-gray-700">Nombre</label>
-                    <input type="text" name="name" value="{{ form.name or '' }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Estado</label>
-                    <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="true"  {{ 'selected' if form and form.status == true }}>Activo</option>
-                        <option value="false" {{ 'selected' if form and form.status == false }}>Inactivo</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Descuento actual (%)</label>
-                    <input type="number" name="actual_discount" value="{{ form.actual_discount or 0 }}"
-                           min="0" max="100"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Fecha de lanzamiento</label>
-                    <input type="date" name="release_date" value="{{ form.release_date or '' }}"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Precio de lanzamiento ($)</label>
-                    <input type="number" name="release_price" value="{{ form.release_price or '' }}"
-                           step="0.01" min="0"
-                           class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Developer</label>
-                    <select name="developer_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin developer —</option>
-                        {% for d in developers %}
-                        <option value="{{ d.id }}" {{ 'selected' if form and form.developer_id == d.id }}>
-                            {{ d.name }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700">Media</label>
-                    <select name="media_id" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 text-sm">
-                        <option value="">— Sin media —</option>
-                        {% for m in medias %}
-                        <option value="{{ m.id }}" {{ 'selected' if form and form.media_id == m.id }}>
-                            #{{ m.id }} — {{ m.path_300x450 }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="pt-4 flex gap-3">
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
-                        Crear Title
-                    </button>
-                    <a href="/views/title/"
-                       class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm font-medium">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+        <form action="/views/title/" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name) }}
+            {% call select_field("Estado", "status") %}
+                <option value="true"  {{ 'selected' if form and form.status == 'true' }}>Activo</option>
+                <option value="false" {{ 'selected' if not form or form.status == 'false' }}>Inactivo</option>
+            {% endcall %}
+            {{ input("Descuento (%)", "actual_discount", form.actual_discount or 0, type="number") }}
+            {{ input("Fecha de lanzamiento", "release_date", form.release_date, type="date") }}
+            {{ input("Precio ($)", "release_price", form.release_price, type="number") }}
+            {% call select_field("Developer", "developer_id", "— Sin developer —") %}
+                {% set cur = (form.developer_id if form else "")|string %}
+                {% for d in developers %}
+                <option value="{{ d.id }}" {{ 'selected' if d.id|string == cur }}>{{ d.name }}</option>
+                {% endfor %}
+            {% endcall %}
+            {{ form_buttons("Crear Title", "/views/title/") }}
+        </form>
     </div>
-</div>
+</div></div>
 {% endblock %}

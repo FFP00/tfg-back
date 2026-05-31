@@ -1,19 +1,19 @@
-from sqlalchemy import Column, DateTime, Integer, String, func
+from sqlalchemy import Column, DateTime, Integer, LargeBinary, func
 
 from alembic import op
 
-# revision identifiers, used by Alembic.
 revision        = "002"
 down_revision   = "001"
 branch_labels   = None
 depends_on      = None
 
+
 def upgrade():
     t = op.create_table("image",
 
-        Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("path_256x256", String, nullable=False),
-        Column("path_512x512", String, nullable=False),
+        Column("id",      Integer,     primary_key=True, autoincrement=True, nullable=False),
+        Column("profile", LargeBinary, nullable=True),
+        Column("banner",  LargeBinary, nullable=True),
 
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
         Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
@@ -34,6 +34,7 @@ def upgrade():
         FOR EACH ROW
         EXECUTE PROCEDURE update_updated_at_column();
     """)
+
 
 def downgrade():
     op.drop_table("image")

@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.config.templates import templates
-from app.endpoint.models.CountryModel import Country
-from app.endpoint.models.CurrencyModel import Currency
+from app.database.models.CountryModel import Country
+from app.database.models.CurrencyModel import Currency
+
+_PAGE = 20
 
 router = APIRouter()
 
@@ -25,15 +28,19 @@ def _get_currencies(session: Session):
 
 
 @router.get("/")
-def index(request: Request, search: str = "", session: Session = Depends(get_session)):
-    q = select(Country)
+def index(request: Request, search: str = "", page: int = 1, session: Session = Depends(get_session)):
+    q      = select(Country)
+    count_q = select(func.count()).select_from(Country)
     if search:
-        q = q.where(
-            (Country.name.ilike(f"%{search}%")) | (Country.code.ilike(f"%{search}%"))
-        )
-    countries = session.exec(q).all()
-    return templates.TemplateResponse(request, "country/index.html", _ctx(request, countries=countries, search=search)
-    )
+        cond    = (Country.name.ilike(f"%{search}%")) | (Country.code.ilike(f"%{search}%"))
+        q       = q.where(cond)
+        count_q = count_q.where(cond)
+    total     = session.exec(count_q).one()
+    countries = session.exec(q.offset((page - 1) * _PAGE).limit(_PAGE)).all()
+    return templates.TemplateResponse(request, "country/index.html", _ctx(request,
+        countries=countries, search=search, page=page,
+        has_prev=page > 1, has_next=(page * _PAGE) < total,
+    ))
 
 
 @router.get("/create")

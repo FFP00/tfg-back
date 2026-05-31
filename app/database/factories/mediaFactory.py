@@ -2,7 +2,7 @@ from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.endpoint.models.MediaModel import Media
+from app.database.models.MediaModel import Media
 
 fake = Faker(["es_ES"])
 

@@ -4,7 +4,7 @@ from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.endpoint.models.TitleModel import Title
+from app.database.models.TitleModel import Title
 
 fake = Faker(['es_ES'])
 

@@ -1,88 +1,22 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import page_header, field, badge, actions, search_bar, empty_state, pagination %}
 {% block title %}Customers{% endblock %}
-
-{% block header %}
-<div class="bg-white shadow-sm border-b border-gray-100">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <h2 class="text-xl font-semibold text-gray-800 leading-tight">Listado de Customers</h2>
-        <a href="/views/customer/create"
-           class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition">
-            + Nuevo Customer
-        </a>
-    </div>
-</div>
-{% endblock %}
-
+{% block header %}{{ page_header("Listado de Customers", "/views/customer/create") }}{% endblock %}
 {% block content %}
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-        <!-- Buscador -->
-        <div class="bg-white p-6 shadow-sm rounded-lg mb-6 border border-gray-100">
-            <h3 class="font-bold mb-2 text-gray-700">Buscar customers</h3>
-            <p class="text-xs text-gray-500 uppercase mb-2">Nombre o Email</p>
-            <form method="GET">
-                <input type="text" name="search" value="{{ search or '' }}"
-                       placeholder="Buscar por nombre, email..."
-                       class="w-full border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
-            </form>
-            <p class="mt-2 text-xs text-gray-400">
-                {% if search %}Mostrando resultados para: "<strong>{{ search }}</strong>"
-                {% else %}Mostrando todos los customers{% endif %}
-            </p>
+<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    {{ search_bar(search, "Buscar por nombre o email...") }}
+    <div class="flex flex-col gap-4">
+        {% for customer in customers %}
+        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
+            <h1 class="text-xl font-semibold">{{ customer.name }}</h1>
+            <div class="space-y-1 text-gray-700 mt-2">
+                {{ field("Email", customer.email) }}
+                <p><strong>Estado:</strong> {{ badge(customer.status) }}</p>
+                {{ field("Country", "#" ~ customer.country_id, "/views/country/" ~ customer.country_id) }}            </div>
+            {{ actions("/views/customer", customer.id) }}
         </div>
-
-        <div class="flex flex-col gap-4">
-            {% for customer in customers %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-                <h1 class="text-xl"><strong>{{ customer.name }}</strong></h1>
-                <br>
-                <div class="space-y-1 text-gray-700">
-                    <p><strong>ID:</strong> {{ customer.id }}</p>
-                    <p><strong>Email:</strong> {{ customer.email }}</p>
-                    <p>
-                        <strong>Estado:</strong>
-                        {% if customer.status %}
-                            <span class="text-emerald-500 font-semibold">Activo</span>
-                        {% else %}
-                            <span class="text-red-500 font-semibold">Inactivo</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Country ID:</strong>
-                        {% if customer.country_id %}
-                            <a href="/views/country/{{ customer.country_id }}" class="text-indigo-600 hover:underline">#{{ customer.country_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><strong>Image ID:</strong>
-                        {% if customer.image_id %}
-                            <a href="/views/image/{{ customer.image_id }}" class="text-indigo-600 hover:underline">#{{ customer.image_id }}</a>
-                        {% else %}N/A{% endif %}
-                    </p>
-                    <p><span class="font-medium text-gray-600">created at:</span> {{ customer.created_at }}</p>
-                    <p><span class="font-medium text-gray-600">updated at:</span> {{ customer.updated_at }}</p>
-                </div>
-                <br>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-2">
-                        <a href="/views/customer/{{ customer.id }}"
-                           class="px-6 py-1.5 bg-emerald-500 text-white font-medium rounded hover:bg-emerald-600 transition text-sm">Show</a>
-                        <a href="/views/customer/{{ customer.id }}/edit"
-                           class="px-6 py-1.5 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition text-sm">Edit</a>
-                    </div>
-                    <form action="/views/customer/{{ customer.id }}/delete" method="POST"
-                          onsubmit="return confirm('¿Seguro?')">
-                        <button type="submit"
-                                class="px-6 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition text-sm">Delete</button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100 text-gray-500 text-center">
-                No se encontraron customers.
-            </div>
-            {% endfor %}
-        </div>
+        {% else %}{{ empty_state("No se encontraron customers.") }}{% endfor %}
     </div>
-</div>
+    {{ pagination(page, has_prev, has_next, search) }}
+</div></div>
 {% endblock %}

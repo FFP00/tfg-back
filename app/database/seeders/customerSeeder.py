@@ -4,13 +4,14 @@ import secrets
 from sqlmodel import Session, select
 
 from app.database.factories.customerFactory import CustomerFactory
-from app.endpoint.models.CountryModel import Country
-from app.endpoint.models.ImageModel import Image
+from app.database.models.CountryModel import Country
+from app.database.models.ImageModel import Image
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def seed_customers(session: Session, count: int):
+
+def seed_customers(session: Session, count: int) -> None:
     customers = []
     images = session.exec(select(Image.id)).all()
     countries = session.exec(select(Country.id)).all()
@@ -28,8 +29,8 @@ def seed_customers(session: Session, count: int):
         country = secrets.choice(countries)
 
         customer = CustomerFactory.build()
-        customer.image_id=image
-        customer.country_id=country
+        customer.image_id = image
+        customer.country_id = country
         customers.append(customer)
 
     session.add_all(customers)

@@ -1,5 +1,6 @@
-PYTHON = uv run
-SEEDER = app/database/seeders/databaseSeeder.py
+PYTHON 		= uv run
+SEEDER 		= app/database/seeders/databaseSeeder.py
+SCRAPPER 	= app/public/scrapper.py
 
 migrate-up:
 	@$(PYTHON) alembic upgrade head
@@ -14,4 +15,7 @@ migrate-fresh:
 migrate-fresh-seed:
 	@$(PYTHON) alembic downgrade base
 	@$(PYTHON) alembic upgrade head
+	@$(PYTHON) $(SEEDER)
+
+scrapp:
 	@$(PYTHON) $(SEEDER)

@@ -2,7 +2,7 @@ from faker import Faker
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.endpoint.models.GenreModel import Genre
+from app.database.models.GenreModel import Genre
 
 fake = Faker(['es_ES'])
 

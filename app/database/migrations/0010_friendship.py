@@ -1,35 +1,35 @@
-from sqlalchemy import (
-    Boolean,
-    CheckConstraint,
+from sqlalchemy import (  # noqa: F401
     Column,
     DateTime,
+    Enum,
     ForeignKey,
     Integer,
+    UniqueConstraint,
     func,
 )
 
 from alembic import op
 
-# revision identifiers, used by Alembic.
 revision        = "010"
 down_revision   = "009"
 branch_labels   = None
 depends_on      = None
 
 def upgrade():
+    ENUM_STATUS = Enum("pending", "accepted", "rejected", "blocked", native_enum=False)
+
     t = op.create_table("friendship",
 
-        Column("id", Integer, primary_key=True, nullable=True, default=None),
-        Column("status", Boolean, nullable=False),
+        Column("id",     Integer, primary_key=True, autoincrement=True, nullable=False),
+        Column("status", ENUM_STATUS, nullable=False),
 
-        Column("customer_id_1", Integer, ForeignKey("customer.id"), nullable=True, default=None),
-        Column("customer_id_2", Integer, ForeignKey("customer.id"), nullable=True, default=None),
+        Column("customer_id_1", Integer, ForeignKey("customer.id"), nullable=False),
+        Column("customer_id_2", Integer, ForeignKey("customer.id"), nullable=False),
 
         Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
         Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
 
-        CheckConstraint("customer_id_1 < customer_id_2", name="ck_customer_id")
-
+        UniqueConstraint("customer_id_1", "customer_id_2", name="uq_friendship_pair"),
     )
 
     op.execute(f"""
@@ -47,6 +47,7 @@ def upgrade():
         FOR EACH ROW
         EXECUTE PROCEDURE update_updated_at_column();
     """)
+
 
 def downgrade():
     op.drop_table("friendship")
