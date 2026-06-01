@@ -1,13 +1,18 @@
 {% extends "base.html" %}
-{% from "macros.html" import page_header, field, actions, empty_state, pagination %}
+{% from "macros.html" import page_header, field, actions, search_bar, empty_state, pagination %}
 {% block title %}Friendships{% endblock %}
 {% block header %}{{ page_header("Listado de Friendships") }}{% endblock %}
 {% block content %}
 <div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    {{ search_bar(search, "Buscar por nombre de customer...") }}
     <div class="flex flex-col gap-4">
         {% for friendship in friendships %}
         <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <h1 class="text-xl font-semibold">Customer #{{ friendship.customer_id_1 }} ↔ Customer #{{ friendship.customer_id_2 }}</h1>
+            <h1 class="text-xl font-semibold">
+                {{ customers.get(friendship.customer_id_1, "#" ~ friendship.customer_id_1) }}
+                ↔
+                {{ customers.get(friendship.customer_id_2, "#" ~ friendship.customer_id_2) }}
+            </h1>
             <div class="space-y-1 text-gray-700 mt-2">
                 <p><strong>Estado:</strong>
                     {% if friendship.status == 'accepted' %}<span class="text-emerald-500 font-semibold">Aceptada</span>
@@ -20,6 +25,6 @@
         </div>
         {% else %}{{ empty_state("No se encontraron friendships.") }}{% endfor %}
     </div>
-    {{ pagination(page, has_prev, has_next) }}
+    {{ pagination(page, has_prev, has_next, search) }}
 </div></div>
 {% endblock %}

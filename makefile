@@ -18,4 +18,4 @@ migrate-fresh-seed:
 	@$(PYTHON) $(SEEDER)
 
 scrapp:
-	@$(PYTHON) $(SEEDER)
+	@$(PYTHON) $(SCRAPPER)

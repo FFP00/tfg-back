@@ -1,11 +1,10 @@
 from collections.abc import Iterator
-from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import Response, StreamingResponse
 from sqlalchemy import func
-from sqlmodel import Session, col, or_, select
+from sqlmodel import Session, col, select
 
 from app.config.auth import get_current_customer, get_current_developer
 from app.config.database import get_session
@@ -98,17 +97,6 @@ def _to_show(title: Title, session: Session) -> TitleShow:
 # ── Static routes first ───────────────────────────────────────────────────────
 
 
-@router.get("/featured", response_model=list[TitleCard])
-def featured(session: Session = Depends(get_session)) -> list[TitleCard]:
-    cutoff = datetime.now(UTC).date() - timedelta(days=30)
-    titles = session.exec(
-        select(Title).where(
-            Title.status,
-            or_(Title.actual_discount > 0, Title.release_date >= cutoff),
-        )
-    ).all()
-    return [_to_card(t, session) for t in titles]
-
 
 @router.get("/random", response_model=TitleCard)
 def random_title(session: Session = Depends(get_session)) -> TitleCard:
@@ -179,7 +167,7 @@ def create(
 # ── Dynamic routes ────────────────────────────────────────────────────────────
 
 
-@router.patch("/{name}/media", status_code=204)
+@router.post("/{name}/media", status_code=204)
 async def upload_media(
     name:    str,
     body:    Annotated[TitleMediaUpload, Form()],
@@ -193,6 +181,11 @@ async def upload_media(
         raise HTTPException(
             status_code=404, detail="Título no encontrado o no eres el propietario"
         )
+    if title.media_id:
+        raise HTTPException(
+            status_code=403,
+            detail="La media ya existe. Contacta al administrador para modificarla",
+        )
 
     uploads = {
         "capsule": body.capsule,
@@ -205,22 +198,17 @@ async def upload_media(
         "store_6": body.store_6,
         "trailer": body.trailer,
     }
-    if not any(uploads.values()):
-        raise HTTPException(status_code=400, detail="Se requiere al menos un archivo")
+    if not body.capsule or not body.header or not body.store_1:
+        raise HTTPException(
+            status_code=400,
+            detail="Se requieren al menos: capsule, header y store_1",
+        )
 
-    if title.media_id:
-        media = session.get(Media, title.media_id)
-    else:
-        if not body.capsule or not body.header or not body.store_1:
-            raise HTTPException(
-                status_code=400,
-                detail="Primera subida requiere: capsule, header y store_1",
-            )
-        media = Media(capsule=b"", header=b"", store_1=b"")
-        session.add(media)
-        session.flush()
-        title.media_id = media.id
-        session.add(title)
+    media = Media(capsule=b"", header=b"", store_1=b"")
+    session.add(media)
+    session.flush()
+    title.media_id = media.id
+    session.add(title)
 
     for field, upload in uploads.items():
         if upload:
@@ -231,13 +219,13 @@ async def upload_media(
     return Response(status_code=204)
 
 
-@router.get("/{name}/image/{field}")
-def get_image(
-    name: str, field: str, session: Session = Depends(get_session)
+@router.get("/{name}/media/{field}")
+def get_media(
+    name: str, field: str, request: Request, session: Session = Depends(get_session)
 ) -> Response:
-    if field not in _IMAGE_FIELDS:
+    if field not in (*_IMAGE_FIELDS, "trailer"):
         raise HTTPException(
-            status_code=400, detail=f"Campo inválido. Válidos: {list(_IMAGE_FIELDS)}"
+            status_code=400, detail=f"Campo inválido. Válidos: {list((*_IMAGE_FIELDS, 'trailer'))}"
         )
     title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
     if not title or not title.media_id:
@@ -248,21 +236,10 @@ def get_image(
     data: bytes | None = getattr(media, field, None)
     if not data:
         raise HTTPException(status_code=404, detail=f"Campo '{field}' vacío")
-    return Response(content=data, media_type="image/jpeg")
 
+    if field != "trailer":
+        return Response(content=data, media_type="image/jpeg")
 
-@router.get("/{name}/trailer")
-def get_trailer(
-    name: str, request: Request, session: Session = Depends(get_session)
-) -> Response:
-    title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
-    if not title or not title.media_id:
-        raise HTTPException(status_code=404, detail="Título o media no encontrado")
-    media = session.get(Media, title.media_id)
-    if not media or not media.trailer:
-        raise HTTPException(status_code=404, detail="Trailer no disponible")
-
-    data = media.trailer
     total = len(data)
     range_header = request.headers.get("range")
 
@@ -330,7 +307,7 @@ def get_reviews(name: str, session: Session = Depends(get_session)) -> list[Revi
     return result
 
 
-@router.post("/{name}/review/", response_model=ReviewShow, status_code=201)
+@router.post("/{name}/reviews", response_model=ReviewShow, status_code=201)
 def create_review(
     name: str,
     payload: ReviewCreate,
@@ -372,7 +349,7 @@ def create_review(
     )
 
 
-@router.patch("/{name}/review/me", response_model=ReviewShow)
+@router.patch("/{name}/reviews/me", response_model=ReviewShow)
 def update_review(
     name: str,
     payload: ReviewPatch,
@@ -408,7 +385,7 @@ def update_review(
     )
 
 
-@router.post("/{name}/review/{customer_name}/vote", response_model=VoteResponse)
+@router.post("/{name}/reviews/{customer_name}/vote", response_model=VoteResponse)
 def vote_review(
     name: str,
     customer_name: str,

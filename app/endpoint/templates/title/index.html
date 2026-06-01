@@ -7,28 +7,22 @@
     {{ search_bar(search, "Buscar por nombre...") }}
     <div class="flex flex-col gap-4">
         {% for title in titles %}
-        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <div class="flex gap-6">
-                {% if title.media_id %}
-                <div class="flex-shrink-0 flex flex-wrap gap-2 w-64">
-                    {% for field_name in ["capsule", "header", "store_1", "store_2", "store_3", "store_4", "store_5", "store_6"] %}
-                    <img src="/views/title/{{ title.id }}/media/{{ field_name }}"
-                         alt="{{ field_name }}"
-                         class="h-20 object-cover rounded border border-gray-200"
-                         onerror="this.style.display='none'">
-                    {% endfor %}
+        <div class="bg-white shadow-sm rounded-lg border border-gray-100 overflow-hidden flex">
+            {% if title.media_id %}
+            <img src="/views/title/{{ title.id }}/media/capsule"
+                 class="w-28 object-contain flex-shrink-0 bg-gray-50" alt="capsule"
+                 onerror="this.style.display='none'">
+            {% endif %}
+            <div class="flex-1 p-8">
+                <h1 class="text-xl font-semibold">{{ title.name }}</h1>
+                <div class="space-y-1 text-gray-700 mt-2">
+                    <p><strong>Estado:</strong> {{ badge(title.status) }}</p>
+                    {{ field("Precio", "$" ~ title.release_price) }}
+                    {{ field("Descuento", title.actual_discount ~ "%") }}
+                    {{ field("Lanzamiento", title.release_date) }}
+                    {% if title.developer %}{{ field("Developer", title.developer.name, "/views/developer/" ~ title.developer_id) }}{% endif %}
                 </div>
-                {% endif %}
-                <div class="flex-1">
-                    <h1 class="text-xl font-semibold">{{ title.name }}</h1>
-                    <div class="space-y-1 text-gray-700 mt-2">
-                        <p><strong>Estado:</strong> {{ badge(title.status) }}</p>
-                        {{ field("Descuento", title.actual_discount ~ "%") }}
-                        {{ field("Precio", "$" ~ title.release_price) }}
-                        {{ field("Developer", "#" ~ title.developer_id, "/views/developer/" ~ title.developer_id) }}
-                    </div>
-                    {{ actions("/views/title", title.id) }}
-                </div>
+                {{ actions("/views/title", title.id) }}
             </div>
         </div>
         {% else %}{{ empty_state("No se encontraron titles.") }}{% endfor %}

@@ -74,3 +74,5 @@ class TitleMediaUpload(SQLModel):
     store_5: UploadFile | None = None
     store_6: UploadFile | None = None
     trailer: UploadFile | None = None
+
+

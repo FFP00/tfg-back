@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy import func
-from sqlmodel import Session, select
+from sqlmodel import Session, col, or_, select
 
 from app.config.database import get_session
 from app.config.templates import templates
+from app.database.models.CustomerModel import Customer
 from app.database.models.FriendshipModel import Friendship
 
 router = APIRouter()
@@ -25,11 +26,29 @@ def _ctx(request: Request, **kwargs):
 
 
 @router.get("/")
-def index(request: Request, page: int = 1, session: Session = Depends(get_session)):
-    total       = session.exec(select(func.count()).select_from(Friendship)).one()
-    friendships = session.exec(select(Friendship).offset((page - 1) * _PAGE).limit(_PAGE)).all()
+def index(request: Request, search: str = "", page: int = 1, session: Session = Depends(get_session)):
+    q       = select(Friendship)
+    count_q = select(func.count()).select_from(Friendship)
+
+    if search:
+        matching = session.exec(
+            select(Customer.id).where(col(Customer.name).ilike(f"%{search}%"))
+        ).all()
+        cond    = or_(col(Friendship.customer_id_1).in_(matching), col(Friendship.customer_id_2).in_(matching))
+        q       = q.where(cond)
+        count_q = count_q.where(cond)
+
+    total       = session.exec(count_q).one()
+    friendships = session.exec(q.offset((page - 1) * _PAGE).limit(_PAGE)).all()
+
+    ids = {f.customer_id_1 for f in friendships} | {f.customer_id_2 for f in friendships}
+    customers = {
+        c.id: c.name
+        for c in session.exec(select(Customer).where(col(Customer.id).in_(ids))).all()
+    } if ids else {}
+
     return templates.TemplateResponse(request, "friendship/index.html", _ctx(request,
-        friendships=friendships, page=page,
+        friendships=friendships, customers=customers, search=search, page=page,
         has_prev=page > 1, has_next=(page * _PAGE) < total,
     ))
 

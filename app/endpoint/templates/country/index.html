@@ -11,7 +11,8 @@
             <h1 class="text-xl font-semibold">{{ country.en_name }} <span class="text-gray-400 font-normal text-base">/ {{ country.name }}</span></h1>
             <div class="space-y-1 text-gray-700 mt-2">
                 {{ field("Código", country.code) }}
-                {{ field("Currency", "#" ~ country.currency_id, "/views/currency/" ~ country.currency_id) }}            </div>
+                {% if country.currency %}{{ field("Currency", country.currency.name ~ " (" ~ country.currency.code ~ ")", "/views/currency/" ~ country.currency_id) }}{% endif %}
+</div>
             {{ actions("/views/country", country.id) }}
         </div>
         {% else %}{{ empty_state("No se encontraron countries.") }}{% endfor %}

@@ -7,13 +7,20 @@
     {{ search_bar(search, "Buscar por nombre o email...") }}
     <div class="flex flex-col gap-4">
         {% for customer in customers %}
-        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <h1 class="text-xl font-semibold">{{ customer.name }}</h1>
-            <div class="space-y-1 text-gray-700 mt-2">
-                {{ field("Email", customer.email) }}
-                <p><strong>Estado:</strong> {{ badge(customer.status) }}</p>
-                {{ field("Country", "#" ~ customer.country_id, "/views/country/" ~ customer.country_id) }}            </div>
-            {{ actions("/views/customer", customer.id) }}
+        <div class="bg-white shadow-sm rounded-lg border border-gray-100 overflow-hidden flex">
+            {% if customer.image and customer.image.profile %}
+            <img src="/api/customer/{{ customer.name }}/image/profile"
+                 class="w-28 object-cover flex-shrink-0" alt="profile">
+            {% endif %}
+            <div class="flex-1 p-8">
+                <h1 class="text-xl font-semibold">{{ customer.name }}</h1>
+                <div class="space-y-1 text-gray-700 mt-2">
+                    {{ field("Email", customer.email) }}
+                    <p><strong>Estado:</strong> {{ badge(customer.status) }}</p>
+                    {% if customer.country %}{{ field("País", customer.country.en_name, "/views/country/" ~ customer.country_id) }}{% endif %}
+                </div>
+                {{ actions("/views/customer", customer.id) }}
+            </div>
         </div>
         {% else %}{{ empty_state("No se encontraron customers.") }}{% endfor %}
     </div>

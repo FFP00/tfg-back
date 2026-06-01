@@ -2,12 +2,15 @@ from decimal import Decimal
 
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
+from pwdlib import PasswordHash
 from sqlalchemy import func
 from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.config.templates import templates
 from app.database.models.CountryModel import Country
+
+hasher = PasswordHash.recommended()
 from app.database.models.CustomerModel import Customer
 from app.database.models.ImageModel import Image
 from app.database.models.WalletModel import Wallet
@@ -71,7 +74,7 @@ def store(
         session.add(Customer(
             name=name,
             email=email,
-            password=password,
+            password=hasher.hash(password),
             status=status == "true",
             country_id=int(country_id) if country_id else None,
             image_id=int(image_id) if image_id else None,
@@ -128,7 +131,7 @@ def update(
         customer.name       = name
         customer.email      = email
         if password:
-            customer.password = password
+            customer.password = hasher.hash(password)
         customer.status     = status == "true"
         customer.country_id = int(country_id) if country_id else None
         customer.image_id   = int(image_id)   if image_id   else None

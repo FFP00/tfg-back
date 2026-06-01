@@ -21,7 +21,7 @@ from app.endpoint.schemas.transactionSchema import (
 router = APIRouter()
 
 
-@router.post("/", response_model=PurchaseResponse)
+@router.post("/", response_model=PurchaseResponse, status_code=201)
 def purchase(
     payload: PurchasePayload,
     current: Customer = Depends(get_current_customer),

@@ -7,7 +7,7 @@
     <div class="flex flex-col gap-4">
         {% for review in reviews %}
         <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <h1 class="text-xl font-semibold">Review #{{ review.id }}</h1>
+            <p class="text-gray-800 font-medium">{{ review.content }}</p>
             <div class="space-y-1 text-gray-700 mt-2">
                 <p><strong>Recomienda:</strong> {{ badge(review.recommends, "Sí", "No") }}</p>
                 <p><strong>Estado:</strong> {{ badge(review.status, "Publicada", "Pendiente", "emerald", "yellow") }}</p>

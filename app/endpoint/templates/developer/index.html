@@ -7,13 +7,21 @@
     {{ search_bar(search, "Buscar por nombre o email...") }}
     <div class="flex flex-col gap-4">
         {% for developer in developers %}
-        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <h1 class="text-xl font-semibold">{{ developer.name }}</h1>
-            <div class="space-y-1 text-gray-700 mt-2">
-                {{ field("Email", developer.email) }}
-                {{ field("Support Email", developer.support_email) }}
-                <p><strong>Estado:</strong> {{ badge(developer.status) }}</p>            </div>
-            {{ actions("/views/developer", developer.id) }}
+        <div class="bg-white shadow-sm rounded-lg border border-gray-100 overflow-hidden flex">
+            {% if developer.image and developer.image.profile %}
+            <img src="/api/developer/{{ developer.name }}/image/profile"
+                 class="w-28 object-cover flex-shrink-0" alt="profile">
+            {% endif %}
+            <div class="flex-1 p-8">
+                <h1 class="text-xl font-semibold">{{ developer.name }}</h1>
+                <div class="space-y-1 text-gray-700 mt-2">
+                    {{ field("Email", developer.email) }}
+                    {{ field("Support Email", developer.support_email) }}
+                    {{ field("Web", developer.website_url, developer.website_url) }}
+                    <p><strong>Estado:</strong> {{ badge(developer.status) }}</p>
+                </div>
+                {{ actions("/views/developer", developer.id) }}
+            </div>
         </div>
         {% else %}{{ empty_state("No se encontraron developers.") }}{% endfor %}
     </div>

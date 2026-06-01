@@ -12,9 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 def seed_customers_titles(session: Session, count: int):
-    customer_titles = []
     customers = session.exec(select(Customer.id)).all()
-    titles = session.exec(select(Title.id)).all()
+    titles    = session.exec(select(Title.id)).all()
 
     if not customers:
         logger.info("No encontramos usuarios")
@@ -24,14 +23,19 @@ def seed_customers_titles(session: Session, count: int):
         logger.info("No encontramos juegos")
         return
 
-    for _ in range(count):
-        customer = secrets.choice(customers)
-        title = secrets.choice(titles)
+    used: set[tuple[int, int]] = set()
+    customer_titles = []
 
-        customer_title = CustomerTitleFactory.build()
-        customer_title.customer_id = customer
-        customer_title.title_id = title
-        customer_titles.append(customer_title)
+    while len(customer_titles) < count:
+        customer = secrets.choice(customers)
+        title    = secrets.choice(titles)
+        if (customer, title) in used:
+            continue
+        used.add((customer, title))
+        ct = CustomerTitleFactory.build()
+        ct.customer_id = customer
+        ct.title_id    = title
+        customer_titles.append(ct)
 
     session.add_all(customer_titles)
     logger.info(f"{count} customer_title preparados.")

@@ -133,7 +133,7 @@ fetch('/api/customer/me/deposit', {
 // { balance: '25.50' }
 ```
 
-### PUT `/api/customer/me/image`
+### PATCH `/api/customer/me/image`
 Subir/actualizar imagen de perfil o banner. Multipart. Requiere token.
 
 ```js
@@ -141,7 +141,7 @@ const form = new FormData()
 form.append('profile', fileInput.files[0])   // opcional
 form.append('banner', bannerInput.files[0])  // opcional — al menos uno requerido
 fetch('/api/customer/me/image', {
-  method: 'PUT',
+  method: 'PATCH',
   headers: { Authorization: `Bearer ${token}` },
   body: form,
 })
@@ -203,7 +203,7 @@ const { developer } = await fetch('/api/developer/me', {
 ```
 
 ### GET `/api/developer/`
-Listado de developers activos. Búsqueda por nombre. Público. El email NO se expone.
+Listado de developers activos. Búsqueda por nombre. Público. El email privado NO se expone.
 
 ```js
 fetch('/api/developer/?search=indie')
@@ -227,7 +227,7 @@ fetch('/api/developer/me', {
 // { name, email, support_email, website_url, status, created_at, updated_at }
 ```
 
-### PUT `/api/developer/me/image`
+### PATCH `/api/developer/me/image`
 Subir imagen de perfil/banner. Multipart. Requiere token de developer.
 
 ```js
@@ -235,7 +235,7 @@ const form = new FormData()
 form.append('profile', file)
 form.append('banner', banner)
 fetch('/api/developer/me/image', {
-  method: 'PUT',
+  method: 'PATCH',
   headers: { Authorization: `Bearer ${devToken}` },
   body: form,
 })
@@ -260,14 +260,6 @@ fetch('/api/developer/MiEstudio')
 ---
 
 ## Títulos — `/api/title`
-
-### GET `/api/title/featured`
-Títulos en oferta o lanzados en los últimos 30 días. Público.
-
-```js
-fetch('/api/title/featured')
-// [{ name, release_price, actual_discount, genres: [{name}], developer_name }, ...]
-```
 
 ### GET `/api/title/random`
 Un título aleatorio activo. Público.
@@ -310,40 +302,38 @@ fetch('/api/title/', {
 // 201 → { name, status, actual_discount, release_date, release_price, genres, developer, ... }
 ```
 
-### PUT `/api/title/{name}/media`
-Subir imágenes y/o trailer. Requiere token del developer propietario.
-- **Primera subida**: `capsule`, `header` y `store_1` obligatorios.
-- **Subidas posteriores**: cualquier campo es opcional.
+### POST `/api/title/{name}/media`
+Subir media del juego por primera vez. Requiere token del developer propietario.
+- Solo disponible si el juego **no tiene media aún**. Una vez subida, contactar al admin para cambios.
+- `capsule`, `header` y `store_1` son obligatorios. El resto opcional.
 
 ```js
 const form = new FormData()
-form.append('capsule', capsuleFile)   // obligatorio primera vez
-form.append('header', headerFile)     // obligatorio primera vez
-form.append('store_1', store1File)    // obligatorio primera vez
+form.append('capsule', capsuleFile)   // obligatorio
+form.append('header', headerFile)     // obligatorio
+form.append('store_1', store1File)    // obligatorio
 form.append('store_2', store2File)    // opcional
 form.append('trailer', trailerFile)   // opcional (mp4)
 fetch(`/api/title/${encodeURIComponent(name)}/media`, {
-  method: 'PUT',
+  method: 'POST',
   headers: { Authorization: `Bearer ${devToken}` },
   body: form,
 })
 // 204 vacío
+// 403 si ya existe media → contactar al administrador
 ```
 
-### GET `/api/title/{name}/image/{field}`
-Imagen del título. `field`: `capsule`, `header`, `store_1`–`store_6`. Público.
+### GET `/api/title/{name}/media/{field}`
+Archivo del título. `field`: `capsule`, `header`, `store_1`–`store_6`, `trailer`. Público.
+- Imágenes: respuesta directa `image/jpeg`.
+- `trailer`: streaming con soporte de `Range` para HTML5 `<video>`.
 
 ```html
-<img src="/api/title/Mi%20Juego/image/capsule" />
-<img src="/api/title/Mi%20Juego/image/header" />
-```
+<img src="/api/title/Mi%20Juego/media/capsule" />
+<img src="/api/title/Mi%20Juego/media/header" />
 
-### GET `/api/title/{name}/trailer`
-Streaming del trailer. Soporta `Range` para HTML5 `<video>`. Público.
-
-```html
 <video controls>
-  <source src="/api/title/Mi%20Juego/trailer" type="video/mp4" />
+  <source src="/api/title/Mi%20Juego/media/trailer" type="video/mp4" />
 </video>
 ```
 
@@ -355,11 +345,11 @@ fetch('/api/title/Mi%20Juego/reviews')
 // [{ content, recommends, votes, customer_name, created_at }, ...]
 ```
 
-### POST `/api/title/{name}/review/`
+### POST `/api/title/{name}/reviews`
 Publicar review. El cliente debe tener el juego. Queda pendiente de aprobación. Requiere token de customer.
 
 ```js
-fetch('/api/title/Mi%20Juego/review/', {
+fetch('/api/title/Mi%20Juego/reviews', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   body: JSON.stringify({ content: 'Muy buen juego', recommends: true }),
@@ -367,11 +357,11 @@ fetch('/api/title/Mi%20Juego/review/', {
 // 201 → { content, recommends, votes, customer_name, created_at }
 ```
 
-### PATCH `/api/title/{name}/review/me`
+### PATCH `/api/title/{name}/reviews/me`
 Editar tu propia review. Requiere token de customer.
 
 ```js
-fetch('/api/title/Mi%20Juego/review/me', {
+fetch('/api/title/Mi%20Juego/reviews/me', {
   method: 'PATCH',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   body: JSON.stringify({ content: 'Actualizo mi opinión', recommends: false }),
@@ -379,11 +369,11 @@ fetch('/api/title/Mi%20Juego/review/me', {
 // { content, recommends, votes, customer_name, created_at }
 ```
 
-### POST `/api/title/{name}/review/{customer_name}/vote`
+### POST `/api/title/{name}/reviews/{customer_name}/vote`
 Votar la review de otro cliente. No puedes votar la tuya. Requiere token de customer.
 
 ```js
-fetch('/api/title/Mi%20Juego/review/johndoe/vote', {
+fetch('/api/title/Mi%20Juego/reviews/johndoe/vote', {
   method: 'POST',
   headers: { Authorization: `Bearer ${token}` },
 })
@@ -434,7 +424,7 @@ fetch('/api/transaction/', {
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   body: JSON.stringify({ titles: ['Mi Juego', 'Otro Juego'] }),
 })
-// { titles_purchased: 2, total_spent: '39.98', wallet_balance: '10.02' }
+// 201 → { titles_purchased: 2, total_spent: '39.98', wallet_balance: '10.02' }
 ```
 
 ### GET `/api/transaction/me`
@@ -554,7 +544,6 @@ const [genres, countries, currencies] = await Promise.all([
 
 ### Login y perfil propio
 ```js
-// Login
 const { access_token, customer, wallet } = await fetch('/auth/customer/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -619,16 +608,17 @@ await fetch('/api/title/', {
   body: JSON.stringify({ name, release_date, release_price }),
 })
 
-// Subir media (primera vez: capsule + header + store_1 obligatorios)
+// Subir media (solo primera vez — capsule, header y store_1 obligatorios)
 const form = new FormData()
 form.append('capsule', capsuleFile)
 form.append('header', headerFile)
 form.append('store_1', store1File)
 await fetch(`/api/title/${encodeURIComponent(name)}/media`, {
-  method: 'PUT',
+  method: 'POST',
   headers: { Authorization: `Bearer ${devToken}` },
   body: form,
 })
+// 403 si ya existe media → contactar al administrador
 ```
 
 ### Gestión de amistades

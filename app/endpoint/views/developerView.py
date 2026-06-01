@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
+from pwdlib import PasswordHash
 from sqlalchemy import func
 from sqlmodel import Session, select
 
@@ -7,6 +8,8 @@ from app.config.database import get_session
 from app.config.templates import templates
 from app.database.models.DeveloperModel import Developer
 from app.database.models.ImageModel import Image
+
+hasher = PasswordHash.recommended()
 
 _PAGE = 20
 
@@ -66,7 +69,7 @@ def store(
             name=name,
             email=email,
             support_email=support_email,
-            password=password,
+            password=hasher.hash(password),
             website_url=website_url or None,
             status=status == "true",
             image_id=int(image_id) if image_id else None,
@@ -119,7 +122,7 @@ def update(
         developer.email = email
         developer.support_email = support_email
         if password:
-            developer.password = password
+            developer.password = hasher.hash(password)
         developer.website_url = website_url or None
         developer.status = status == "true"
         developer.image_id = int(image_id) if image_id else None
