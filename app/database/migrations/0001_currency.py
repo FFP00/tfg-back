@@ -11,13 +11,14 @@ depends_on      = None
 def upgrade():
     t = op.create_table("currency",
 
-        Column("id",     Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("name",   String,  nullable=False, unique=True),
-        Column("code",   String,  nullable=False, unique=True),
-        Column("symbol", String,  nullable=False),
+        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("name",          String, nullable=False, unique=True),
+        Column("code",          String, nullable=False, unique=True),
+        Column("symbol",        String, nullable=False),
+
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
 
     op.execute(f"""

@@ -97,7 +97,6 @@ def update(
     votes: int = Form(0),
     recommends: str = Form("true"),
     status: str = Form("false"),
-    customer_title_id: str = Form(""),
     session: Session = Depends(get_session),
 ):
     review = session.get(Review, id)
@@ -108,7 +107,6 @@ def update(
         review.votes = votes
         review.recommends = recommends == "true"
         review.status = status == "true"
-        review.customer_title_id = int(customer_title_id) if customer_title_id else None
         session.add(review)
         session.commit()
         return RedirectResponse(f"/views/review/{id}?success=Review+actualizada", status_code=302)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, UniqueConstraint, func
 
 from alembic import op
 
@@ -11,13 +11,15 @@ depends_on      = None
 def upgrade():
     t = op.create_table("genre_title",
 
-        Column("id",       Integer, primary_key=True, autoincrement=True, nullable=False),
+        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("title_id", Integer, ForeignKey("title.id"),  nullable=False),
-        Column("genre_id", Integer, ForeignKey("genre.id"),  nullable=False),
+        Column("title_id",      Integer, ForeignKey("title.id"),  nullable=False),
+        Column("genre_id",      Integer, ForeignKey("genre.id"),  nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+
+        UniqueConstraint("title_id", "genre_id", name="uq_title_genre"),
     )
 
     op.execute(f"""

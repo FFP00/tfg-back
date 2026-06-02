@@ -26,10 +26,19 @@ def seed_titles_transactions(session: Session, count: int) -> None:
         logger.info("No encontramos transacciones")
         return
 
-    for _ in range(count):
+    used = set()
+    attempts = 0
+    max_attempts = count * 10
+
+    while len(titles_transactions) < count and attempts < max_attempts:
+        attempts += 1
         title = secrets.choice(titles)
         transaction = secrets.choice(transactions)
 
+        if (title, transaction) in used:
+            continue
+
+        used.add((title, transaction))
         title_transaction = TitleTransactionFactory.build()
         title_transaction.title_id = title
         title_transaction.transaction_id = transaction

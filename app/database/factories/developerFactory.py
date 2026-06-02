@@ -19,7 +19,7 @@ class DeveloperFactory(SQLAlchemyFactory[Developer]):
     email           = Use(fake.unique.email)
     support_email   = Use(fake.unique.email)
     password        = Use(lambda: password_hasher.hash("password123"))
-    website_url     = Use(fake.url)
+    website_url     = Use(lambda: f"https://{fake.unique.domain_name()}")
 
     created_at      = Use(lambda: None)
     updated_at      = Use(lambda: None)

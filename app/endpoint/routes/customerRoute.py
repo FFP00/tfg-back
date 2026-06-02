@@ -42,15 +42,11 @@ def me(
     current: Customer = Depends(get_current_customer),
     session: Session = Depends(get_session),
 ) -> LoginCustomerResponse:
-    wallet = session.exec(
-        select(Wallet).where(Wallet.customer_id == current.id)
-    ).first()
+    wallet = session.get(Wallet, current.id)
     return LoginCustomerResponse(
         access_token=token,
         customer=CustomerShow.model_validate(current, from_attributes=True),
-        wallet=WalletShow.model_validate(wallet, from_attributes=True)
-        if wallet
-        else None,
+        wallet=WalletShow.model_validate(wallet, from_attributes=True) if wallet else None,
     )
 
 
@@ -121,9 +117,7 @@ def deposit(
 ) -> Wallet:
     if payload.amount <= 0:
         raise HTTPException(status_code=400, detail="El importe debe ser positivo")
-    wallet = session.exec(
-        select(Wallet).where(Wallet.customer_id == current.id)
-    ).first()
+    wallet = session.get(Wallet, current.id)
     if not wallet:
         raise HTTPException(status_code=404, detail="Wallet no encontrada")
     wallet.balance = (wallet.balance or 0) + payload.amount
@@ -144,16 +138,9 @@ async def upload_image(
             status_code=400, detail="Se requiere al menos un campo: profile o banner"
         )
 
-    if current.image_id:
-        image = session.get(Image, current.image_id)
-        if not image:
-            raise HTTPException(status_code=404, detail="Imagen no encontrada")
-    else:
-        image = Image()
-        session.add(image)
-        session.flush()
-        current.image_id = image.id
-        session.add(current)
+    image = session.get(Image, current.image_id)
+    if not image:
+        raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
     if body.profile:
         image.profile = await body.profile.read()
@@ -179,8 +166,8 @@ def get_image(
     customer = session.exec(
         select(Customer).where(Customer.name == name, Customer.status)
     ).first()
-    if not customer or not customer.image_id:
-        raise HTTPException(status_code=404, detail="Customer o imagen no encontrada")
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer no encontrado")
     image = session.get(Image, customer.image_id)
     if not image:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
@@ -258,7 +245,7 @@ def get_reviews(name: str, session: Session = Depends(get_session)) -> list[Revi
     ).all()
     result = []
     for r in reviews:
-        ct = ct_map.get(r.customer_title_id)
+        ct = ct_map.get(r.customer_title_id) if r.customer_title_id else None
         title = session.get(Title, ct.title_id) if ct else None
         result.append(
             ReviewShow(

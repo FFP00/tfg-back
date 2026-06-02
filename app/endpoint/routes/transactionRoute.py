@@ -30,9 +30,7 @@ def purchase(
     if not payload.titles:
         raise HTTPException(status_code=400, detail="Lista de títulos vacía")
 
-    wallet = session.exec(
-        select(Wallet).where(Wallet.customer_id == current.id)
-    ).first()
+    wallet = session.get(Wallet, current.id)
     if not wallet:
         raise HTTPException(status_code=404, detail="Wallet no encontrada")
 

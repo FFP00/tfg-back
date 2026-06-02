@@ -17,8 +17,8 @@ class Customer(SQLModel, table=True):
     password:       str             = Field(nullable=False)
     status:         bool            = Field(default=True, nullable=False)
 
-    country_id:     int      | None = Field(default=None, foreign_key="country.id", nullable=True)
-    image_id:       int      | None = Field(default=None, foreign_key="image.id",   nullable=True)
+    country_id:     int             = Field(foreign_key="country.id", nullable=False)
+    image_id:       int      | None = Field(default=None, foreign_key="image.id",   nullable=False)
     created_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
     updated_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
 

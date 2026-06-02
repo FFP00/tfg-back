@@ -1,36 +1,37 @@
 from sqlalchemy import (
+    Boolean,
     Column,
+    Date,
     DateTime,
     ForeignKey,
     Integer,
     Numeric,
-    UniqueConstraint,
+    String,
     func,
 )
 
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision        = "015"
-down_revision   = "014"
+revision        = "007"
+down_revision   = "006"
 branch_labels   = None
 depends_on      = None
 
 def upgrade():
-    t = op.create_table("title_transaction",
+    t = op.create_table("title",
 
         Column("id",                Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("price",             Numeric(precision=10, scale=2), nullable=False),
-        Column("discount",          Integer, nullable=False),
 
-        Column("title_id",          Integer, ForeignKey("title.id"), nullable=False),
-        Column("transaction_id",    Integer, ForeignKey("transaction.id"), nullable=False),
+        Column("name",              String, nullable=False, unique=True),
+        Column("status",            Boolean, nullable=False, server_default="false"),
+        Column("actual_discount",   Integer, nullable=False),
+        Column("release_date",      Date, nullable=False),
+        Column("release_price",     Numeric(precision=10, scale=2), nullable=False),
 
-        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
-        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
-
-        UniqueConstraint("title_id", "transaction_id", name="uq_title_transaction"),
-
+        Column("developer_id",      Integer, ForeignKey("developer.id"), nullable=False),
+        Column("created_at",        DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",        DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
 
     op.execute(f"""
@@ -49,5 +50,6 @@ def upgrade():
         EXECUTE PROCEDURE update_updated_at_column();
     """)
 
+
 def downgrade():
-    op.drop_table("title_transaction")
+    op.drop_table("title")

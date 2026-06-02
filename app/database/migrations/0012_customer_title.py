@@ -3,6 +3,7 @@ from sqlalchemy import (  # noqa: F401
     DateTime,
     ForeignKey,
     Integer,
+    String,
     UniqueConstraint,
     func,
 )
@@ -18,13 +19,14 @@ depends_on      = None
 def upgrade():
     t = op.create_table("customer_title",
 
-        Column("id",         Integer, primary_key=True, autoincrement=True, nullable=False),
+        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("title_id",    Integer, ForeignKey("title.id"),    nullable=False),
-        Column("customer_id", Integer, ForeignKey("customer.id"), nullable=False),
+        Column("title_id",      Integer, ForeignKey("title.id"),    nullable=False),
+        Column("customer_id",   Integer, ForeignKey("customer.id"), nullable=False),
+        Column("playtime",      Integer, nullable=False, server_default="0"),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
 
         UniqueConstraint("customer_id", "title_id", name="uq_customer_title"),
     )

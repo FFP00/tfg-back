@@ -13,9 +13,10 @@ _PWD_RE   = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$"
 
 
 class CustomerCreate(SQLModel):
-    name:     str
-    email:    str
-    password: str
+    name:         str
+    email:        str
+    password:     str
+    country_code: str
 
     @field_validator("email")
     @classmethod

@@ -62,9 +62,9 @@ class ReviewFactory(SQLAlchemyFactory[Review]):
     __model__              = Review
     __set_relationships__  = False
 
-    id                 = Use(lambda: None)
-    content            = Use(lambda: None)
-    recommends         = Use(lambda: None)
+    customer_title_id  = Use(lambda: None)
+    content            = Use(lambda: secrets.choice(POSITIVE_REVIEWS))
+    recommends         = Use(lambda: True)
     votes              = Use(_votes)
     status             = Use(lambda: True)
     created_at         = Use(lambda: None)

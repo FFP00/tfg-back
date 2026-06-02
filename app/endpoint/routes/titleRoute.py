@@ -181,7 +181,10 @@ async def upload_media(
         raise HTTPException(
             status_code=404, detail="Título no encontrado o no eres el propietario"
         )
-    if title.media_id:
+    media = session.exec(select(Media).where(Media.title_id == title.id)).first()
+    if not media:
+        raise HTTPException(status_code=404, detail="Título o media no encontrado")
+    if media.capsule:
         raise HTTPException(
             status_code=403,
             detail="La media ya existe. Contacta al administrador para modificarla",
@@ -204,11 +207,46 @@ async def upload_media(
             detail="Se requieren al menos: capsule, header y store_1",
         )
 
-    media = Media(capsule=b"", header=b"", store_1=b"")
+    for field, upload in uploads.items():
+        if upload:
+            setattr(media, field, await upload.read())
+
     session.add(media)
-    session.flush()
-    title.media_id = media.id
-    session.add(title)
+    session.commit()
+    return Response(status_code=204)
+
+
+@router.patch("/{name}/media", status_code=204)
+async def patch_media(
+    name:    str,
+    body:    Annotated[TitleMediaUpload, Form()],
+    current: Developer = Depends(get_current_developer),
+    session: Session   = Depends(get_session),
+) -> Response:
+    title = session.exec(
+        select(Title).where(Title.name == name, Title.developer_id == current.id)
+    ).first()
+    if not title:
+        raise HTTPException(
+            status_code=404, detail="Título no encontrado o no eres el propietario"
+        )
+    media = session.exec(select(Media).where(Media.title_id == title.id)).first()
+    if not media:
+        raise HTTPException(status_code=404, detail="Media no encontrada")
+
+    uploads = {
+        "capsule": body.capsule,
+        "header":  body.header,
+        "store_1": body.store_1,
+        "store_2": body.store_2,
+        "store_3": body.store_3,
+        "store_4": body.store_4,
+        "store_5": body.store_5,
+        "store_6": body.store_6,
+        "trailer": body.trailer,
+    }
+    if not any(uploads.values()):
+        raise HTTPException(status_code=400, detail="Se requiere al menos un campo")
 
     for field, upload in uploads.items():
         if upload:
@@ -225,12 +263,12 @@ def get_media(
 ) -> Response:
     if field not in (*_IMAGE_FIELDS, "trailer"):
         raise HTTPException(
-            status_code=400, detail=f"Campo inválido. Válidos: {list((*_IMAGE_FIELDS, 'trailer'))}"
+            status_code=400, detail=f"Campo inválido. Válidos: {[*_IMAGE_FIELDS, 'trailer']}"
         )
     title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
-    if not title or not title.media_id:
-        raise HTTPException(status_code=404, detail="Título o media no encontrado")
-    media = session.get(Media, title.media_id)
+    if not title:
+        raise HTTPException(status_code=404, detail="Título no encontrado")
+    media = session.exec(select(Media).where(Media.title_id == title.id)).first()
     if not media:
         raise HTTPException(status_code=404, detail="Media no encontrada")
     data: bytes | None = getattr(media, field, None)

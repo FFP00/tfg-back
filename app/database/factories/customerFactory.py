@@ -14,6 +14,7 @@ class CustomerFactory(SQLAlchemyFactory[Customer]):
 
     id          = Use(lambda: None)
     status      = Use(lambda: True)
+    country_id  = Use(lambda: None)
 
     name        = Use(fake.unique.user_name)
     email       = Use(fake.unique.email)

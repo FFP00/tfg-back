@@ -34,6 +34,10 @@ def register(
         select(Developer).where(Developer.support_email == payload.support_email)
     ).first():
         raise HTTPException(status_code=409, detail="Support email ya registrado")
+    if payload.website_url and session.exec(
+        select(Developer).where(Developer.website_url == payload.website_url)
+    ).first():
+        raise HTTPException(status_code=409, detail="Website URL ya registrada")
     developer = Developer(
         name=payload.name,
         email=payload.email,

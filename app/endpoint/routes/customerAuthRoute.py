@@ -10,6 +10,7 @@ from app.config.auth import (
     revoke_token,
 )
 from app.config.database import get_session
+from app.database.models.CountryModel import Country
 from app.database.models.CustomerModel import Customer
 from app.database.models.WalletModel import Wallet
 from app.endpoint.schemas.authSchema import LoginForm
@@ -28,6 +29,11 @@ router = APIRouter()
 def register(
     payload: CustomerCreate, session: Session = Depends(get_session)
 ) -> Response:
+    country = session.exec(
+        select(Country).where(Country.code == payload.country_code)
+    ).first()
+    if not country:
+        raise HTTPException(status_code=404, detail="Country no encontrado")
     if session.exec(
         select(Customer).where(
             or_(Customer.email == payload.email, Customer.name == payload.name)
@@ -38,6 +44,7 @@ def register(
         name=payload.name,
         email=payload.email,
         password=hasher.hash(payload.password),
+        country_id=country.id,
     )
     session.add(customer)
     session.commit()
@@ -56,16 +63,12 @@ def login(
     ).first()
     if not customer or not hasher.verify(form.password, customer.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-    wallet = session.exec(
-        select(Wallet).where(Wallet.customer_id == customer.id)
-    ).first()
+    wallet = session.get(Wallet, customer.id)
     token = create_access_token({"sub": str(customer.id), "role": "customer"}, session)
     return LoginCustomerResponse(
         access_token=token,
         customer=CustomerShow.model_validate(customer, from_attributes=True),
-        wallet=WalletShow.model_validate(wallet, from_attributes=True)
-        if wallet
-        else None,
+        wallet=WalletShow.model_validate(wallet, from_attributes=True) if wallet else None,
     )
 
 

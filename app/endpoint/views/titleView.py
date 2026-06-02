@@ -32,9 +32,6 @@ def _developers(session: Session):
     return session.exec(select(Developer)).all()
 
 
-def _media_ids(session: Session):
-    return session.exec(select(Media.id)).all()
-
 
 @router.get("/")
 def index(request: Request, search: str = "", page: int = 1, session: Session = Depends(get_session)):
@@ -95,9 +92,9 @@ def get_media(id: int, field: str, session: Session = Depends(get_session)) -> R
     if field not in (*_PHOTO_FIELDS, "trailer"):
         raise HTTPException(status_code=400, detail="Campo inválido")
     title = session.get(Title, id)
-    if not title or not title.media_id:
+    if not title:
         raise HTTPException(status_code=404, detail="Media no encontrada")
-    media = session.get(Media, title.media_id)
+    media = session.exec(select(Media).where(Media.title_id == id)).first()
     if not media:
         raise HTTPException(status_code=404, detail="Media no encontrada")
     data: bytes | None = getattr(media, field, None)
@@ -112,7 +109,7 @@ def show(id: int, request: Request, session: Session = Depends(get_session)):
     title = session.get(Title, id)
     if not title:
         return RedirectResponse("/views/title/?error=Title+no+encontrado", status_code=302)
-    media        = session.get(Media, title.media_id) if title.media_id else None
+    media        = session.exec(select(Media).where(Media.title_id == id)).first()
     photo_fields = [f for f in _PHOTO_FIELDS if media and getattr(media, f)]
     has_trailer  = bool(media and media.trailer)
     return templates.TemplateResponse(request, "title/show.html", _ctx(request,
@@ -126,7 +123,7 @@ def edit(id: int, request: Request, session: Session = Depends(get_session)):
     if not title:
         return RedirectResponse("/views/title/?error=Title+no+encontrado", status_code=302)
     return templates.TemplateResponse(request, "title/edit.html",
-        _ctx(request, title=title, developers=_developers(session), medias=_media_ids(session)),
+        _ctx(request, title=title, developers=_developers(session)),
     )
 
 
@@ -140,7 +137,6 @@ def update(
     release_date:    str     = Form(...),
     release_price:   str     = Form(...),
     developer_id:    str     = Form(""),
-    media_id:        str     = Form(""),
     session:         Session = Depends(get_session),
 ):
     title = session.get(Title, id)
@@ -153,14 +149,13 @@ def update(
         title.release_date    = date.fromisoformat(release_date)
         title.release_price   = Decimal(release_price)
         title.developer_id    = int(developer_id) if developer_id else None
-        title.media_id        = int(media_id)      if media_id    else None
         session.add(title)
         session.commit()
         return RedirectResponse(f"/views/title/{id}?success=Title+actualizado", status_code=302)
     except Exception as e:
         return templates.TemplateResponse(request, "title/edit.html",
             _ctx(request, title=title, error=str(e),
-                 developers=_developers(session), medias=_media_ids(session)),
+                 developers=_developers(session)),
         )
 
 

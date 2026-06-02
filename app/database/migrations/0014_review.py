@@ -19,15 +19,15 @@ depends_on      = None
 def upgrade():
     t = op.create_table("review",
 
-        Column("id", Integer, primary_key=True, nullable=True, default=None),
-        Column("content", String, nullable=False),
-        Column("votes", Integer, nullable=False),
-        Column("recommends", Boolean, nullable=False),
-        Column("status", Boolean, nullable=False, default=False),
+        Column("customer_title_id", Integer, ForeignKey("customer_title.id"), primary_key=True, nullable=False),
 
-        Column("customer_title_id", Integer, ForeignKey("customer_title.id"), nullable=True, default=None),
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("content",           String, nullable=False),
+        Column("votes",             Integer, nullable=False, server_default="0"),
+        Column("recommends",        Boolean, nullable=False),
+        Column("status",            Boolean, nullable=False, server_default="false"),
+
+        Column("created_at",        DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",        DateTime(timezone=True), server_default=func.now(), nullable=False),
 
     )
 

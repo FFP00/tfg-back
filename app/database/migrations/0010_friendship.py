@@ -20,14 +20,15 @@ def upgrade():
 
     t = op.create_table("friendship",
 
-        Column("id",     Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("status", ENUM_STATUS, nullable=False),
+        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
+
+        Column("status",        ENUM_STATUS, nullable=False, server_default="pending"),
 
         Column("customer_id_1", Integer, ForeignKey("customer.id"), nullable=False),
         Column("customer_id_2", Integer, ForeignKey("customer.id"), nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
 
         UniqueConstraint("customer_id_1", "customer_id_2", name="uq_friendship_pair"),
     )

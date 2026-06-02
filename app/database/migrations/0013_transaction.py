@@ -11,12 +11,12 @@ depends_on      = None
 def upgrade():
     t = op.create_table("transaction",
 
-        Column("id",          Integer, primary_key=True, autoincrement=True, nullable=False),
+        Column("id",                    Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("wallet_customer_id", Integer, ForeignKey("wallet.customer_id"), nullable=False),
+        Column("wallet_customer_id",    Integer, ForeignKey("wallet.customer_id"), nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("created_at",            DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",            DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
 
     op.execute(f"""

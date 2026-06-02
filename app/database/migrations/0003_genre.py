@@ -3,19 +3,20 @@ from sqlalchemy import Column, DateTime, Integer, String, func
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision        = "004"
-down_revision   = "003"
+revision        = "003"
+down_revision   = "002"
 branch_labels   = None
 depends_on      = None
 
 def upgrade():
     t = op.create_table("genre",
 
-        Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("name", String, nullable=False, unique=True),
+        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("name",          String, nullable=False, unique=True),
+
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
 
     op.execute(f"""

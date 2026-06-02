@@ -3,7 +3,11 @@ import secrets
 
 from sqlmodel import Session, select
 
-from app.database.factories.reviewFactory import NEGATIVE_REVIEWS, POSITIVE_REVIEWS, ReviewFactory
+from app.database.factories.reviewFactory import (
+    NEGATIVE_REVIEWS,
+    POSITIVE_REVIEWS,
+    ReviewFactory,
+)
 from app.database.models.CustomerTitleModel import CustomerTitle
 
 logging.basicConfig(level=logging.INFO)

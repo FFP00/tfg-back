@@ -11,11 +11,12 @@ depends_on      = None
 def upgrade():
     t = op.create_table("token",
 
-        Column("id",    Integer, primary_key=True, autoincrement=True, nullable=False),
-        Column("token", String,  nullable=False, unique=True),
+        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("token",         String,  nullable=False, unique=True),
+
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
 
     op.execute(f"""

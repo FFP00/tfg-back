@@ -13,7 +13,7 @@ class MediaFactory(SQLAlchemyFactory[Media]):
     __model__ = Media
     __set_relationships__ = False
 
-    id       = Use(lambda: None)
+    title_id = Use(lambda: None)
     capsule  = Use(lambda: _PLACEHOLDER)
     header   = Use(lambda: _PLACEHOLDER)
     store_1  = Use(lambda: _PLACEHOLDER)

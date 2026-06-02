@@ -15,10 +15,10 @@ class Developer(SQLModel, table=True):
     email:          str             = Field(unique=True, nullable=False)
     support_email:  str             = Field(unique=True, nullable=False)
     password:       str             = Field(nullable=False)
-    website_url:    str      | None = Field(default=None, nullable=True)
+    website_url:    str      | None = Field(default=None, nullable=True, unique=True)
     status:         bool            = Field(default=False, nullable=False)
 
-    image_id:       int      | None = Field(default=None, foreign_key="image.id", nullable=True)
+    image_id:       int      | None = Field(default=None, foreign_key="image.id", nullable=False)
     created_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
     updated_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
 

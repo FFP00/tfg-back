@@ -19,11 +19,12 @@ depends_on      = None
 def upgrade():
     t = op.create_table("wallet",
 
-        Column("customer_id", Integer, ForeignKey("customer.id"), primary_key=True, nullable=False),
-        Column("balance",     Numeric(precision=10, scale=2), nullable=True, default=None),
+        Column("customer_id",   Integer, ForeignKey("customer.id"), primary_key=True, nullable=False),
 
-        Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
-        Column("updated_at", DateTime(timezone=True), server_default=func.now(), nullable=False, default=None),
+        Column("balance",       Numeric(precision=10, scale=2), nullable=True),
+
+        Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+        Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
 
         CheckConstraint("balance >= 0", name="ck_balance_positive"),
     )

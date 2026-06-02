@@ -8,7 +8,6 @@ from app.database.seeders.customerSeeder import seed_customers
 from app.database.seeders.customerTitleSeeder import seed_customers_titles
 from app.database.seeders.friendshipSeeder import seed_friendships
 from app.database.seeders.gamesSeeder import seed_games
-from app.database.seeders.imageSeeder import seed_images
 from app.database.seeders.reviewSeeder import seed_reviews
 from app.database.seeders.titleTransactionSeeder import seed_titles_transactions
 from app.database.seeders.transactionSeeder import seed_transactions
@@ -18,12 +17,10 @@ logger = logging.getLogger(__name__)
 
 
 def run_seed() -> None:
-
     logger.info("Iniciando databaseSeeder.py")
     with Session(engine) as session:
         try:
             seed_currencies_countries(session)
-            seed_images(session, count=150)
             seed_games(session)
             seed_customers(session, count=150)
             seed_friendships(session, count=300)

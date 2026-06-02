@@ -7,7 +7,6 @@ from pathlib import Path
 from pwdlib import PasswordHash
 from sqlmodel import Session, select
 
-from app.database.factories.imageFactory import ImageFactory
 from app.database.models.DeveloperModel import Developer
 from app.database.models.GenreModel import Genre
 from app.database.models.GenreTitleModel import GenreTitle
@@ -96,14 +95,6 @@ def seed_games(session: Session) -> None:
             support_emails_vistos[support_dev] = existente.id
             continue
 
-        imagen = ImageFactory.build()
-        session.add(imagen)
-        session.flush()
-
-        if imagen.id is None:
-            logger.info(f"No encontramos id de imagen para developer {nombre_dev!r}")
-            return
-
         developer = Developer(
             name=nombre_dev,
             email=email_dev,
@@ -111,7 +102,6 @@ def seed_games(session: Session) -> None:
             website_url=datos_dev.get("website_url"),
             password=hasher.hash("password123"),
             status=True,
-            image_id=imagen.id,
         )
         session.add(developer)
         session.flush()
@@ -153,31 +143,12 @@ def seed_games(session: Session) -> None:
             logger.info(f"Faltan imágenes requeridas para {nombre_juego!r}")
             continue
 
-        media = Media(
-            capsule=capsule,
-            header=header,
-            store_1=store_1,
-            store_2=_read_file(store[1]) if len(store) > 1 else None,
-            store_3=_read_file(store[2]) if len(store) > 2 else None,
-            store_4=_read_file(store[3]) if len(store) > 3 else None,
-            store_5=_read_file(store[4]) if len(store) > 4 else None,
-            store_6=_read_file(store[5]) if len(store) > 5 else None,
-            trailer=_read_file(imagenes["trailer"]) if "trailer" in imagenes else None,
-        )
-        session.add(media)
-        session.flush()
-
-        if not media.id:
-            logger.info(f"No se pudo crear media para {nombre_juego!r}")
-            continue
-
         title = Title(
             name=nombre_juego,
             release_date=date.fromisoformat(game["release_date"]),
             release_price=Decimal(str(game["release_price"])),
             actual_discount=0,
             developer_id=developer_id,
-            media_id=media.id,
             status=True,
         )
         session.add(title)
@@ -186,6 +157,22 @@ def seed_games(session: Session) -> None:
         if not title.id:
             logger.info(f"No se pudo crear título {nombre_juego!r}")
             continue
+
+        media = session.exec(select(Media).where(Media.title_id == title.id)).first()
+        if not media:
+            logger.info(f"No se pudo crear media para {nombre_juego!r}")
+            continue
+
+        media.capsule = capsule
+        media.header  = header
+        media.store_1 = store_1
+        media.store_2 = _read_file(store[1]) if len(store) > 1 else None
+        media.store_3 = _read_file(store[2]) if len(store) > 2 else None
+        media.store_4 = _read_file(store[3]) if len(store) > 3 else None
+        media.store_5 = _read_file(store[4]) if len(store) > 4 else None
+        media.store_6 = _read_file(store[5]) if len(store) > 5 else None
+        media.trailer = _read_file(imagenes["trailer"]) if "trailer" in imagenes else None
+        session.add(media)
 
         for nombre_genero in game.get("genres", []):
             genre_id = mapa_generos.get(nombre_genero)

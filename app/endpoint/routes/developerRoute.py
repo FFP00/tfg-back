@@ -84,6 +84,18 @@ def update_me(
     ):
         raise HTTPException(status_code=409, detail="Support email ya en uso")
 
+    if (
+        "website_url" in data
+        and data["website_url"]
+        and session.exec(
+            select(Developer).where(
+                Developer.website_url == data["website_url"],
+                Developer.id != current.id,
+            )
+        ).first()
+    ):
+        raise HTTPException(status_code=409, detail="Website URL ya en uso")
+
     if "password" in data:
         current.password = hasher.hash(data.pop("password"))
 
@@ -105,16 +117,9 @@ async def upload_image(
             status_code=400, detail="Se requiere al menos un campo: profile o banner"
         )
 
-    if current.image_id:
-        image = session.get(Image, current.image_id)
-        if not image:
-            raise HTTPException(status_code=404, detail="Imagen no encontrada")
-    else:
-        image = Image()
-        session.add(image)
-        session.flush()
-        current.image_id = image.id
-        session.add(current)
+    image = session.get(Image, current.image_id)
+    if not image:
+        raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
     if body.profile:
         image.profile = await body.profile.read()
@@ -140,8 +145,8 @@ def get_image(
     developer = session.exec(
         select(Developer).where(Developer.name == name, Developer.status)
     ).first()
-    if not developer or not developer.image_id:
-        raise HTTPException(status_code=404, detail="Developer o imagen no encontrada")
+    if not developer:
+        raise HTTPException(status_code=404, detail="Developer no encontrado")
     image = session.get(Image, developer.image_id)
     if not image:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")

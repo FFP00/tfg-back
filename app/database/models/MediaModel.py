@@ -7,11 +7,11 @@ from sqlmodel import Field, SQLModel
 class Media(SQLModel, table=True):
     __tablename__ = "media"
 
-    id: int | None = Field(default=None, primary_key=True)
+    title_id: int = Field(primary_key=True, foreign_key="title.id")
 
-    capsule: bytes = Field(sa_column=Column(LargeBinary, nullable=False))
-    header: bytes  = Field(sa_column=Column(LargeBinary, nullable=False))
-    store_1: bytes = Field(sa_column=Column(LargeBinary, nullable=False))
+    capsule: bytes | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
+    header:  bytes | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
+    store_1: bytes | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
 
     store_2: bytes | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
     store_3: bytes | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
