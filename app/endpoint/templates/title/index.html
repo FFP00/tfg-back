@@ -8,7 +8,7 @@
     <div class="flex flex-col gap-4">
         {% for title in titles %}
         <div class="bg-white shadow-sm rounded-lg border border-gray-100 overflow-hidden flex">
-            {% if title.media_id %}
+            {% if title.id %}
             <img src="/views/title/{{ title.id }}/media/capsule"
                  class="w-28 object-contain flex-shrink-0 bg-gray-50" alt="capsule"
                  onerror="this.style.display='none'">
@@ -20,7 +20,7 @@
                     {{ field("Precio", "$" ~ title.release_price) }}
                     {{ field("Descuento", title.actual_discount ~ "%") }}
                     {{ field("Lanzamiento", title.release_date) }}
-                    {% if title.developer %}{{ field("Developer", title.developer.name, "/views/developer/" ~ title.developer_id) }}{% endif %}
+                    {% if title.developer %}{{ field("Developer", title.developer.user.name, "/views/developer/" ~ title.developer_user_id) }}{% endif %}
                 </div>
                 {{ actions("/views/title", title.id) }}
             </div>

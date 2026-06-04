@@ -9,20 +9,10 @@
             {{ input("Nombre", "name", form.name) }}
             {{ input("Email", "email", form.email, type="email") }}
             {{ input("Contraseña", "password", type="password") }}
-            {% call select_field("Estado", "status") %}
-                <option value="true"  {{ 'selected' if not form or form.status == 'true' }}>Activo</option>
-                <option value="false" {{ 'selected' if form and form.status == 'false' }}>Inactivo</option>
-            {% endcall %}
             {% call select_field("Country", "country_id", "— Sin country —") %}
                 {% set cur = (form.country_id if form else "")|string %}
                 {% for c in countries %}
                 <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur }}>{{ c.name }} ({{ c.code }})</option>
-                {% endfor %}
-            {% endcall %}
-            {% call select_field("Image", "image_id", "— Sin imagen —") %}
-                {% set cur = (form.image_id if form else "")|string %}
-                {% for img in images %}
-                <option value="{{ img.id }}" {{ 'selected' if img.id|string == cur }}>Image #{{ img.id }}</option>
                 {% endfor %}
             {% endcall %}
             {{ form_buttons("Crear Customer", "/views/customer/") }}

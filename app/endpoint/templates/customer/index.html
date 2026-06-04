@@ -8,18 +8,21 @@
     <div class="flex flex-col gap-4">
         {% for customer in customers %}
         <div class="bg-white shadow-sm rounded-lg border border-gray-100 overflow-hidden flex">
-            {% if customer.image and customer.image.profile %}
-            <img src="/api/customer/{{ customer.name }}/image/profile"
-                 class="w-28 object-cover flex-shrink-0" alt="profile">
+            {% if customer.user %}
+            <img src="/api/customer/{{ customer.user.name }}/image/profile"
+                 class="w-28 object-cover flex-shrink-0" alt="profile"
+                 onerror="this.style.display='none'">
             {% endif %}
             <div class="flex-1 p-8">
-                <h1 class="text-xl font-semibold">{{ customer.name }}</h1>
+                <h1 class="text-xl font-semibold">{{ customer.user.name if customer.user else customer.user_id }}</h1>
                 <div class="space-y-1 text-gray-700 mt-2">
-                    {{ field("Email", customer.email) }}
+                    {{ field("Email", customer.user.email if customer.user else "") }}
                     <p><strong>Estado:</strong> {{ badge(customer.status) }}</p>
-                    {% if customer.country %}{{ field("País", customer.country.en_name, "/views/country/" ~ customer.country_id) }}{% endif %}
+                    {% if customer.user and customer.user.country %}
+                        {{ field("País", customer.user.country.english_name, "/views/country/" ~ customer.user.country_id) }}
+                    {% endif %}
                 </div>
-                {{ actions("/views/customer", customer.id) }}
+                {{ actions("/views/customer", customer.user_id) }}
             </div>
         </div>
         {% else %}{{ empty_state("No se encontraron customers.") }}{% endfor %}

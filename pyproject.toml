@@ -19,6 +19,9 @@ dependencies = [
     "sentry-sdk[fastapi]>=2.60.0",
     "pyjwt>=2.12.1",
     "pwdlib[argon2]>=0.3.0",
+    "ty>=0.0.42",
+    "requests>=2.34.2",
+    "stripe>=11.0.0",
 ]
 
 # Dependencias específicas para desarrollo y testing

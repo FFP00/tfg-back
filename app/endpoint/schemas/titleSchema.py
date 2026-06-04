@@ -20,7 +20,7 @@ class TitleCard(SQLModel):
     release_price:   Decimal
     actual_discount: int
     genres:          list[GenreShow] = []
-    developer_name:  str | None = None
+    developer_name:  str | None      = None
 
 
 class TitleShow(SQLModel):
@@ -74,5 +74,3 @@ class TitleMediaUpload(SQLModel):
     store_5: UploadFile | None = None
     store_6: UploadFile | None = None
     trailer: UploadFile | None = None
-
-

@@ -1,195 +1,169 @@
-# API Endpoints — Referencia completa
+# API Endpoints — Referencia completa para generación de frontend
 
 ## ¿Qué es este proyecto?
 
-**GameStore** es una plataforma de distribución digital de videojuegos de código abierto, inspirada en Steam y GOG. Funciona como un marketplace donde:
+**GameStore (Burnt)** es una plataforma de distribución digital de videojuegos inspirada en Steam/GOG.
 
-- **Customers** (usuarios/jugadores) crean cuentas, recargan su wallet en USD, compran juegos, escriben reviews y se agregan como amigos.
-- **Developers** (estudios/desarrolladores) publican juegos (títulos), suben sus imágenes y trailers, y gestionan precios y descuentos.
-- Un **administrador** aprueba tanto cuentas de developers como títulos antes de que sean visibles públicamente.
+- **Customers** crean cuentas, recargan su wallet, compran juegos, escriben reviews y agregan amigos.
+- **Developers** publican títulos, suben imágenes/trailers y gestionan precios.
+- Un **admin** aprueba developers, títulos y reviews desde un panel HTML interno (`/views/`).
 
-### Modelo de dominio
+---
 
-```
-Developer ──publica──► Title (juego)
-                         │
-                         ├── Media (capsule, header, store_1–6, trailer)
-                         ├── Genre[] (etiquetas: RPG, Aventura, etc.)
-                         └── Review[] (escritas por customers que lo compraron)
+## Recursos creados automáticamente (triggers PostgreSQL)
 
-Customer ──tiene──► Wallet (saldo en USD)
-Customer ──compra──► Transaction ──contiene──► TitleTransaction (precio pagado, descuento aplicado)
-Customer ──posee──► CustomerTitle (biblioteca: lista de juegos comprados)
-Customer ──escribe──► Review (requiere tener el juego; moderada por admin)
-Customer ──tiene──► Friendship (pending → accepted | rejected | blocked)
-```
+Al insertar un `user` → se crea automáticamente `image` (profile y banner vacíos).
+Al insertar un `customer` → se crea automáticamente `wallet` (balance = 0.00).
+Al insertar un `title` → se crea automáticamente `media` (todos los campos vacíos).
 
-### Flujo de vida de un título
+---
 
-1. Developer se registra → `status=false` (pendiente de aprobación admin)
-2. Admin aprueba → `status=true` → developer puede hacer login
-3. Developer crea título → `status=false` (pendiente de aprobación admin)
-4. Developer sube media del título (capsule, header, store_1 mínimo)
-5. Admin aprueba → `status=true` → título visible en el catálogo público
-6. Customer compra el título mediante una transacción atómica
-7. Customer puede escribir una review → `status=false` hasta que admin la aprueba
+## Sistema de autenticación
 
-### Flujo de precios
-
-```
-precio_final = release_price × (1 - actual_discount / 100)
-```
-
-`actual_discount` es un entero 0–100. Ejemplo: precio base `$29.99`, descuento `20` → precio final `$23.99`.
-
-### Sistema de autenticación
-
-- Hay dos tipos de token **completamente separados**: `customer` y `developer`. No son intercambiables.
-- Todos los tokens son JWT Bearer. Se envían como `Authorization: Bearer <token>`.
-- El logout revoca el token en base de datos (no basta con eliminarlo del cliente).
+- Dos tokens **completamente separados**: `customer` y `developer`. No son intercambiables.
+- Enviar siempre como `Authorization: Bearer <token>`.
+- Usar token equivocado → **403 Forbidden**.
+- Usar token revocado (después de logout) → **401 Unauthorized**.
+- El logout revoca el token en DB — no basta con borrarlo del cliente.
 
 ---
 
 ## Reglas globales
 
-- Todos los precios y balances están en **USD** (Decimal serializado como string para evitar pérdida de precisión flotante).
-- **No se expone `id`** en ninguna respuesta pública. Identificadores únicos: `name`, `email`, `code`.
-- Rutas protegidas requieren `Authorization: Bearer <token>`.
-- Imágenes se sirven como `Content-Type: image/jpeg` — usar directamente como `src` de `<img>`.
-- El `trailer` se sirve como `Content-Type: video/mp4` con soporte de `Range` para HTML5 `<video>`.
-- Las reviews son moderadas: solo las aprobadas por el admin (`status=true`) aparecen en respuestas públicas.
-- Los campos marcados `| null` pueden llegar como `null` en el JSON — manejar con optional chaining.
+- Precios y balances en **USD** como `string (Decimal)` — ej. `"29.99"`. Nunca como número flotante.
+- Ninguna respuesta pública expone `id`. Los identificadores son `name`, `email`, `code`.
+- Imágenes → `Content-Type: image/jpeg`, usar como `<img src="...">`.
+- Trailers → `Content-Type: video/mp4` con soporte `Range`, usar como `<video><source>`.
+- Solo las reviews con `status=true` (aprobadas por admin) aparecen en respuestas públicas.
+- Títulos con `status=false` (pendientes) no aparecen en el catálogo público.
+- `GET /api/title/{name}` y similares devuelven **404** tanto si el título no existe como si está inactivo.
 
 ---
 
-## Tipos reutilizables (schemas)
-
-Estos objetos aparecen anidados en múltiples respuestas.
+## Schemas reutilizables
 
 ### `CurrencyShow`
 ```json
-{
-  "name":   "string",
-  "code":   "string  — código ISO 4217, ej. 'EUR'",
-  "symbol": "string  — símbolo visual, ej. '€'"
-}
+{ "name": "Euro", "code": "EUR", "symbol": "€" }
 ```
 
 ### `CountryShow`
 ```json
 {
-  "name":     "string  — nombre local del país",
-  "en_name":  "string  — nombre en inglés",
-  "code":     "string  — código ISO 3166-1 alpha-2, ej. 'ES'",
-  "currency": "CurrencyShow | null"
+  "native_name":  "España",
+  "english_name": "Spain",
+  "code":         "ES",
+  "currency":     "CurrencyShow | null"
 }
 ```
 
 ### `WalletShow`
 ```json
-{
-  "balance": "string (Decimal) | null  — saldo en USD, ej. '25.50'"
-}
+{ "balance": "42.50" }
 ```
+> Siempre existe para customers registrados. Balance inicial: `"0.00"`.
 
-### `CustomerShow`  _(privado — solo visible para el propio customer autenticado)_
+### `CustomerShow` _(privado — solo para el propio customer autenticado)_
 ```json
 {
-  "name":       "string",
-  "email":      "string",
-  "status":     "boolean  — false = cuenta desactivada",
+  "name":       "johndoe",
+  "email":      "john@example.com",
+  "status":     true,
   "country":    "CountryShow | null",
-  "created_at": "string ISO8601 | null  — ej. '2025-01-15T10:30:00Z'",
-  "updated_at": "string ISO8601 | null"
+  "created_at": "2025-01-15T10:30:00+00:00 | null",
+  "updated_at": "2025-01-15T10:30:00+00:00 | null"
 }
 ```
 
-### `CustomerPublic`  _(perfil público — sin email)_
+### `CustomerPublic` _(perfil público — sin email)_
 ```json
 {
-  "name":       "string",
+  "name":       "johndoe",
   "country":    "CountryShow | null",
-  "created_at": "string ISO8601 | null",
-  "updated_at": "string ISO8601 | null"
+  "created_at": "2025-01-15T10:30:00+00:00 | null",
+  "updated_at": "2025-01-15T10:30:00+00:00 | null"
 }
 ```
 
-### `DeveloperShow`  _(privado — solo visible para el propio developer autenticado)_
+### `DeveloperShow` _(privado — solo para el propio developer autenticado)_
 ```json
 {
-  "name":          "string",
-  "email":         "string  — email privado de acceso",
-  "support_email": "string  — email público de soporte",
-  "website_url":   "string | null",
-  "status":        "boolean  — false = pendiente de aprobación admin",
-  "created_at":    "string ISO8601 | null",
-  "updated_at":    "string ISO8601 | null"
+  "name":          "MiEstudio",
+  "email":         "acceso@miestudio.com",
+  "support_email": "soporte@miestudio.com",
+  "website_url":   "https://miestudio.com | null",
+  "status":        true,
+  "country":       "CountryShow | null",
+  "created_at":    "... | null",
+  "updated_at":    "... | null"
 }
 ```
 
-### `DeveloperPublic`  _(perfil público — sin email privado)_
+### `DeveloperPublic` _(perfil público — sin email privado)_
 ```json
 {
-  "name":          "string",
-  "support_email": "string",
-  "website_url":   "string | null",
-  "created_at":    "string ISO8601 | null",
-  "updated_at":    "string ISO8601 | null"
+  "name":          "MiEstudio",
+  "support_email": "soporte@miestudio.com",
+  "website_url":   "https://miestudio.com | null",
+  "country":       "CountryShow | null",
+  "created_at":    "... | null",
+  "updated_at":    "... | null"
 }
 ```
 
 ### `GenreShow`
 ```json
-{
-  "name": "string"
-}
+{ "name": "RPG" }
 ```
 
-### `TitleCard`  _(resumen para listados y home)_
+### `TitleCard` _(resumen para listados)_
 ```json
 {
-  "name":            "string",
-  "release_price":   "string (Decimal)  — precio base en USD, ej. '29.99'",
-  "actual_discount": "integer (0–100)  — porcentaje de descuento actual",
-  "genres":          "[GenreShow]  — puede ser []",
-  "developer_name":  "string | null"
+  "name":            "A Short Hike",
+  "release_price":   "6.39",
+  "actual_discount": 20,
+  "genres":          [{ "name": "Indie" }],
+  "developer_name":  "adamgryu | null"
 }
 ```
-> Precio final = `release_price × (1 - actual_discount / 100)`
+> **`release_price` ya incluye el descuento aplicado** (`release_price × (1 - actual_discount/100)`).
 
-### `TitleShow`  _(detalle completo)_
+### `TitleShow` _(detalle completo)_
 ```json
 {
-  "name":            "string",
-  "status":          "boolean  — false = pendiente de aprobación admin",
-  "actual_discount": "integer (0–100)",
-  "release_date":    "string YYYY-MM-DD",
-  "release_price":   "string (Decimal)",
-  "genres":          "[GenreShow]  — puede ser []",
+  "name":            "A Short Hike",
+  "status":          true,
+  "actual_discount": 0,
+  "release_date":    "2019-07-30",
+  "release_price":   "7.99",
+  "genres":          [{ "name": "Adventure" }, { "name": "Indie" }],
   "developer":       "DeveloperPublic | null",
-  "created_at":      "string ISO8601 | null",
-  "updated_at":      "string ISO8601 | null"
+  "created_at":      "... | null",
+  "updated_at":      "... | null"
 }
 ```
+> En `GET /api/title/{name}` (público): `release_price` es el precio **final con descuento**.
+> En `GET /api/title/me` (developer): `release_price` es el precio **base sin descuento**.
 
 ### `ReviewShow`
 ```json
 {
-  "content":       "string  — texto de la review",
-  "recommends":    "boolean  — true = recomienda el juego",
-  "votes":         "integer  — número de votos útiles recibidos",
-  "customer_name": "string",
-  "created_at":    "string ISO8601",
-  "title_name":    "string | null  — solo presente en /api/customer/{name}/reviews; null en /api/title/{name}/reviews"
+  "content":       "Juego increíble, muy relajante",
+  "recommends":    true,
+  "votes":         5,
+  "customer_name": "johndoe",
+  "title_name":    "A Short Hike",
+  "created_at":    "2025-01-15T10:30:00+00:00"
 }
 ```
+> `title_name` siempre está presente en todas las respuestas de reviews.
 
 ### `FriendshipShow`
 ```json
 {
-  "status":     "string  — 'pending' | 'accepted' | 'blocked' | 'rejected'",
-  "from_name":  "string | null  — nombre del remitente original",
-  "created_at": "string ISO8601 | null  — null cuando status='rejected' (registro eliminado)"
+  "status":     "pending | accepted",
+  "from_name":  "johndoe | null",
+  "created_at": "... | null"
 }
 ```
 
@@ -198,778 +172,458 @@ Estos objetos aparecen anidados en múltiples respuestas.
 ## Auth — `/auth`
 
 ### `POST /auth/customer/register`
-Crear cuenta de cliente. **Público.**
+**Público.** Crear cuenta de customer.
 
 **Body (`application/json`):**
 ```json
 {
-  "name":         "string  — nombre único de usuario",
-  "email":        "string  — formato válido de email",
-  "password":     "string  — mín. 8 chars, 1 mayúscula, 1 minúscula, 1 número, 1 carácter especial",
-  "country_code": "string  — código ISO 3166-1 alpha-2, ej. 'ES' (obtener de GET /api/country/)"
+  "name":         "johndoe",
+  "email":        "john@example.com",
+  "password":     "Pass123!",
+  "country_code": "ES"
 }
 ```
+> Password: mín. 8 chars, 1 mayúscula, 1 minúscula, 1 número, 1 especial.
+> `country_code`: código ISO alpha-2, obtener de `GET /api/country/`.
 
-**Respuesta exitosa:** `201` — cuerpo vacío.
+**Respuesta:** `201` vacío.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Country no encontrado"` (si `country_code` no existe) |
-| 409 | `"Email o nombre ya registrado"` |
-| 422 | Error de validación de Pydantic (email inválido, contraseña débil, etc.) |
+**Errores:** `404` país no existe · `409` nombre o email duplicado · `422` validación.
 
 ---
 
 ### `POST /auth/customer/login`
-Login con `name` o `email` + contraseña. Solo customers con `status=true`. **Público.**
+**Público.** `application/x-www-form-urlencoded`
 
-**Body (`application/x-www-form-urlencoded`):**
 ```
 username=johndoe&password=Pass123!
 ```
-> `username` acepta tanto el `name` como el `email` del customer.
+> `username` acepta tanto `name` como `email`.
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:**
 ```json
 {
-  "access_token": "string  — JWT Bearer token",
+  "access_token": "eyJ...",
   "token_type":   "bearer",
   "customer":     "CustomerShow",
-  "wallet":       "WalletShow | null  — null si el wallet no existe aún"
+  "wallet":       "WalletShow"
 }
 ```
+> Guardar `access_token` en localStorage. El `wallet.balance` empieza en `"0.00"`.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | `"Credenciales incorrectas"` (usuario no existe, contraseña errónea, o cuenta inactiva) |
-| 422 | Campos faltantes en el form |
+**Errores:** `401` credenciales incorrectas / cuenta inactiva.
 
 ---
 
 ### `POST /auth/customer/logout`
-Revoca el token del customer en base de datos. **Requiere token de customer.**
+**Token de customer.** Revoca el token en DB.
 
-**Respuesta exitosa:** `204` — cuerpo vacío.
+**Respuesta:** `204` vacío.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido o expirado |
+**Flujo frontend:**
+```js
+await fetch('/auth/customer/logout', { method: 'POST', headers: { Authorization: `Bearer ${token}` } })
+localStorage.removeItem('token')
+```
 
 ---
 
 ### `POST /auth/developer/register`
-Crear cuenta de developer. La cuenta empieza con `status=false` hasta aprobación del admin. **Público.**
+**Público.**
 
 **Body (`application/json`):**
 ```json
 {
-  "name":          "string  — nombre único del estudio/developer",
-  "email":         "string  — email privado de acceso (no se expone públicamente)",
-  "support_email": "string  — email público de soporte para usuarios",
-  "password":      "string  — mín. 8 chars, 1 mayúscula, 1 minúscula, 1 número, 1 carácter especial",
-  "website_url":   "string | null  — opcional; si se envía debe ser único"
+  "name":          "MiEstudio",
+  "email":         "acceso@miestudio.com",
+  "support_email": "soporte@miestudio.com",
+  "password":      "Pass123!",
+  "country_code":  "ES",
+  "website_url":   "https://miestudio.com"
 }
 ```
+> `website_url` es opcional. La cuenta queda `status=false` hasta aprobación del admin.
+> Se envía email al admin notificando el nuevo developer.
 
-**Respuesta exitosa:** `201` — cuerpo vacío.
+**Respuesta:** `201` vacío.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 409 | `"Email ya registrado"` |
-| 409 | `"Nombre ya registrado"` |
-| 409 | `"Support email ya registrado"` |
-| 409 | `"Website URL ya registrada"` (si se envía `website_url` y ya existe) |
-| 422 | Error de validación (email inválido, contraseña débil) |
+**Errores:** `404` país · `409` nombre/email/support_email/website_url duplicados · `422` validación.
 
 ---
 
 ### `POST /auth/developer/login`
-Login por email. Solo developers con `status=true`. **Público.**
+**Público.** `application/x-www-form-urlencoded`
 
-**Body (`application/x-www-form-urlencoded`):**
 ```
-username=contacto@miestudio.com&password=Pass123!
+username=acceso@miestudio.com&password=Pass123!
 ```
-> A diferencia del customer, `username` **solo acepta email** (no `name`).
+> **Solo acepta email**, no nombre. Solo developers con `status=true` pueden entrar.
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:**
 ```json
 {
-  "access_token": "string  — JWT Bearer token",
+  "access_token": "eyJ...",
   "token_type":   "bearer",
   "developer":    "DeveloperShow"
 }
 ```
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | `"Credenciales incorrectas"` (email no existe, contraseña errónea, o cuenta inactiva/pendiente) |
-| 422 | Campos faltantes en el form |
+**Errores:** `401` credenciales incorrectas / cuenta pendiente de aprobación.
 
 ---
 
 ### `POST /auth/developer/logout`
-Revoca el token del developer en base de datos. **Requiere token de developer.**
-
-**Respuesta exitosa:** `204` — cuerpo vacío.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido o expirado |
+**Token de developer.** Igual que customer logout. `204` vacío.
 
 ---
 
-## Clientes — `/api/customer`
+## Customers — `/api/customer`
 
 ### `GET /api/customer/me`
-Perfil completo del customer autenticado, incluyendo wallet. **Requiere token de customer.**
+**Token de customer.** Perfil completo + wallet.
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:**
 ```json
 {
-  "access_token": "string  — el mismo token recibido en el header (útil para renovar referencias en cliente)",
+  "access_token": "eyJ...",
   "token_type":   "bearer",
   "customer":     "CustomerShow",
   "wallet":       "WalletShow | null"
 }
 ```
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido o expirado |
-
 ---
 
 ### `GET /api/customer/`
-Listado de todos los customers activos. Búsqueda opcional por `name` o `email`. **Público.**
+**Público.** Lista customers activos.
 
-**Query params:**
-| Param | Tipo | Descripción |
-|-------|------|-------------|
-| `search` | `string` (opcional) | Filtra por coincidencia parcial en `name` o `email` (case-insensitive) |
+**Query:** `?search=texto` → filtra por `name` o `email` (case-insensitive, parcial).
 
-**Respuesta exitosa:** `200`
-```json
-[
-  "CustomerPublic",
-  "..."
-]
-```
-> El email **no** se incluye en `CustomerPublic` — es un listado completamente público.
+**Respuesta `200`:** `[CustomerPublic, ...]`
 
 ---
 
 ### `PATCH /api/customer/me`
-Actualizar perfil propio. Enviar solo los campos a modificar. **Requiere token de customer.**
-
-**Body (`application/json`):** _(todos los campos son opcionales)_
-```json
-{
-  "name":         "string | null  — nuevo nombre único",
-  "email":        "string | null  — nuevo email",
-  "password":     "string | null  — nueva contraseña (mín. 8 chars, 1 mayús, 1 minús, 1 número, 1 especial)",
-  "country_code": "string | null  — código ISO del país, ej. 'ES'"
-}
-```
-
-**Respuesta exitosa:** `200` → `CustomerShow`
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 404 | `"Country no encontrado"` (si `country_code` no existe) |
-| 409 | `"Nombre ya en uso"` |
-| 409 | `"Email ya en uso"` |
-| 422 | Contraseña no cumple requisitos |
-
----
-
-### `POST /api/customer/me/deposit`
-Añadir saldo al wallet del customer. **Requiere token de customer.**
+**Token de customer.** Actualización parcial — enviar solo campos a cambiar.
 
 **Body (`application/json`):**
 ```json
 {
-  "amount": "string (Decimal)  — importe positivo a añadir en USD, ej. '10.00'"
+  "name":         "nuevo_nombre | null",
+  "email":        "nuevo@email.com | null",
+  "password":     "NuevoPass123! | null",
+  "country_code": "US | null"
 }
 ```
 
-**Respuesta exitosa:** `200` → `WalletShow`
+**Respuesta `200`:** `CustomerShow`
+
+**Errores:** `404` país · `409` nombre/email duplicado · `422` contraseña débil.
+
+---
+
+### `POST /api/customer/me/deposit`
+**Token de customer.** Añadir saldo al wallet.
+
+**Body (`application/json`):**
 ```json
-{
-  "balance": "string (Decimal)  — nuevo saldo total tras el depósito"
-}
+{ "amount": "20.00" }
 ```
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"El importe debe ser positivo"` |
-| 401 | Token inválido |
-| 404 | `"Wallet no encontrada"` |
+**Respuesta `200`:** `WalletShow`
+
+**Errores:** `400` importe no positivo · `404` wallet no encontrada.
 
 ---
 
 ### `PATCH /api/customer/me/image`
-Subir o reemplazar imagen de perfil y/o banner. **Requiere token de customer.**
+**Token de customer.** `multipart/form-data`. Al menos uno de los dos campos.
 
-**Body (`multipart/form-data`):** _(al menos uno de los dos es obligatorio)_
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `profile` | `file` (opcional) | Imagen de perfil (se almacena como JPEG) |
-| `banner` | `file` (opcional) | Imagen de banner (se almacena como JPEG) |
+| Campo | Tipo | |
+|-------|------|-|
+| `profile` | `file` | opcional |
+| `banner` | `file` | opcional |
 
-**Respuesta exitosa:** `204` — cuerpo vacío.
+**Respuesta:** `204` vacío.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Se requiere al menos un campo: profile o banner"` |
-| 401 | Token inválido |
-| 404 | `"Imagen no encontrada"` (inconsistencia interna) |
+**Errores:** `400` sin campos · `404` imagen no encontrada.
 
 ---
 
 ### `GET /api/customer/{name}/image/{field}`
-Obtener imagen de un customer activo. **Público.**
+**Público.** Bytes de imagen. `field`: `profile` o `banner`.
 
-**Path params:**
-| Param | Valores válidos |
-|-------|----------------|
-| `name` | Nombre del customer |
-| `field` | `"profile"` o `"banner"` |
+**Respuesta:** `200` `image/jpeg` — usar como `<img src="/api/customer/{name}/image/profile">`.
 
-**Respuesta exitosa:** `200` — bytes de imagen con `Content-Type: image/jpeg`.
-> Usar directamente como `src` de `<img>`.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Campo inválido. Válidos: ['profile', 'banner']"` |
-| 404 | `"Customer no encontrado"` (customer no existe o está inactivo) |
-| 404 | `"Imagen no encontrada"` (inconsistencia interna) |
-| 404 | `"Campo 'profile' vacío"` o `"Campo 'banner' vacío"` (imagen no subida para ese campo) |
+**Errores:** `400` campo inválido · `404` customer no existe/inactivo · `404` campo vacío.
 
 ---
 
 ### `GET /api/customer/{name}`
-Perfil público de un customer activo. **Público.**
-
-**Respuesta exitosa:** `200` → `CustomerPublic`
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Customer no encontrado"` |
+**Público.** Perfil público. **Respuesta `200`:** `CustomerPublic`.
 
 ---
 
 ### `GET /api/customer/{name}/library`
-Biblioteca de juegos del customer (todos los títulos que posee). **Público.**
+**Público.** Juegos del customer.
 
-**Respuesta exitosa:** `200`
-```json
-[
-  { "name": "string  — nombre del título" },
-  "..."
-]
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Customer no encontrado"` |
+**Respuesta `200`:** `[{ "name": "A Short Hike" }, ...]`
 
 ---
 
 ### `GET /api/customer/{name}/friends`
-Lista de amigos aceptados del customer. Solo muestra amigos activos. **Público.**
+**Público.** Amigos aceptados.
 
-**Respuesta exitosa:** `200`
-```json
-[
-  { "name": "string  — nombre del customer amigo" },
-  "..."
-]
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Customer no encontrado"` |
+**Respuesta `200`:** `[{ "name": "amigo1" }, ...]`
 
 ---
 
 ### `GET /api/customer/{name}/reviews`
-Reviews aprobadas escritas por el customer. Incluye el nombre del juego reseñado. **Público.**
+**Público.** Reviews aprobadas del customer (con `title_name`).
 
-**Respuesta exitosa:** `200`
-```json
-[
-  {
-    "content":       "string",
-    "recommends":    "boolean",
-    "votes":         "integer",
-    "customer_name": "string",
-    "created_at":    "string ISO8601",
-    "title_name":    "string | null  — nombre del juego reseñado"
-  },
-  "..."
-]
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Customer no encontrado"` |
+**Respuesta `200`:** `[ReviewShow, ...]` — `title_name` siempre presente.
 
 ---
 
 ## Developers — `/api/developer`
 
 ### `GET /api/developer/me`
-Perfil completo del developer autenticado. **Requiere token de developer.**
+**Token de developer.**
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:**
 ```json
 {
-  "access_token": "string",
+  "access_token": "eyJ...",
   "token_type":   "bearer",
   "developer":    "DeveloperShow"
 }
 ```
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-
 ---
 
 ### `GET /api/developer/`
-Listado de developers activos. Búsqueda por nombre. El email privado nunca se expone. **Público.**
+**Público.** Lista developers activos.
 
-**Query params:**
-| Param | Tipo | Descripción |
-|-------|------|-------------|
-| `search` | `string` (opcional) | Filtra por coincidencia parcial en `name` (case-insensitive) |
+**Query:** `?search=texto` → filtra por `name` (case-insensitive, parcial).
 
-**Respuesta exitosa:** `200`
-```json
-[
-  "DeveloperPublic",
-  "..."
-]
-```
+**Respuesta `200`:** `[DeveloperPublic, ...]`
 
 ---
 
 ### `PATCH /api/developer/me`
-Actualizar perfil del developer. Enviar solo los campos a modificar. **Requiere token de developer.**
+**Token de developer.** Actualización parcial.
 
-**Body (`application/json`):** _(todos opcionales)_
+**Body (`application/json`):**
 ```json
 {
-  "name":          "string | null",
-  "email":         "string | null  — email privado de acceso",
-  "support_email": "string | null  — email público de soporte",
-  "password":      "string | null",
-  "website_url":   "string | null"
+  "name":          "NuevoNombre | null",
+  "email":         "nuevo@acceso.com | null",
+  "support_email": "nuevo@soporte.com | null",
+  "password":      "NuevoPass123! | null",
+  "website_url":   "https://nueva-web.com | null",
+  "country_code":  "US | null"
 }
 ```
 
-**Respuesta exitosa:** `200` → `DeveloperShow`
+**Respuesta `200`:** `DeveloperShow`
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 409 | `"Nombre ya en uso"` |
-| 409 | `"Email ya en uso"` |
-| 409 | `"Support email ya en uso"` |
-| 409 | `"Website URL ya en uso"` (si se envía `website_url` no nulo y ya existe) |
-| 422 | Contraseña no cumple requisitos |
+**Errores:** `404` país · `409` nombre/email/support_email/website_url duplicados.
 
 ---
 
 ### `PATCH /api/developer/me/image`
-Subir o reemplazar imagen de perfil y/o banner. **Requiere token de developer.**
-
-**Body (`multipart/form-data`):** _(al menos uno requerido)_
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `profile` | `file` (opcional) | Imagen de perfil |
-| `banner` | `file` (opcional) | Imagen de banner |
-
-**Respuesta exitosa:** `204` — cuerpo vacío.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Se requiere al menos un campo: profile o banner"` |
-| 401 | Token inválido |
-| 404 | `"Imagen no encontrada"` |
+**Token de developer.** `multipart/form-data`. Igual que customer image. `204` vacío.
 
 ---
 
 ### `GET /api/developer/{name}/image/{field}`
-Obtener imagen de un developer activo. **Público.**
-
-**Path params:**
-| Param | Valores válidos |
-|-------|----------------|
-| `name` | Nombre del developer |
-| `field` | `"profile"` o `"banner"` |
-
-**Respuesta exitosa:** `200` — bytes con `Content-Type: image/jpeg`.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Campo inválido. Válidos: ['profile', 'banner']"` |
-| 404 | `"Developer no encontrado"` |
-| 404 | `"Imagen no encontrada"` |
-| 404 | `"Campo 'X' vacío"` |
+**Público.** Igual que customer image. `field`: `profile` o `banner`.
 
 ---
 
 ### `GET /api/developer/{name}`
-Perfil público de un developer activo. Sin email privado. **Público.**
-
-**Respuesta exitosa:** `200` → `DeveloperPublic`
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Developer no encontrado"` |
+**Público.** **Respuesta `200`:** `DeveloperPublic`.
 
 ---
 
 ## Títulos — `/api/title`
 
 ### `GET /api/title/random`
-Un título aleatorio activo del catálogo. Útil para secciones tipo "juego destacado". **Público.**
+**Público.** Un título activo aleatorio.
 
-**Respuesta exitosa:** `200` → `TitleCard`
+**Respuesta `200`:** `TitleCard`
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"No hay títulos disponibles"` |
+**Errores:** `404` no hay títulos activos.
 
 ---
 
 ### `GET /api/title/me`
-Todos los títulos del developer autenticado, **incluyendo los pendientes de aprobación** (`status=false`). **Requiere token de developer.**
+**Token de developer.** Todos los títulos del developer, **incluyendo `status=false`** (pendientes).
 
-**Respuesta exitosa:** `200`
-```json
-[
-  "TitleShow",
-  "..."
-]
-```
-> A diferencia del catálogo público, aquí aparecen los títulos con `status=false`. Útil para el panel del developer.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
+**Respuesta `200`:** `[TitleShow, ...]`
+> `release_price` es el **precio base sin descuento** (vista interna del developer).
 
 ---
 
 ### `GET /api/title/`
-Catálogo de títulos activos (`status=true`). Filtros opcionales combinables. **Público.**
+**Público.** Catálogo activo. Filtros combinables.
 
-**Query params:**
-| Param | Tipo | Descripción |
-|-------|------|-------------|
-| `search` | `string` (opcional) | Coincidencia parcial en `name` (case-insensitive) |
-| `genre` | `string` (opcional) | Filtrar por nombre exacto de género (ej. `"RPG"`) |
-| `developer` | `string` (opcional) | Filtrar por nombre exacto del developer |
+**Query:**
+| Param | Descripción |
+|-------|-------------|
+| `search` | Coincidencia parcial en `name` |
+| `genre` | Nombre exacto de género, ej. `"RPG"` |
+| `developer` | Nombre exacto del developer, ej. `"adamgryu"` |
 
-**Respuesta exitosa:** `200`
-```json
-[
-  "TitleCard",
-  "..."
-]
-```
-> Si `genre` o `developer` no existen, devuelve `[]` (no 404).
+> Si `genre` o `developer` no existen → devuelve `[]`, no 404.
+
+**Respuesta `200`:** `[TitleCard, ...]`
+> `release_price` en `TitleCard` es el precio **final con descuento**.
 
 ---
 
 ### `POST /api/title/`
-Crear un nuevo título. Queda con `status=false` hasta aprobación del admin. **Requiere token de developer.**
+**Token de developer.** Crear título. El admin debe aprobarlo.
 
 **Body (`application/json`):**
 ```json
 {
-  "name":            "string  — nombre único del título",
-  "release_date":    "string YYYY-MM-DD  — fecha de lanzamiento",
-  "release_price":   "string (Decimal)  — precio base en USD",
-  "actual_discount": "integer (0–100)  — opcional, por defecto 0"
+  "name":            "Mi Juego",
+  "release_date":    "2025-06-01",
+  "release_price":   "29.99",
+  "actual_discount": 0
 }
 ```
+> Se crea con `status=false`. Se envía email al admin. El registro de `media` se crea vacío automáticamente.
 
-**Respuesta exitosa:** `201` → `TitleShow`
-> El título recién creado tendrá `status=false`, `genres=[]` y `developer` con los datos del developer autenticado.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 422 | Campos inválidos o faltantes |
-
----
-
-### `POST /api/title/{name}/media`
-Subir los archivos multimedia del título **por primera vez**. Solo disponible si `capsule` aún no tiene contenido. **Requiere token del developer propietario.**
-
-**Path params:** `name` = nombre del título.
-
-**Body (`multipart/form-data`):**
-| Campo | Obligatorio | Descripción |
-|-------|-------------|-------------|
-| `capsule` | Sí | Imagen cápsula (miniatura principal, usada en listados) |
-| `header` | Sí | Imagen cabecera de la página del juego |
-| `store_1` | Sí | Primera imagen de la tienda (screenshots) |
-| `store_2` | No | Segunda imagen |
-| `store_3` | No | Tercera imagen |
-| `store_4` | No | Cuarta imagen |
-| `store_5` | No | Quinta imagen |
-| `store_6` | No | Sexta imagen |
-| `trailer` | No | Video trailer (mp4) |
-
-**Respuesta exitosa:** `204` — cuerpo vacío.
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Se requieren al menos: capsule, header y store_1"` |
-| 401 | Token inválido |
-| 403 | `"La media ya existe. Contacta al administrador para modificarla"` |
-| 404 | `"Título no encontrado o no eres el propietario"` |
+**Respuesta `201`:** `TitleShow` con `genres: []`.
 
 ---
 
 ### `PATCH /api/title/{name}/media`
-Actualizar uno o varios archivos multimedia de un título. Reemplaza solo los campos enviados. **Requiere token del developer propietario.**
+**Token del developer propietario.** `multipart/form-data`. Sube o actualiza archivos multimedia.
 
-**Path params:** `name` = nombre del título.
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `capsule` | `file` | Miniatura principal (usada en listados) |
+| `header` | `file` | Cabecera de la página del juego |
+| `store_1`–`store_6` | `file` | Screenshots de la tienda |
+| `trailer` | `file` | Video trailer (mp4) |
 
-**Body (`multipart/form-data`):** _(todos opcionales, al menos uno requerido)_
-| Campo | Descripción |
-|-------|-------------|
-| `capsule` | Imagen cápsula |
-| `header` | Imagen cabecera |
-| `store_1` – `store_6` | Imágenes de tienda |
-| `trailer` | Video trailer (mp4) |
+> Al menos un campo requerido. Reemplaza solo los campos enviados.
+> En el frontend, hacer obligatorios `capsule`, `header` y `store_1` en el primer envío.
 
-**Respuesta exitosa:** `204` — cuerpo vacío.
+**Respuesta:** `204` vacío.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Se requiere al menos un campo"` |
-| 401 | Token inválido |
-| 404 | `"Título no encontrado o no eres el propietario"` |
-| 404 | `"Media no encontrada"` |
+**Errores:** `400` sin campos · `404` título no encontrado o no es propietario.
 
 ---
 
 ### `GET /api/title/{name}/media/{field}`
-Obtener un archivo multimedia de un título activo. **Público.**
+**Público.** Obtener archivo multimedia de un título activo.
 
-**Path params:**
-| Param | Valores válidos |
-|-------|----------------|
-| `name` | Nombre del título |
-| `field` | `capsule`, `header`, `store_1`, `store_2`, `store_3`, `store_4`, `store_5`, `store_6`, `trailer` |
+`field`: `capsule` `header` `store_1` `store_2` `store_3` `store_4` `store_5` `store_6` `trailer`
 
-**Respuesta exitosa:**
-- Para campos de imagen: `200` — bytes con `Content-Type: image/jpeg`.
-- Para `trailer` sin header `Range`: `200` — stream completo con `Content-Type: video/mp4` y `Accept-Ranges: bytes`.
-- Para `trailer` con header `Range: bytes=0-1048575`: `206 Partial Content` con `Content-Range`, `Content-Length` y `Accept-Ranges`.
+**Respuesta:**
+- Imágenes → `200` `image/jpeg`
+- Trailer sin `Range` → `200` `video/mp4` con `Accept-Ranges: bytes`
+- Trailer con `Range: bytes=0-1048575` → `206` con `Content-Range`, `Content-Length`
 
-> Usar `<img src="/api/title/{name}/media/capsule">` para imágenes.
-> Usar `<video><source src="/api/title/{name}/media/trailer" type="video/mp4"></video>` para el trailer.
+```html
+<!-- Imágenes -->
+<img src="/api/title/{name}/media/capsule">
+<!-- Trailer -->
+<video><source src="/api/title/{name}/media/trailer" type="video/mp4"></video>
+```
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"Campo inválido. Válidos: [...]"` |
-| 404 | `"Título no encontrado"` (título inactivo o inexistente) |
-| 404 | `"Media no encontrada"` |
-| 404 | `"Campo 'X' vacío"` (campo no subido aún) |
-| 416 | `"Range header inválido"` o `"Range Not Satisfiable"` |
+**Errores:** `400` campo inválido · `404` título inactivo o campo vacío · `416` range inválido.
 
 ---
 
 ### `GET /api/title/{name}/reviews`
-Reviews aprobadas de un título. **Público.**
+**Público.** Reviews aprobadas de un título.
 
-**Respuesta exitosa:** `200`
-```json
-[
-  {
-    "content":       "string",
-    "recommends":    "boolean",
-    "votes":         "integer",
-    "customer_name": "string",
-    "created_at":    "string ISO8601",
-    "title_name":    null
-  },
-  "..."
-]
-```
-> `title_name` siempre es `null` en este endpoint (el título ya es conocido por el contexto de la ruta).
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Título no encontrado"` |
+**Respuesta `200`:** `[ReviewShow, ...]` — `title_name` siempre presente (igual al nombre del título).
 
 ---
 
 ### `POST /api/title/{name}/reviews`
-Publicar una review. El customer debe tener el título en su biblioteca. La review queda pendiente de aprobación del admin (`status=false`). **Requiere token de customer.**
+**Token de customer.** El customer debe poseer el juego. Se envía email al admin.
 
 **Body (`application/json`):**
 ```json
-{
-  "content":    "string  — texto de la review",
-  "recommends": "boolean  — true si recomienda el juego"
-}
+{ "content": "Juego increíble", "recommends": true }
 ```
 
-**Respuesta exitosa:** `201`
-```json
-{
-  "content":       "string",
-  "recommends":    "boolean",
-  "votes":         0,
-  "customer_name": "string",
-  "created_at":    "string ISO8601",
-  "title_name":    null
-}
-```
+**Respuesta `201`:** `ReviewShow` — la review queda `status=false` hasta aprobación del admin.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 403 | `"Debes tener el juego para reseñarlo"` |
-| 404 | `"Título no encontrado"` |
-| 409 | `"Ya tienes una reseña para este juego"` |
+**Errores:** `403` no tienes el juego · `404` título no encontrado · `409` ya tienes una review.
 
 ---
 
 ### `PATCH /api/title/{name}/reviews/me`
-Editar la propia review de un título. Solo campos a modificar. **Requiere token de customer.**
+**Token de customer.** Editar propia review.
 
-**Body (`application/json`):** _(ambos opcionales)_
+**Body (`application/json`):**
 ```json
-{
-  "content":    "string | null",
-  "recommends": "boolean | null"
-}
+{ "content": "Actualizado | null", "recommends": true | false | null }
 ```
 
-**Respuesta exitosa:** `200` → `ReviewShow` (con `title_name: null`)
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 403 | `"No tienes este juego"` |
-| 404 | `"Título no encontrado"` |
-| 404 | `"No tienes reseña para este juego"` |
+**Respuesta `200`:** `ReviewShow`
 
 ---
 
 ### `POST /api/title/{name}/reviews/{customer_name}/vote`
-Votar la review de otro customer como útil. No se puede votar la propia review. **Requiere token de customer.**
+**Token de customer.** Votar review de otro usuario como útil. No se puede votar la propia.
 
-**Respuesta exitosa:** `200`
-```json
-{
-  "votes": "integer  — nuevo total de votos de la review"
-}
-```
+**Respuesta `200`:** `{ "votes": 6 }`
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"No puedes votar tu propia reseña"` |
-| 401 | Token inválido |
-| 404 | `"Título no encontrado"` |
-| 404 | `"Autor de la reseña no encontrado"` |
-| 404 | `"Reseña no encontrada"` |
+**Errores:** `400` propia review · `404` título/autor/review no encontrado.
 
 ---
 
 ### `PATCH /api/title/{name}`
-Actualizar descuento y/o géneros de un título propio. **Requiere token del developer propietario.**
+**Token del developer propietario.** Actualizar descuento y/o géneros.
 
-**Body (`application/json`):** _(ambos opcionales)_
+**Body (`application/json`):**
 ```json
 {
-  "actual_discount": "integer (0–100) | null  — nuevo porcentaje de descuento",
-  "genres":          "[string] | null  — lista de nombres de géneros; reemplaza completamente los géneros actuales"
+  "actual_discount": 20,
+  "genres":          ["RPG", "Aventura"]
 }
 ```
-> Enviar `"genres": []` elimina todos los géneros del título.
+> `genres` **reemplaza completamente** los géneros actuales. Enviar `[]` elimina todos.
 
-**Respuesta exitosa:** `200` → `TitleShow`
+**Respuesta `200`:** `TitleShow`
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 404 | `"Título no encontrado o no eres el propietario"` |
-| 404 | `"Genre 'X' no encontrado"` |
+**Errores:** `404` título no encontrado o no propietario · `404` género no existe.
 
 ---
 
 ### `GET /api/title/{name}`
-Detalle completo de un título activo. **Público.**
+**Público.** Detalle de un título activo.
 
-**Respuesta exitosa:** `200` → `TitleShow`
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Título no encontrado"` |
+**Respuesta `200`:** `TitleShow`
+> `release_price` es el precio **final con descuento**.
 
 ---
 
 ## Transacciones — `/api/transaction`
 
 ### `POST /api/transaction/`
-Compra atómica de uno o varios títulos. Si algún título falla (ya poseído, no disponible, saldo insuficiente), **toda la transacción se cancela**. **Requiere token de customer.**
+**Token de customer.** Compra atómica de uno o varios títulos. Si algo falla, **toda la compra se cancela**.
 
 **Body (`application/json`):**
 ```json
-{
-  "titles": "[string]  — lista de nombres de títulos a comprar (mín. 1)"
-}
+{ "titles": ["A Short Hike", "Sheepy: A Short Adventure"] }
 ```
 
-**Respuesta exitosa:** `201`
+**Respuesta `201`:**
 ```json
 {
-  "titles_purchased": "integer  — cantidad de títulos comprados",
-  "total_spent":      "string (Decimal)  — total descontado del wallet en USD",
-  "wallet_balance":   "string (Decimal)  — saldo restante en el wallet tras la compra"
+  "titles_purchased": 2,
+  "total_spent":      "7.99",
+  "wallet_balance":   "42.01"
 }
 ```
 
@@ -977,336 +631,296 @@ Compra atómica de uno o varios títulos. Si algún título falla (ya poseído, 
 | Código | `detail` |
 |--------|----------|
 | 400 | `"Lista de títulos vacía"` |
-| 401 | Token inválido |
 | 402 | `"Balance insuficiente"` |
 | 404 | `"Wallet no encontrada"` |
-| 404 | `"Título 'X' no encontrado o no disponible"` (título inactivo o inexistente) |
+| 404 | `"Título 'X' no encontrado o no disponible"` |
 | 409 | `"Ya tienes 'X' en tu biblioteca"` |
 
 ---
 
 ### `GET /api/transaction/me`
-Historial completo de compras del customer autenticado. **Requiere token de customer.**
+**Token de customer.** Historial de compras.
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:**
 ```json
 [
   {
-    "created_at": "string ISO8601  — fecha y hora de la transacción",
+    "created_at": "2025-01-15T10:30:00+00:00",
     "titles": [
-      {
-        "name":             "string  — nombre del título",
-        "price_paid":       "string (Decimal)  — precio pagado tras descuento",
-        "discount_applied": "integer (0–100)  — descuento que tenía el título en el momento de la compra"
-      }
+      { "name": "A Short Hike", "price_paid": "7.99", "discount_applied": 0 }
     ]
-  },
-  "..."
+  }
 ]
 ```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
 
 ---
 
 ## Amistades — `/api/friendship`
 
+### Modelo de amistad
+
+- Solo dos estados: `pending` y `accepted`.
+- Para rechazar o bloquear: usar `DELETE` (elimina la relación).
+- Solo el **receptor** (no el emisor) puede aceptar.
+- Internamente se almacena el `user_id` menor en `customer_user_id_1` y el mayor en `customer_user_id_2`. El emisor se registra en `initiator_id`.
+
+---
+
 ### `GET /api/friendship/pending`
-Solicitudes de amistad **recibidas** y pendientes de respuesta. **Requiere token de customer.**
+**Token de customer.** Solicitudes **recibidas** pendientes.
 
-**Respuesta exitosa:** `200`
-```json
-[
-  {
-    "status":     "pending",
-    "from_name":  "string | null  — nombre del customer que envió la solicitud",
-    "created_at": "string ISO8601 | null"
-  },
-  "..."
-]
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
+**Respuesta `200`:** `[FriendshipShow, ...]` — `status` siempre `"pending"`.
 
 ---
 
 ### `POST /api/friendship/{name}`
-Enviar solicitud de amistad a un customer. **Requiere token de customer.**
+**Token de customer.** Enviar solicitud al customer `{name}`.
 
-**Path params:** `name` = nombre del customer destinatario.
+**Respuesta `201`:** `FriendshipShow` con `status: "pending"`.
 
-**Respuesta exitosa:** `201`
-```json
-{
-  "status":     "pending",
-  "from_name":  "string  — nombre del customer que envía (el autenticado)",
-  "created_at": "string ISO8601"
-}
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 400 | `"No puedes enviarte una solicitud a ti mismo"` |
-| 401 | Token inválido |
-| 404 | `"Usuario no encontrado"` |
-| 409 | `"Ya existe una relación con este usuario"` |
+**Errores:** `400` a sí mismo · `404` usuario no existe · `409` ya existe relación.
 
 ---
 
 ### `PATCH /api/friendship/{name}`
-Responder o modificar una solicitud de amistad. **Requiere token de customer.**
-
-**Path params:** `name` = nombre del customer con quien existe la relación.
+**Token de customer.** Aceptar una solicitud recibida. Solo el receptor puede usar este endpoint.
 
 **Body (`application/json`):**
 ```json
-{
-  "status": "string  — 'accepted' | 'rejected' | 'blocked'"
-}
+{ "status": "accepted" }
 ```
+> Solo `"accepted"` es válido. Para rechazar, usar `DELETE`.
 
-> **Reglas de negocio:**
-> - `accepted` y `rejected`: solo el **receptor** de la solicitud puede usarlos.
-> - `blocked`: cualquiera de los dos puede bloquear al otro.
-> - `rejected` elimina el registro — la respuesta tendrá `created_at: null`.
+**Respuesta `200`:** `FriendshipShow`
 
-**Respuesta exitosa:** `200` → `FriendshipShow`
-```json
-{
-  "status":     "string  — el nuevo estado",
-  "from_name":  "string | null",
-  "created_at": "string ISO8601 | null  — null si status='rejected'"
-}
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 404 | `"Usuario no encontrado"` |
-| 404 | `"Solicitud de amistad no encontrada"` |
-| 422 | `status` no es uno de los valores permitidos |
+**Errores:** `403` eres el emisor, no puedes aceptar · `404` solicitud no encontrada · `409` ya procesada.
 
 ---
 
 ### `DELETE /api/friendship/{name}`
-Eliminar una amistad o cancelar una solicitud pendiente, en cualquier estado. **Requiere token de customer.**
+**Token de customer.** Elimina la relación en cualquier estado (cancela solicitudes, elimina amistades).
 
-**Respuesta exitosa:** `204` — cuerpo vacío.
+**Respuesta:** `204` vacío.
 
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 401 | Token inválido |
-| 404 | `"Usuario no encontrado"` |
-| 404 | `"Relación no encontrada"` |
+**Errores:** `404` relación no encontrada.
 
 ---
 
 ## Géneros — `/api/genre`
 
 ### `GET /api/genre/`
-Listado completo de géneros disponibles. **Público.**
+**Público.** Lista completa de géneros.
 
-**Respuesta exitosa:** `200`
-```json
-[
-  { "name": "string" },
-  "..."
-]
-```
-> Cargar una sola vez al iniciar la app y filtrar client-side. Para listar títulos de un género usar `GET /api/title/?genre=RPG`.
+**Respuesta `200`:** `[{ "name": "Action" }, { "name": "RPG" }, ...]`
+
+> Cargar una vez al iniciar la app para poblar filtros.
 
 ---
 
 ## Países — `/api/country`
 
 ### `GET /api/country/`
-Todos los países con su moneda asociada. **Público.** Usar para poblar el selector de país en el registro.
+**Público.** Todos los países con su moneda.
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:**
 ```json
 [
   {
-    "name":     "string",
-    "en_name":  "string",
-    "code":     "string  — código ISO 3166-1 alpha-2",
-    "currency": "CurrencyShow | null"
-  },
-  "..."
+    "native_name":  "España",
+    "english_name": "Spain",
+    "code":         "ES",
+    "currency":     { "name": "Euro", "code": "EUR", "symbol": "€" }
+  }
 ]
 ```
 
----
-
 ### `GET /api/country/{code}`
-País por código ISO. **Público.**
-
-**Path params:** `code` = código ISO del país (ej. `ES`, `US`).
-
-**Respuesta exitosa:** `200`
-```json
-{
-  "name":     "string",
-  "en_name":  "string",
-  "code":     "string",
-  "currency": "CurrencyShow | null"
-}
-```
-
-**Errores:**
-| Código | `detail` |
-|--------|----------|
-| 404 | `"Country no encontrado"` |
+**Público.** País por código ISO. Mismo objeto. **Errores:** `404`.
 
 ---
 
 ## Monedas — `/api/currency`
 
 ### `GET /api/currency/`
-Listado de todas las monedas. **Público.** Las monedas también vienen embebidas en cada `CountryShow`.
+**Público.**
 
-**Respuesta exitosa:** `200`
+**Respuesta `200`:** `[{ "name": "Euro", "code": "EUR", "symbol": "€" }, ...]`
+
+---
+
+## Stripe — Depósito de saldo — `/api/stripe`
+
+> **Requiere** `STRIPE_SECRET_KEY` en `.env`. Para desarrollo usar una clave de test de Stripe (`sk_test_...`).
+> Tarjeta de prueba: `4242 4242 4242 4242` · cualquier fecha futura (ej. `12/34`) · cualquier CVC (ej. `123`).
+
+### `POST /api/stripe/checkout`
+**Token de customer.** Inicia una sesión de pago en Stripe Checkout.
+
+**Body (`application/json`):**
 ```json
-[
-  {
-    "name":   "string",
-    "code":   "string  — código ISO 4217",
-    "symbol": "string"
-  },
-  "..."
-]
+{ "amount": "20.00" }
+```
+
+**Respuesta `200`:**
+```json
+{ "checkout_url": "https://checkout.stripe.com/c/pay/cs_test_..." }
+```
+> El frontend redirige al usuario a `checkout_url`. Stripe muestra la página de pago hosteada.
+
+**Errores:** `400` importe no positivo · `503` Stripe no configurado (falta `STRIPE_SECRET_KEY`).
+
+---
+
+### `GET /api/stripe/success?session_id=cs_test_...`
+**Token de customer.** Verificar el pago y acreditar el saldo. Llamar desde el `success_url` configurado.
+
+**Query param:** `session_id` — el ID de sesión de Stripe que llega en la URL de retorno.
+
+**Respuesta `200`:** `WalletShow`
+```json
+{ "balance": "42.00" }
+```
+> Verifica con la API de Stripe que `payment_status == "paid"` y que la sesión pertenece al customer autenticado antes de acreditar.
+
+**Errores:** `400` sesión inválida o no verificable · `402` pago no completado · `403` sesión de otro usuario · `404` wallet no encontrada · `503` Stripe no configurado.
+
+---
+
+### Flujo completo de recarga con Stripe (frontend)
+```js
+// 1. Crear sesión de checkout
+const { checkout_url } = await fetch('/api/stripe/checkout', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+  body: JSON.stringify({ amount: '20.00' }),
+}).then(r => r.json())
+
+// 2. Redirigir al usuario a la página de pago de Stripe
+window.location.href = checkout_url
+// El usuario paga con la tarjeta de prueba: 4242 4242 4242 4242
+
+// 3. Stripe redirige al success_url configurado, ej:
+//    https://tu-front.com/deposit/success?session_id=cs_test_...
+
+// 4. Desde la página de éxito, confirmar con el back:
+const wallet = await fetch(`/api/stripe/success?session_id=${sessionId}`, {
+  headers: { Authorization: `Bearer ${token}` },
+}).then(r => r.json())
+// wallet.balance → saldo actualizado tras el pago
+```
+
+### Variables de entorno necesarias para Stripe
+```env
+STRIPE_SECRET_KEY=sk_test_...         # Clave secreta de Stripe (panel Stripe → Developers → API keys)
+STRIPE_PUBLISHABLE_KEY=pk_test_...    # Clave pública (para uso futuro en frontend si se usan Stripe Elements)
+STRIPE_SUCCESS_URL=http://localhost:3000/deposit/success
+STRIPE_CANCEL_URL=http://localhost:3000/deposit/cancel
 ```
 
 ---
 
-## Flujos habituales
+## Flujos de frontend
 
 ### Arranque de la app
 ```js
-// Cargar catálogos estáticos una sola vez al iniciar
 const [genres, countries] = await Promise.all([
   fetch('/api/genre/').then(r => r.json()),
   fetch('/api/country/').then(r => r.json()),
 ])
-// Usar countries para el selector de país en registro
-// Usar genres para el filtro de catálogo
+// Usar countries[i].code como valor en selects de registro
+// Usar countries[i].english_name / native_name para mostrar al usuario
 ```
 
-### Registro y login de customer
+### Registro + login de customer
 ```js
-// 1. Registrar (country_code es OBLIGATORIO)
+// Registrar
 await fetch('/auth/customer/register', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    name: 'johndoe',
-    email: 'john@example.com',
-    password: 'Pass123!',
-    country_code: 'ES',  // requerido
-  }),
+  body: JSON.stringify({ name: 'johndoe', email: 'john@example.com', password: 'Pass123!', country_code: 'ES' }),
 })
-// 201 → OK | 404 → país no existe | 409 → nombre/email duplicado
 
-// 2. Login
-const res = await fetch('/auth/customer/login', {
+// Login
+const res  = await fetch('/auth/customer/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   body: new URLSearchParams({ username: 'johndoe', password: 'Pass123!' }),
 })
 const { access_token, customer, wallet } = await res.json()
 localStorage.setItem('token', access_token)
+// customer.name, customer.email, customer.country.english_name
+// wallet.balance → "0.00" al inicio
 ```
 
-### Refrescar sesión de customer
+### Refrescar sesión
 ```js
 const me = await fetch('/api/customer/me', {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 }).then(r => r.json())
-// me.customer: CustomerShow — incluye email y status
-// me.wallet:   WalletShow | null — balance en USD
+// me.customer.name, me.customer.email, me.wallet.balance
 ```
 
 ### Comprar juegos
 ```js
-// 1. Verificar saldo
-const { wallet } = await fetch('/api/customer/me', {
-  headers: { Authorization: `Bearer ${token}` },
+// 1a. Recargar saldo con Stripe Checkout (recomendado)
+const { checkout_url } = await fetch('/api/stripe/checkout', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+  body: JSON.stringify({ amount: '20.00' }),
 }).then(r => r.json())
+window.location.href = checkout_url   // → el usuario paga → Stripe redirige al success_url
 
-// 2. Recargar si hace falta
+// 1b. Recargar saldo sin Stripe (solo dev/testing)
 await fetch('/api/customer/me/deposit', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
   body: JSON.stringify({ amount: '20.00' }),
 })
 
-// 3. Comprar (transacción atómica — todo o nada)
+// 2. Compra atómica
 const receipt = await fetch('/api/transaction/', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-  body: JSON.stringify({ titles: ['Mi Juego', 'Otro Juego'] }),
+  body: JSON.stringify({ titles: ['A Short Hike', 'Sheepy: A Short Adventure'] }),
 }).then(r => r.json())
-// { titles_purchased: 2, total_spent: '39.98', wallet_balance: '10.02' }
+// receipt.titles_purchased, receipt.total_spent, receipt.wallet_balance
 ```
 
-### Perfil público completo de un customer
+### Perfil público de un customer
 ```js
 const [profile, library, friends, reviews] = await Promise.all([
-  fetch(`/api/customer/${name}`).then(r => r.json()),           // CustomerPublic
-  fetch(`/api/customer/${name}/library`).then(r => r.json()),   // [{ name }]
-  fetch(`/api/customer/${name}/friends`).then(r => r.json()),   // [{ name }]
-  fetch(`/api/customer/${name}/reviews`).then(r => r.json()),   // ReviewShow[] (con title_name)
+  fetch(`/api/customer/${name}`).then(r => r.json()),         // CustomerPublic
+  fetch(`/api/customer/${name}/library`).then(r => r.json()), // [{ name }]
+  fetch(`/api/customer/${name}/friends`).then(r => r.json()), // [{ name }]
+  fetch(`/api/customer/${name}/reviews`).then(r => r.json()), // ReviewShow[] con title_name
 ])
-// Imagen de perfil: <img src={`/api/customer/${name}/image/profile`} />
-// Banner:           <img src={`/api/customer/${name}/image/banner`} />
+// Imagen: <img src={`/api/customer/${name}/image/profile`} />
+// Banner: <img src={`/api/customer/${name}/image/banner`} />
 ```
 
 ### Panel del developer
 ```js
-// Mis títulos (incluyendo pendientes de aprobación)
+// Mis títulos (incluyendo pendientes status=false)
 const myTitles = await fetch('/api/title/me', {
   headers: { Authorization: `Bearer ${devToken}` },
 }).then(r => r.json())
-// myTitles[i].status === false → pendiente de aprobación admin
 
 // Crear título
-const newTitle = await fetch('/api/title/', {
+const title = await fetch('/api/title/', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${devToken}` },
-  body: JSON.stringify({
-    name: 'Mi Juego',
-    release_date: '2025-06-01',
-    release_price: '29.99',
-    actual_discount: 0,
-  }),
+  body: JSON.stringify({ name: 'Mi Juego', release_date: '2025-06-01', release_price: '29.99' }),
 }).then(r => r.json())
 
-// Subir media (solo primera vez — capsule, header y store_1 obligatorios)
+// Subir media (usar PATCH, hacer capsule/header/store_1 required en el form del frontend)
 const form = new FormData()
 form.append('capsule', capsuleFile)
 form.append('header', headerFile)
 form.append('store_1', store1File)
-form.append('trailer', trailerFile)  // opcional
-await fetch(`/api/title/${encodeURIComponent(newTitle.name)}/media`, {
-  method: 'POST',
+await fetch(`/api/title/${encodeURIComponent(title.name)}/media`, {
+  method: 'PATCH',
   headers: { Authorization: `Bearer ${devToken}` },
   body: form,
-})
-// 204 → OK | 403 → ya existe media, contactar admin
-
-// Actualizar descuento y géneros (reemplaza géneros completos)
-await fetch(`/api/title/${encodeURIComponent(newTitle.name)}`, {
-  method: 'PATCH',
-  headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${devToken}` },
-  body: JSON.stringify({ actual_discount: 20, genres: ['RPG', 'Aventura'] }),
 })
 ```
 
@@ -1314,12 +928,18 @@ await fetch(`/api/title/${encodeURIComponent(newTitle.name)}`, {
 ```js
 const [title, reviews] = await Promise.all([
   fetch(`/api/title/${encodeURIComponent(name)}`).then(r => r.json()),         // TitleShow
-  fetch(`/api/title/${encodeURIComponent(name)}/reviews`).then(r => r.json()), // ReviewShow[]
+  fetch(`/api/title/${encodeURIComponent(name)}/reviews`).then(r => r.json()), // [ReviewShow]
 ])
-// Capsule:   <img src={`/api/title/${name}/media/capsule`} />
-// Header:    <img src={`/api/title/${name}/media/header`} />
-// Trailer:   <video><source src={`/api/title/${name}/media/trailer`} type="video/mp4" /></video>
-// Tienda:    store_1 a store_6 (solo los que existen — manejar 404 en campo vacío)
+// title.release_price → precio final con descuento
+// title.developer.name, title.developer.support_email
+
+// Imágenes:
+// <img src={`/api/title/${name}/media/capsule`} />
+// <img src={`/api/title/${name}/media/header`} />
+// store_1 a store_6 → manejar 404 si el campo está vacío
+
+// Trailer:
+// <video><source src={`/api/title/${name}/media/trailer`} type="video/mp4" /></video>
 ```
 
 ### Gestión de amistades
@@ -1328,9 +948,9 @@ const [title, reviews] = await Promise.all([
 const pending = await fetch('/api/friendship/pending', {
   headers: { Authorization: `Bearer ${token}` },
 }).then(r => r.json())
-// [{ status: 'pending', from_name: 'johndoe', created_at }]
+// [{ status: "pending", from_name: "johndoe", created_at }]
 
-// Aceptar solicitud
+// Aceptar
 await fetch(`/api/friendship/${pending[0].from_name}`, {
   method: 'PATCH',
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -1343,9 +963,23 @@ await fetch('/api/friendship/otro_usuario', {
   headers: { Authorization: `Bearer ${token}` },
 })
 
-// Eliminar amistad o cancelar solicitud
+// Eliminar / rechazar
 await fetch(`/api/friendship/${name}`, {
   method: 'DELETE',
   headers: { Authorization: `Bearer ${token}` },
 })
 ```
+
+---
+
+## Stripe — Depósito de saldo
+
+> **Pendiente de implementación.** El endpoint `/api/customer/me/deposit` actual acepta directamente un importe sin verificación de pago. Se reemplazará por un flujo Stripe Checkout en modo test.
+
+Flujo previsto:
+1. `POST /api/customer/me/deposit/checkout` → crea una Stripe Checkout Session, devuelve `{ checkout_url }`.
+2. Frontend redirige a `checkout_url` (página hosteada por Stripe en modo test).
+3. Stripe redirige al `success_url` tras el pago.
+4. El backend verifica la sesión con la API de Stripe y acredita el balance.
+
+Tarjeta de prueba Stripe: `4242 4242 4242 4242` · cualquier fecha futura · cualquier CVC.

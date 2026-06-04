@@ -11,15 +11,15 @@ class Title(SQLModel, table=True):
 
     __tablename__ = "title"
 
-    id:               int      | None = Field(default=None, primary_key=True)
-    name:             str             = Field(unique=True, nullable=False)
-    status:           bool            = Field(default=False, nullable=False)
-    actual_discount:  int             = Field(nullable=False, default=0)
-    release_date:     date            = Field(nullable=False)
-    release_price:    Decimal         = Field(nullable=False, decimal_places=2, max_digits=10)
+    id:                  int      | None = Field(default=None, primary_key=True)
+    name:                str             = Field(unique=True, nullable=False, max_length=100)
+    status:              bool            = Field(default=False, nullable=False)
+    actual_discount:     int             = Field(default=0, nullable=False)
+    release_date:        date            = Field(nullable=False)
+    release_price:       Decimal         = Field(nullable=False, decimal_places=2, max_digits=4)
 
-    developer_id:     int             = Field(foreign_key="developer.id", nullable=False)
-    created_at:       datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
-    updated_at:       datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+    developer_user_id:   int             = Field(foreign_key="developer.user_id", nullable=False)
+    created_at:          datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+    updated_at:          datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
 
-    developer:        Developer | None = Relationship(sa_relationship_kwargs={"lazy": "joined"})
+    developer:           Developer | None = Relationship(sa_relationship_kwargs={"lazy": "joined"})

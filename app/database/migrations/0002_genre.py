@@ -1,34 +1,22 @@
-from sqlalchemy import (  # noqa: F401
-    Column,
-    DateTime,
-    ForeignKey,
-    Integer,
-    String,
-    UniqueConstraint,
-    func,
-)
+from sqlalchemy import Column, DateTime, Integer, String, func
 
 from alembic import op
 
-revision        = "012"
-down_revision   = "011"
+revision        = "002"
+down_revision   = "001"
 branch_labels   = None
 depends_on      = None
 
 
 def upgrade():
-    t = op.create_table("customer_title",
+    t = op.create_table("genre",
 
         Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("title_id",      Integer, ForeignKey("title.id"),    nullable=False),
-        Column("customer_id",   Integer, ForeignKey("customer.id"), nullable=False),
-        Column("playtime",      Integer, nullable=False, server_default="0"),
+        Column("name",          String(50), nullable=False, unique=True),
 
         Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
-
-        UniqueConstraint("customer_id", "title_id", name="uq_customer_title"),
     )
 
     op.execute(f"""
@@ -49,4 +37,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table("customer_title")
+    op.drop_table("genre")

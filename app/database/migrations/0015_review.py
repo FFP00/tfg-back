@@ -10,25 +10,24 @@ from sqlalchemy import (
 
 from alembic import op
 
-# revision identifiers, used by Alembic.
-revision        = "014"
-down_revision   = "013"
+revision        = "015"
+down_revision   = "014"
 branch_labels   = None
 depends_on      = None
+
 
 def upgrade():
     t = op.create_table("review",
 
         Column("customer_title_id", Integer, ForeignKey("customer_title.id"), primary_key=True, nullable=False),
 
-        Column("content",           String, nullable=False),
+        Column("content",           String(255), nullable=False),
         Column("votes",             Integer, nullable=False, server_default="0"),
         Column("recommends",        Boolean, nullable=False),
         Column("status",            Boolean, nullable=False, server_default="false"),
 
         Column("created_at",        DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",        DateTime(timezone=True), server_default=func.now(), nullable=False),
-
     )
 
     op.execute(f"""
@@ -46,6 +45,7 @@ def upgrade():
         FOR EACH ROW
         EXECUTE PROCEDURE update_updated_at_column();
     """)
+
 
 def downgrade():
     op.drop_table("review")

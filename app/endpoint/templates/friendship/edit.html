@@ -1,21 +1,23 @@
 {% extends "base.html" %}
-{% from "macros.html" import form_header, select_field, form_buttons, field %}
-{% block title %}Editar Friendship #{{ friendship.id }}{% endblock %}
-{% block header %}{{ form_header("Editar Friendship") }}{% endblock %}
+{% import "macros.html" as m %}
+{% block title %}Editar Amistad{% endblock %}
+{% block header %}{{ m.form_header("Editar Amistad") }}{% endblock %}
 {% block content %}
 <div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white shadow-sm sm:rounded-lg p-6">
         <p class="text-sm text-gray-500 mb-4">
-            Customer #{{ friendship.customer_id_1 }} ↔ Customer #{{ friendship.customer_id_2 }}
+            {{ names.get(friendship.customer_user_id_1, "—") }} ↔ {{ names.get(friendship.customer_user_id_2, "—") }}
         </p>
         <form action="/views/friendship/{{ friendship.id }}/update" method="POST" class="space-y-4">
-            {% call select_field("Estado", "status", "") %}
+            {% call m.select_field("Estado", "status", "") %}
                 {% set cur = friendship.status %}
                 {% for s in statuses %}
-                <option value="{{ s }}" {{ 'selected' if s == cur }}>{{ s|capitalize }}</option>
+                <option value="{{ s }}" {{ 'selected' if s == cur }}>
+                    {% if s == "accepted" %}Aceptada{% else %}Pendiente{% endif %}
+                </option>
                 {% endfor %}
             {% endcall %}
-            {{ form_buttons("Actualizar", "/views/friendship/" ~ friendship.id) }}
+            {{ m.form_buttons("Actualizar", "/views/friendship/" ~ friendship.id) }}
         </form>
     </div>
 </div></div>

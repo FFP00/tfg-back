@@ -1,5 +1,6 @@
 import json
 import logging
+import secrets
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -7,11 +8,13 @@ from pathlib import Path
 from pwdlib import PasswordHash
 from sqlmodel import Session, select
 
+from app.database.models.CountryModel import Country
 from app.database.models.DeveloperModel import Developer
 from app.database.models.GenreModel import Genre
 from app.database.models.GenreTitleModel import GenreTitle
 from app.database.models.MediaModel import Media
 from app.database.models.TitleModel import Title
+from app.database.models.UserModel import User
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -53,17 +56,22 @@ def seed_games(session: Session) -> None:
 
     logger.info(f"{len(mapa_generos)} géneros preparados.")
 
+    country_ids = session.exec(select(Country.id)).all()
+    if not country_ids:
+        logger.info("No encontramos paises — ejecuta countrySeeder primero")
+        return
+
     # ── Desarrolladores ───────────────────────────────────────────────────────
 
     mapa_developers: dict[str, int] = {}
-    emails_vistos: dict[str, int] = {}
-    support_emails_vistos: dict[str, int] = {}
+    emails_vistos: dict[str, int]   = {}
+    support_vistos: dict[str, int]  = {}
 
     for game in games:
-        datos_dev = game["developer"]
-        nombre_dev = datos_dev["name"]
-        email_dev = datos_dev["email"]
-        support_dev = datos_dev["support_email"]
+        datos_dev    = game["developer"]
+        nombre_dev   = datos_dev["name"]
+        email_dev    = datos_dev["email"].split(",")[0].strip()
+        support_dev  = datos_dev["support_email"].split(",")[0].strip()
 
         if nombre_dev in mapa_developers:
             continue
@@ -72,47 +80,53 @@ def seed_games(session: Session) -> None:
             mapa_developers[nombre_dev] = emails_vistos[email_dev]
             continue
 
-        if support_dev in support_emails_vistos:
-            mapa_developers[nombre_dev] = support_emails_vistos[support_dev]
+        if support_dev in support_vistos:
+            mapa_developers[nombre_dev] = support_vistos[support_dev]
             continue
 
-        existente = (
-            session.exec(select(Developer).where(Developer.email == email_dev)).first()
-            or session.exec(
-                select(Developer).where(Developer.name == nombre_dev)
-            ).first()
-            or session.exec(
-                select(Developer).where(Developer.support_email == support_dev)
-            ).first()
+        user_existente = (
+            session.exec(select(User).where(User.email == email_dev, User.type == "DEV")).first()
+            or session.exec(select(User).where(User.name == nombre_dev, User.type == "DEV")).first()
         )
 
-        if existente:
-            if existente.id is None:
-                logger.info(f"No encontramos id del developer {nombre_dev!r}")
-                return
-            mapa_developers[nombre_dev] = existente.id
-            emails_vistos[email_dev] = existente.id
-            support_emails_vistos[support_dev] = existente.id
+        if user_existente:
+            dev_existente = session.get(Developer, user_existente.id)
+            if dev_existente and dev_existente.user_id is not None:
+                mapa_developers[nombre_dev] = dev_existente.user_id
+                emails_vistos[email_dev]    = dev_existente.user_id
+                support_vistos[support_dev] = dev_existente.user_id
             continue
 
-        developer = Developer(
+        if session.exec(select(Developer).where(Developer.support_email == support_dev)).first():
+            logger.info(f"Support email duplicado para {nombre_dev!r}, saltando")
+            continue
+
+        user = User(
             name=nombre_dev,
             email=email_dev,
+            password=hasher.hash("password123"),
+            country_id=secrets.choice(country_ids),
+            type="DEV",
+        )
+        session.add(user)
+        session.flush()
+
+        if user.id is None:
+            logger.info(f"No se pudo crear user para developer {nombre_dev!r}")
+            return
+
+        developer = Developer(
+            user_id=user.id,
             support_email=support_dev,
             website_url=datos_dev.get("website_url"),
-            password=hasher.hash("password123"),
             status=True,
         )
         session.add(developer)
         session.flush()
 
-        if developer.id is None:
-            logger.info(f"No encontramos id del developer {nombre_dev!r}")
-            return
-
-        mapa_developers[nombre_dev] = developer.id
-        emails_vistos[email_dev] = developer.id
-        support_emails_vistos[support_dev] = developer.id
+        mapa_developers[nombre_dev] = user.id
+        emails_vistos[email_dev]    = user.id
+        support_vistos[support_dev] = user.id
 
     logger.info(f"{len(mapa_developers)} desarrolladores preparados.")
 
@@ -126,17 +140,17 @@ def seed_games(session: Session) -> None:
         if session.exec(select(Title).where(Title.name == nombre_juego)).first():
             continue
 
-        nombre_dev = game["developer"]["name"]
-        developer_id = mapa_developers.get(nombre_dev)
-        if not developer_id:
+        nombre_dev       = game["developer"]["name"]
+        developer_user_id = mapa_developers.get(nombre_dev)
+        if not developer_user_id:
             logger.info(f"No encontramos developer para {nombre_juego!r}")
             continue
 
         imagenes = game["images"]
-        store = imagenes.get("store", [])
+        store    = imagenes.get("store", [])
 
         capsule = _read_file(imagenes["library_capsule"])
-        header = _read_file(imagenes["library_header"])
+        header  = _read_file(imagenes["library_header"])
         store_1 = _read_file(store[0]) if len(store) > 0 else None
 
         if not capsule or not header or not store_1:
@@ -148,7 +162,7 @@ def seed_games(session: Session) -> None:
             release_date=date.fromisoformat(game["release_date"]),
             release_price=Decimal(str(game["release_price"])),
             actual_discount=0,
-            developer_id=developer_id,
+            developer_user_id=developer_user_id,
             status=True,
         )
         session.add(title)

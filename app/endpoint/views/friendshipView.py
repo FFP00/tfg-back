@@ -4,14 +4,16 @@ from sqlalchemy import func
 from sqlmodel import Session, col, or_, select
 
 from app.config.database import get_session
+from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.CustomerModel import Customer
 from app.database.models.FriendshipModel import Friendship
+from app.database.models.UserModel import User
 
 router = APIRouter()
 
 _PAGE     = 20
-_STATUSES = ("pending", "accepted", "rejected", "blocked")
+_STATUSES = ("pending", "accepted")
 
 
 def _ctx(request: Request, **kwargs):
@@ -25,6 +27,16 @@ def _ctx(request: Request, **kwargs):
     }
 
 
+def _names_map(friendship_list: list[Friendship], session: Session) -> dict[int, str]:
+    ids = set()
+    for f in friendship_list:
+        ids.update([f.customer_user_id_1, f.customer_user_id_2, f.initiator_id])
+    if not ids:
+        return {}
+    customers = session.exec(select(Customer).where(col(Customer.user_id).in_(ids))).all()
+    return {c.user_id: c.user.name if c.user else f"#{c.user_id}" for c in customers}
+
+
 @router.get("/")
 def index(request: Request, search: str = "", page: int = 1, session: Session = Depends(get_session)):
     q       = select(Friendship)
@@ -32,23 +44,23 @@ def index(request: Request, search: str = "", page: int = 1, session: Session = 
 
     if search:
         matching = session.exec(
-            select(Customer.id).where(col(Customer.name).ilike(f"%{search}%"))
+            select(User.id).where(col(User.name).ilike(f"%{search}%"), User.type == "CUS")
         ).all()
-        cond    = or_(col(Friendship.customer_id_1).in_(matching), col(Friendship.customer_id_2).in_(matching))
+        cond    = or_(
+            col(Friendship.customer_user_id_1).in_(matching),
+            col(Friendship.customer_user_id_2).in_(matching),
+        )
         q       = q.where(cond)
         count_q = count_q.where(cond)
 
     total       = session.exec(count_q).one()
-    friendships = session.exec(q.offset((page - 1) * _PAGE).limit(_PAGE)).all()
-
-    ids = {f.customer_id_1 for f in friendships} | {f.customer_id_2 for f in friendships}
-    customers = {
-        c.id: c.name
-        for c in session.exec(select(Customer).where(col(Customer.id).in_(ids))).all()
-    } if ids else {}
+    friendships = session.exec(
+        q.order_by(Friendship.created_at.desc()).offset((page - 1) * _PAGE).limit(_PAGE)
+    ).all()
+    names = _names_map(friendships, session)
 
     return templates.TemplateResponse(request, "friendship/index.html", _ctx(request,
-        friendships=friendships, customers=customers, search=search, page=page,
+        friendships=friendships, names=names, search=search, page=page,
         has_prev=page > 1, has_next=(page * _PAGE) < total,
     ))
 
@@ -57,16 +69,18 @@ def index(request: Request, search: str = "", page: int = 1, session: Session = 
 def show(id: int, request: Request, session: Session = Depends(get_session)):
     friendship = session.get(Friendship, id)
     if not friendship:
-        return RedirectResponse("/views/friendship/?error=Friendship+no+encontrada", status_code=302)
-    return templates.TemplateResponse(request, "friendship/show.html", _ctx(request, friendship=friendship))
+        return RedirectResponse("/views/friendship/?error=Amistad+no+encontrada", status_code=302)
+    names = _names_map([friendship], session)
+    return templates.TemplateResponse(request, "friendship/show.html", _ctx(request, friendship=friendship, names=names))
 
 
 @router.get("/{id}/edit")
 def edit(id: int, request: Request, session: Session = Depends(get_session)):
     friendship = session.get(Friendship, id)
     if not friendship:
-        return RedirectResponse("/views/friendship/?error=Friendship+no+encontrada", status_code=302)
-    return templates.TemplateResponse(request, "friendship/edit.html", _ctx(request, friendship=friendship))
+        return RedirectResponse("/views/friendship/?error=Amistad+no+encontrada", status_code=302)
+    names = _names_map([friendship], session)
+    return templates.TemplateResponse(request, "friendship/edit.html", _ctx(request, friendship=friendship, names=names))
 
 
 @router.post("/{id}/update")
@@ -78,17 +92,20 @@ def update(
 ):
     friendship = session.get(Friendship, id)
     if not friendship:
-        return RedirectResponse("/views/friendship/?error=Friendship+no+encontrada", status_code=302)
+        return RedirectResponse("/views/friendship/?error=Amistad+no+encontrada", status_code=302)
     if status not in _STATUSES:
         status = "pending"
     try:
         friendship.status = status
         session.add(friendship)
         session.commit()
-        return RedirectResponse(f"/views/friendship/{id}?success=Friendship+actualizada", status_code=302)
+        return RedirectResponse(f"/views/friendship/{id}?success=Amistad+actualizada", status_code=302)
     except Exception as e:
+        session.rollback()
+        friendship = session.get(Friendship, id)
+        names      = _names_map([friendship], session) if friendship else {}
         return templates.TemplateResponse(request, "friendship/edit.html",
-            _ctx(request, friendship=friendship, error=str(e)),
+            _ctx(request, friendship=friendship, names=names, error=human_error(e)),
         )
 
 
@@ -96,10 +113,11 @@ def update(
 def delete(id: int, session: Session = Depends(get_session)):
     friendship = session.get(Friendship, id)
     if not friendship:
-        return RedirectResponse("/views/friendship/?error=Friendship+no+encontrada", status_code=302)
+        return RedirectResponse("/views/friendship/?error=Amistad+no+encontrada", status_code=302)
     try:
         session.delete(friendship)
         session.commit()
-        return RedirectResponse("/views/friendship/?success=Friendship+eliminada", status_code=302)
+        return RedirectResponse("/views/friendship/?success=Amistad+eliminada", status_code=302)
     except Exception as e:
-        return RedirectResponse(f"/views/friendship/?error={e}", status_code=302)
+        session.rollback()
+        return RedirectResponse(f"/views/friendship/?error={human_error(e)}", status_code=302)

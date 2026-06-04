@@ -2,24 +2,21 @@ from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, f
 
 from alembic import op
 
-# revision identifiers, used by Alembic.
 revision        = "006"
 down_revision   = "005"
 branch_labels   = None
 depends_on      = None
 
+
 def upgrade():
-    t = op.create_table("customer",
+    t = op.create_table("developer",
 
-        Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
+        Column("user_id",       Integer, ForeignKey("user.id"), primary_key=True, nullable=False),
 
-        Column("name",          String, nullable=False, unique=True),
-        Column("email",         String, nullable=False, unique=True),
-        Column("password",      String, nullable=False),
-        Column("status",        Boolean, nullable=False, server_default="true"),
+        Column("support_email", String(50),  nullable=False, unique=True),
+        Column("website_url",   String(255),  nullable=True,  unique=True),
+        Column("status",        Boolean, nullable=False, server_default="false"),
 
-        Column("country_id",    Integer, ForeignKey("country.id"), nullable=False),
-        Column("image_id",      Integer, ForeignKey("image.id"), nullable=False, unique=True),
         Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
@@ -41,20 +38,23 @@ def upgrade():
     """)
 
     op.execute("""
-        CREATE OR REPLACE FUNCTION create_customer_image()
+        CREATE OR REPLACE FUNCTION check_developer_type()
         RETURNS TRIGGER AS $$
         BEGIN
-            INSERT INTO image (created_at, updated_at) VALUES (now(), now()) RETURNING id INTO NEW.image_id;
+            IF (SELECT type FROM "user" WHERE id = NEW.user_id) != 'DEV' THEN
+                RAISE EXCEPTION 'user % is not of type DEV', NEW.user_id;
+            END IF;
             RETURN NEW;
         END;
         $$ language 'plpgsql';
 
-        DROP TRIGGER IF EXISTS tr_customer_create_image ON customer;
-        CREATE TRIGGER tr_customer_create_image
-        BEFORE INSERT ON customer
+        DROP TRIGGER IF EXISTS tr_developer_check_type ON developer;
+        CREATE TRIGGER tr_developer_check_type
+        BEFORE INSERT ON developer
         FOR EACH ROW
-        EXECUTE PROCEDURE create_customer_image();
+        EXECUTE PROCEDURE check_developer_type();
     """)
 
+
 def downgrade():
-    op.drop_table("customer")
+    op.drop_table("developer")

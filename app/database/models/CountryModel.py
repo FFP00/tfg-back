@@ -11,9 +11,9 @@ class Country(SQLModel, table=True):
     __tablename__ = "country"
 
     id:             int      | None = Field(default=None, primary_key=True)
-    name:           str             = Field(unique=True, nullable=False)
-    en_name:        str             = Field(unique=True, nullable=False)
-    code:           str             = Field(unique=True, nullable=False)
+    native_name:    str             = Field(unique=True, nullable=False, max_length=100)
+    english_name:   str             = Field(unique=True, nullable=False, max_length=100)
+    code:           str             = Field(unique=True, nullable=False, max_length=2)
 
     currency_id:    int             = Field(foreign_key="currency.id", nullable=False)
     created_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))

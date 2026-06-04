@@ -11,8 +11,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def seed_customers_titles(session: Session, count: int):
-    customers = session.exec(select(Customer.id)).all()
+def seed_customers_titles(session: Session, count: int) -> None:
+    customers = session.exec(select(Customer.user_id)).all()
     titles    = session.exec(select(Title.id)).all()
 
     if not customers:
@@ -33,8 +33,8 @@ def seed_customers_titles(session: Session, count: int):
             continue
         used.add((customer, title))
         ct = CustomerTitleFactory.build()
-        ct.customer_id = customer
-        ct.title_id    = title
+        ct.customer_user_id = customer
+        ct.title_id         = title
         customer_titles.append(ct)
 
     session.add_all(customer_titles)

@@ -2,15 +2,16 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, LargeBinary, func
 
 from alembic import op
 
-# revision identifiers, used by Alembic.
-revision        = "008"
-down_revision   = "007"
+revision        = "009"
+down_revision   = "008"
 branch_labels   = None
 depends_on      = None
 
+
 def upgrade():
     t = op.create_table("media",
-        Column("title_id", Integer, ForeignKey("title.id"), primary_key=True, nullable=False),
+
+        Column("title_id",      Integer, ForeignKey("title.id"), primary_key=True, nullable=False),
 
         Column("capsule",       LargeBinary, nullable=True),
         Column("header",        LargeBinary, nullable=True),
@@ -58,6 +59,7 @@ def upgrade():
         FOR EACH ROW
         EXECUTE PROCEDURE create_title_media();
     """)
+
 
 def downgrade():
     op.drop_table("media")

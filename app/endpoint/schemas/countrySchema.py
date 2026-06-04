@@ -4,8 +4,8 @@ from app.endpoint.schemas.currencySchema import CurrencyShow
 
 
 class CountryShow(SQLModel):
-    name:     str
-    en_name:  str
-    code:     str
+    native_name:    str
+    english_name:   str
+    code:           str
 
-    currency: CurrencyShow | None = None
+    currency:       CurrencyShow | None = None

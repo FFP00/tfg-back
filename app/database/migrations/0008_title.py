@@ -1,23 +1,41 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, func
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    func,
+)
 
 from alembic import op
 
-revision        = "013"
-down_revision   = "012"
+revision        = "008"
+down_revision   = "007"
 branch_labels   = None
 depends_on      = None
 
 
 def upgrade():
-    t = op.create_table("transaction",
+    t = op.create_table("title",
 
         Column("id",                    Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("wallet_customer_id",    Integer, ForeignKey("wallet.customer_id"), nullable=False),
+        Column("name",                  String(100), nullable=False, unique=True),
+        Column("status",                Boolean, nullable=False, server_default="false"),
+        Column("actual_discount",       Integer, nullable=False),
+        Column("release_date",          Date, nullable=False),
+        Column("release_price",         Numeric(precision=4, scale=2), nullable=False),
 
+        Column("developer_user_id",     Integer, ForeignKey("developer.user_id"), nullable=False),
         Column("created_at",            DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",            DateTime(timezone=True), server_default=func.now(), nullable=False),
     )
+
+    CheckConstraint('actual_discount >= 0 AND actual_discount <= 100')
 
     op.execute(f"""
         CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -37,4 +55,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table("transaction")
+    op.drop_table("title")

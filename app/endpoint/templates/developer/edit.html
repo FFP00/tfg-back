@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 {% from "macros.html" import form_header, input, select_field, form_buttons %}
-{% block title %}Editar Developer #{{ developer.id }}{% endblock %}
+{% block title %}Editar Developer #{{ developer.user_id }}{% endblock %}
 {% block header %}{{ form_header("Editar Developer") }}{% endblock %}
 {% block content %}
 <div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white shadow-sm sm:rounded-lg p-6">
-        <form action="/views/developer/{{ developer.id }}/update" method="POST" class="space-y-4">
-            {{ input("Nombre", "name", form.name if form else developer.name) }}
-            {{ input("Email", "email", form.email if form else developer.email, type="email") }}
+        <form action="/views/developer/{{ developer.user_id }}/update" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name if form else developer.user.name) }}
+            {{ input("Email", "email", form.email if form else developer.user.email, type="email") }}
             {{ input("Support Email", "support_email", form.support_email if form else developer.support_email, type="email") }}
             {{ input("Nueva contraseña", "password", type="password", placeholder="Dejar vacío para no cambiar") }}
             {{ input("Website URL", "website_url", form.website_url if form else developer.website_url, placeholder="https://...") }}
+            {% call select_field("Country", "country_id", "— Sin country —") %}
+                {% set cur = (form.country_id if form else developer.user.country_id)|string %}
+                {% for c in countries %}
+                <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur }}>{{ c.name }} ({{ c.code }})</option>
+                {% endfor %}
+            {% endcall %}
             {% call select_field("Estado", "status") %}
                 {% set cur = (form.status if form else developer.status)|string %}
                 <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Activo</option>
                 <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>Inactivo</option>
             {% endcall %}
-            {% call select_field("Image", "image_id", "— Sin imagen —") %}
-                {% set cur = (form.image_id if form else developer.image_id)|string %}
-                {% for img in images %}
-                <option value="{{ img.id }}" {{ 'selected' if img.id|string == cur }}>Image #{{ img.id }}</option>
-                {% endfor %}
-            {% endcall %}
-            {{ form_buttons("Actualizar", "/views/developer/" ~ developer.id) }}
+            {{ form_buttons("Actualizar", "/views/developer/" ~ developer.user_id) }}
         </form>
     </div>
 </div></div>

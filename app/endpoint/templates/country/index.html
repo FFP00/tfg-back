@@ -8,7 +8,7 @@
     <div class="flex flex-col gap-4">
         {% for country in countries %}
         <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <h1 class="text-xl font-semibold">{{ country.en_name }} <span class="text-gray-400 font-normal text-base">/ {{ country.name }}</span></h1>
+            <h1 class="text-xl font-semibold">{{ country.english_name }} <span class="text-gray-400 font-normal text-base">/ {{ country.native_name }}</span></h1>
             <div class="space-y-1 text-gray-700 mt-2">
                 {{ field("Código", country.code) }}
                 {% if country.currency %}{{ field("Currency", country.currency.name ~ " (" ~ country.currency.code ~ ")", "/views/currency/" ~ country.currency_id) }}{% endif %}

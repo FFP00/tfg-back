@@ -1,32 +1,22 @@
-from sqlalchemy import (
-    CheckConstraint,
-    Column,
-    DateTime,
-    ForeignKey,
-    Integer,
-    Numeric,
-    func,
-)
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, func
 
 from alembic import op
 
-revision        = "009"
-down_revision   = "008"
+revision        = "007"
+down_revision   = "006"
 branch_labels   = None
 depends_on      = None
 
 
 def upgrade():
-    t = op.create_table("wallet",
+    t = op.create_table("customer",
 
-        Column("customer_id",   Integer, ForeignKey("customer.id"), primary_key=True, nullable=False),
+        Column("user_id",       Integer, ForeignKey("user.id"), primary_key=True, nullable=False),
 
-        Column("balance",       Numeric(precision=10, scale=2), nullable=True),
+        Column("status",        Boolean, nullable=False, server_default="true"),
 
         Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
-
-        CheckConstraint("balance >= 0", name="ck_balance_positive"),
     )
 
     op.execute(f"""
@@ -46,21 +36,23 @@ def upgrade():
     """)
 
     op.execute("""
-        CREATE OR REPLACE FUNCTION create_wallet_for_customer()
+        CREATE OR REPLACE FUNCTION check_customer_type()
         RETURNS TRIGGER AS $$
         BEGIN
-            INSERT INTO wallet (customer_id, balance)
-            VALUES (NEW.id, 0);
+            IF (SELECT type FROM "user" WHERE id = NEW.user_id) != 'CUS' THEN
+                RAISE EXCEPTION 'user % is not of type CUS', NEW.user_id;
+            END IF;
             RETURN NEW;
         END;
         $$ language 'plpgsql';
 
-        DROP TRIGGER IF EXISTS tr_customer_create_wallet ON customer;
-        CREATE TRIGGER tr_customer_create_wallet
-        AFTER INSERT ON customer
+        DROP TRIGGER IF EXISTS tr_customer_check_type ON customer;
+        CREATE TRIGGER tr_customer_check_type
+        BEFORE INSERT ON customer
         FOR EACH ROW
-        EXECUTE PROCEDURE create_wallet_for_customer();
+        EXECUTE PROCEDURE check_customer_type();
     """)
 
+
 def downgrade():
-    op.drop_table("wallet")
+    op.drop_table("customer")

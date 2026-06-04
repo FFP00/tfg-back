@@ -9,7 +9,7 @@ class Genre(SQLModel, table=True):
     __tablename__ = "genre"
 
     id:             int      | None = Field(default=None, primary_key=True)
-    name:           str             = Field(unique=True, nullable=False)
+    name:           str             = Field(unique=True, nullable=False, max_length=50)
 
     created_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
     updated_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))

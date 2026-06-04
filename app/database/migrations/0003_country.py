@@ -2,20 +2,20 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
 
 from alembic import op
 
-# revision identifiers, used by Alembic.
-revision        = "004"
-down_revision   = "003"
+revision        = "003"
+down_revision   = "002"
 branch_labels   = None
 depends_on      = None
+
 
 def upgrade():
     t = op.create_table("country",
 
         Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("name",          String, nullable=False, unique=True),
-        Column("en_name",       String, nullable=False, unique=True),
-        Column("code",          String, nullable=False, unique=True),
+        Column("native_name",   String(100), nullable=False, unique=True),
+        Column("english_name",  String(100), nullable=False, unique=True),
+        Column("code",          String(2), nullable=False, unique=True),
 
         Column("currency_id",   Integer, ForeignKey("currency.id"), nullable=False),
         Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
@@ -37,6 +37,7 @@ def upgrade():
         FOR EACH ROW
         EXECUTE PROCEDURE update_updated_at_column();
     """)
+
 
 def downgrade():
     op.drop_table("country")

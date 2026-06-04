@@ -1,29 +1,26 @@
 {% extends "base.html" %}
-{% from "macros.html" import form_header, textarea, select_field, form_buttons %}
-{% block title %}Editar Review #{{ review.id }}{% endblock %}
-{% block header %}{{ form_header("Editar Review") }}{% endblock %}
+{% import "macros.html" as m %}
+{% block title %}Editar Review{% endblock %}
+{% block header %}{{ m.form_header("Editar Review") }}{% endblock %}
 {% block content %}
 <div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white shadow-sm sm:rounded-lg p-6">
-        <form action="/views/review/{{ review.id }}/update" method="POST" class="space-y-4">
-            {{ textarea("Contenido", "content", form.content if form else review.content) }}
-            {% call select_field("Recomienda", "recommends") %}
-                {% set cur = (form.recommends if form else review.recommends)|string %}
-                <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Sí</option>
-                <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>No</option>
-            {% endcall %}
-            {% call select_field("Estado", "status") %}
+        <p class="text-sm text-gray-500 mb-4">
+            Review de <span class="font-semibold">{{ row.customer_name }}</span> sobre <span class="font-semibold text-indigo-700">{{ row.title_name }}</span>
+        </p>
+        <form action="/views/review/{{ review.customer_title_id }}/update" method="POST" class="space-y-4">
+            {% call m.select_field("Estado", "status", "") %}
                 {% set cur = (form.status if form else review.status)|string %}
-                <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>Pendiente</option>
-                <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Publicada</option>
+                <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>Pendiente (oculta)</option>
+                <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Publicada (visible)</option>
             {% endcall %}
-            {% call select_field("Customer‑Title", "customer_title_id", "— Seleccionar —") %}
-                {% set cur = (form.customer_title_id if form else review.customer_title_id)|string %}
-                {% for ct in customer_titles %}
-                <option value="{{ ct.id }}" {{ 'selected' if ct.id|string == cur }}>#{{ ct.id }} — Customer #{{ ct.customer_id }} / Title #{{ ct.title_id }}</option>
-                {% endfor %}
+            {{ m.textarea("Contenido", "content", form.content if form else review.content) }}
+            {% call m.select_field("Recomienda el juego", "recommends", "") %}
+                {% set cur = (form.recommends if form else review.recommends)|string %}
+                <option value="true"  {{ 'selected' if cur == 'true' or cur == 'True' }}>Sí, lo recomienda</option>
+                <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>No lo recomienda</option>
             {% endcall %}
-            {{ form_buttons("Actualizar", "/views/review/" ~ review.id) }}
+            {{ m.form_buttons("Actualizar", "/views/review/" ~ review.customer_title_id) }}
         </form>
     </div>
 </div></div>

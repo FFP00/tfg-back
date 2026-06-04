@@ -11,10 +11,10 @@ class Wallet(SQLModel, table=True):
 
     __tablename__ = "wallet"
 
-    customer_id:    int             = Field(foreign_key="customer.id", primary_key=True, nullable=False)
-    balance:        Decimal  | None = Field(default=None, nullable=True, decimal_places=2, max_digits=10)
+    customer_user_id:   int             = Field(primary_key=True, foreign_key="customer.user_id", nullable=False)
+    balance:            Decimal  | None = Field(default=None, nullable=True, decimal_places=2, max_digits=5)
 
-    created_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
-    updated_at:     datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+    created_at:         datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+    updated_at:         datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
 
-    customer:       Customer | None = Relationship(sa_relationship_kwargs={"lazy": "joined"})
+    customer:           Customer | None = Relationship(sa_relationship_kwargs={"lazy": "joined"})

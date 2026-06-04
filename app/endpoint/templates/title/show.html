@@ -1,43 +1,61 @@
 {% extends "base.html" %}
-{% from "macros.html" import form_header, field, badge, actions %}
-{% block title %}Title #{{ title.id }}{% endblock %}
-{% block header %}{{ form_header("Detalles de Title") }}{% endblock %}
+{% import "macros.html" as m %}
+{% block title %}{{ title.name }}{% endblock %}
+{% block header %}{{ m.form_header(title.name) }}{% endblock %}
 {% block content %}
-<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="py-6"><div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-        <h1 class="text-xl font-semibold">{{ title.name }}</h1>
-        <div class="space-y-1 text-gray-700 mt-2">
-            {{ field("ID", title.id) }}
-            <p><strong>Estado:</strong> {{ badge(title.status) }}</p>
-            {{ field("Descuento", title.actual_discount ~ "%") }}
-            {{ field("Fecha de lanzamiento", title.release_date) }}
-            {{ field("Precio", "$" ~ title.release_price) }}
-            {{ field("Developer", "#" ~ title.developer_id, "/views/developer/" ~ title.developer_id) }}
-            {{ field("Media ID", title.media_id) }}
-            {{ field("created at", title.created_at) }}
-            {{ field("updated at", title.updated_at) }}
+
+        {# ── Cabecera ─────────────────────────────────────────────────────── #}
+        <div class="flex items-start justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">{{ title.name }}</h1>
+                <p class="text-sm text-gray-500 mt-1">Developer: <span class="font-semibold text-indigo-700">{{ dev_name }}</span></p>
+            </div>
+            <div class="text-right">
+                <p class="text-xl font-bold text-gray-800">${{ title.release_price }}</p>
+                {% if title.actual_discount > 0 %}
+                <p class="text-sm text-emerald-600 font-semibold">{{ title.actual_discount }}% dto.</p>
+                {% endif %}
+            </div>
         </div>
+
+        {# ── Campos ───────────────────────────────────────────────────────── #}
+        <div class="grid grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
+            <p><strong>Estado:</strong> {{ m.badge(title.status, "Activo", "Pendiente aprobación") }}</p>
+            {{ m.field("Fecha de lanzamiento", title.release_date) }}
+            {{ m.field("Creado", title.created_at) }}
+            {{ m.field("Actualizado", title.updated_at) }}
+        </div>
+
+        {# ── Imágenes ─────────────────────────────────────────────────────── #}
         {% if photo_fields %}
-        <div class="mt-6">
-            <p class="font-semibold text-gray-700 mb-2">Fotos</p>
+        <div class="border-t pt-6 mb-6">
+            <p class="font-semibold text-gray-700 mb-3">Imágenes</p>
             <div class="flex flex-wrap gap-3">
                 {% for f in photo_fields %}
-                <img src="/views/title/{{ title.id }}/media/{{ f }}"
-                     alt="{{ f }}"
-                     class="h-32 object-cover rounded border border-gray-200">
+                <div class="text-center">
+                    <img src="/views/title/{{ title.id }}/media/{{ f }}"
+                         alt="{{ f }}"
+                         class="h-28 object-cover rounded border border-gray-200">
+                    <p class="text-xs text-gray-400 mt-1">{{ f }}</p>
+                </div>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
+
+        {# ── Trailer ──────────────────────────────────────────────────────── #}
         {% if has_trailer %}
-        <div class="mt-6">
-            <p class="font-semibold text-gray-700 mb-2">Trailer</p>
-            <video controls class="w-full max-w-2xl rounded border border-gray-200">
+        <div class="border-t pt-6 mb-6">
+            <p class="font-semibold text-gray-700 mb-3">Trailer</p>
+            <video controls preload="metadata" class="w-full max-w-3xl rounded border border-gray-200">
                 <source src="/views/title/{{ title.id }}/media/trailer" type="video/mp4">
             </video>
         </div>
         {% endif %}
-        {{ actions("/views/title", title.id, show=False, back=True) }}
+
+        {{ m.actions("/views/title", title.id, show=False, back=True) }}
     </div>
 </div></div>
 {% endblock %}

@@ -1,26 +1,25 @@
 {% extends "base.html" %}
-{% from "macros.html" import form_header, field, actions %}
-{% block title %}Friendship #{{ friendship.id }}{% endblock %}
-{% block header %}{{ form_header("Detalles de Friendship") }}{% endblock %}
+{% import "macros.html" as m %}
+{% block title %}Amistad: {{ names.get(friendship.customer_user_id_1, "?") }} ↔ {{ names.get(friendship.customer_user_id_2, "?") }}{% endblock %}
+{% block header %}{{ m.form_header("Detalles de Amistad") }}{% endblock %}
 {% block content %}
-<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-        <h1 class="text-xl font-semibold">Customer #{{ friendship.customer_id_1 }} ↔ Customer #{{ friendship.customer_id_2 }}</h1>
-        <div class="space-y-1 text-gray-700 mt-2">
-            {{ field("ID", friendship.id) }}
+        <h1 class="text-xl font-semibold mb-4">
+            {{ names.get(friendship.customer_user_id_1, "—") }} ↔ {{ names.get(friendship.customer_user_id_2, "—") }}
+        </h1>
+        <div class="space-y-2 text-gray-700">
             <p><strong>Estado:</strong>
-                {% if friendship.status == 'accepted' %}<span class="text-emerald-500 font-semibold">Aceptada</span>
-                {% elif friendship.status == 'pending' %}<span class="text-yellow-500 font-semibold">Pendiente</span>
-                {% elif friendship.status == 'rejected' %}<span class="text-red-400 font-semibold">Rechazada</span>
-                {% elif friendship.status == 'blocked' %}<span class="text-red-700 font-semibold">Bloqueada</span>
-                {% else %}<span class="text-gray-400">{{ friendship.status }}</span>{% endif %}
+                {% if friendship.status == "accepted" %}<span class="text-emerald-600 font-semibold">Aceptada</span>
+                {% else %}<span class="text-amber-500 font-semibold">Pendiente</span>{% endif %}
             </p>
-            {{ field("Customer 1", "#" ~ friendship.customer_id_1, "/views/customer/" ~ friendship.customer_id_1) }}
-            {{ field("Customer 2", "#" ~ friendship.customer_id_2, "/views/customer/" ~ friendship.customer_id_2) }}
-            {{ field("created at", friendship.created_at) }}
-            {{ field("updated at", friendship.updated_at) }}
+            {{ m.field("Emisor de la solicitud", names.get(friendship.initiator_id, "—")) }}
+            {{ m.field("Usuario 1", names.get(friendship.customer_user_id_1, "—"), "/views/customer/" ~ friendship.customer_user_id_1) }}
+            {{ m.field("Usuario 2", names.get(friendship.customer_user_id_2, "—"), "/views/customer/" ~ friendship.customer_user_id_2) }}
+            {{ m.field("Creada", friendship.created_at) }}
+            {{ m.field("Actualizada", friendship.updated_at) }}
         </div>
-        {{ actions("/views/friendship", friendship.id, show=False, back=True) }}
+        {{ m.actions("/views/friendship", friendship.id, show=False, back=True) }}
     </div>
 </div></div>
 {% endblock %}

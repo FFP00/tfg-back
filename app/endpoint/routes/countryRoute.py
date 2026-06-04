@@ -3,17 +3,17 @@ from sqlmodel import Session, select
 
 from app.config.database import get_session
 from app.database.models.CountryModel import Country
-from app.endpoint.schemas.countrySchema import CountryShow
+from app.endpoint.schemas.countrySchema import CountryShow as ShowValidation
 
 router = APIRouter()
 
 
-@router.get("/", response_model=list[CountryShow])
+@router.get("/", response_model=list[ShowValidation])
 def index(session: Session = Depends(get_session)) -> list[Country]:
     return list(session.exec(select(Country)).all())
 
 
-@router.get("/{code}", response_model=CountryShow)
+@router.get("/{code}", response_model=ShowValidation)
 def show(code: str, session: Session = Depends(get_session)) -> Country:
     country = session.exec(select(Country).where(Country.code == code)).first()
     if not country:

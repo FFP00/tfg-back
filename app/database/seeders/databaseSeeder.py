@@ -3,6 +3,7 @@ import logging
 from sqlmodel import Session
 
 from app.config.database import engine
+from app.database.seeders.adminSeeder import seed_admin
 from app.database.seeders.countrySeeder import seed_currencies_countries
 from app.database.seeders.customerSeeder import seed_customers
 from app.database.seeders.customerTitleSeeder import seed_customers_titles
@@ -20,14 +21,15 @@ def run_seed() -> None:
     logger.info("Iniciando databaseSeeder.py")
     with Session(engine) as session:
         try:
-            seed_currencies_countries(session)
-            seed_games(session)
-            seed_customers(session, count=150)
-            seed_friendships(session, count=300)
-            seed_customers_titles(session, count=300)
-            seed_transactions(session, count=500)
-            seed_reviews(session, count=500)
-            seed_titles_transactions(session, count=500)
+            seed_currencies_countries   (session)
+            seed_admin                  (session)
+            seed_games                  (session)
+            seed_customers              (session, count=150)
+            seed_friendships            (session, count=300)
+            seed_customers_titles       (session, count=300)
+            seed_transactions           (session, count=500)
+            seed_reviews                (session, count=500)
+            seed_titles_transactions    (session, count=500)
             session.commit()
 
         except Exception as e:

@@ -1,23 +1,25 @@
-from sqlalchemy import Column, DateTime, Integer, LargeBinary, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, UniqueConstraint, func
 
 from alembic import op
 
-revision        = "002"
-down_revision   = "001"
+revision        = "012"
+down_revision   = "011"
 branch_labels   = None
 depends_on      = None
 
 
 def upgrade():
-    t = op.create_table("image",
+    t = op.create_table("genre_title",
 
         Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("profile",       LargeBinary, nullable=True),
-        Column("banner",        LargeBinary, nullable=True),
+        Column("title_id",      Integer, ForeignKey("title.id"),  nullable=False),
+        Column("genre_id",      Integer, ForeignKey("genre.id"),  nullable=False),
 
         Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
+
+        UniqueConstraint("title_id", "genre_id", name="uq_title_genre"),
     )
 
     op.execute(f"""
@@ -38,4 +40,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table("image")
+    op.drop_table("genre_title")

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% from "macros.html" import form_header, input, select_field, form_buttons %}
-{% block title %}Editar Customer #{{ customer.id }}{% endblock %}
+{% block title %}Editar Customer #{{ customer.user_id }}{% endblock %}
 {% block header %}{{ form_header("Editar Customer") }}{% endblock %}
 {% block content %}
 <div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white shadow-sm sm:rounded-lg p-6">
-        <form action="/views/customer/{{ customer.id }}/update" method="POST" class="space-y-4">
-            {{ input("Nombre", "name", form.name if form else customer.name) }}
-            {{ input("Email", "email", form.email if form else customer.email, type="email") }}
+        <form action="/views/customer/{{ customer.user_id }}/update" method="POST" class="space-y-4">
+            {{ input("Nombre", "name", form.name if form else customer.user.name) }}
+            {{ input("Email", "email", form.email if form else customer.user.email, type="email") }}
             {{ input("Nueva contraseña", "password", type="password", placeholder="Dejar vacío para no cambiar") }}
             {% call select_field("Estado", "status") %}
                 {% set cur = (form.status if form else customer.status)|string %}
@@ -15,21 +15,15 @@
                 <option value="false" {{ 'selected' if cur == 'false' or cur == 'False' }}>Inactivo</option>
             {% endcall %}
             {% call select_field("Country", "country_id", "— Sin country —") %}
-                {% set cur = (form.country_id if form else customer.country_id)|string %}
+                {% set cur = (form.country_id if form else customer.user.country_id)|string %}
                 {% for c in countries %}
                 <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur }}>{{ c.name }} ({{ c.code }})</option>
-                {% endfor %}
-            {% endcall %}
-            {% call select_field("Image", "image_id", "— Sin imagen —") %}
-                {% set cur = (form.image_id if form else customer.image_id)|string %}
-                {% for img in images %}
-                <option value="{{ img.id }}" {{ 'selected' if img.id|string == cur }}>Image #{{ img.id }}</option>
                 {% endfor %}
             {% endcall %}
             {% if wallet %}
             {{ input("Balance ($)", "balance", form.balance if form else wallet.balance, type="number", placeholder="0.00") }}
             {% endif %}
-            {{ form_buttons("Actualizar", "/views/customer/" ~ customer.id) }}
+            {{ form_buttons("Actualizar", "/views/customer/" ~ customer.user_id) }}
         </form>
     </div>
 </div></div>

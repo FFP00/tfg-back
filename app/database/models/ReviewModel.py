@@ -10,7 +10,7 @@ class Review(SQLModel, table=True):
 
     customer_title_id:  int             = Field(primary_key=True, foreign_key="customer_title.id")
 
-    content:            str             = Field(nullable=False)
+    content:            str             = Field(nullable=False, max_length=255)
     votes:              int             = Field(default=0, nullable=False)
     recommends:         bool            = Field(nullable=False)
     status:             bool            = Field(default=False, nullable=False)

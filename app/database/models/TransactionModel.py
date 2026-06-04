@@ -10,12 +10,13 @@ class Transaction(SQLModel, table=True):
 
     __tablename__ = "transaction"
 
-    id:          int      | None = Field(default=None, primary_key=True)
+    id:                       int      | None = Field(default=None, primary_key=True)
 
-    customer_id: int             = Field(
-        sa_column=Column("wallet_customer_id", Integer, ForeignKey("wallet.customer_id"), nullable=False)
+    wallet_customer_user_id:  int             = Field(
+        sa_column=Column("wallet_customer_user_id", Integer, ForeignKey("wallet.customer_user_id"), nullable=False)
     )
-    created_at:  datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
-    updated_at:  datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
 
-    wallet:      Wallet   | None = Relationship(sa_relationship_kwargs={"lazy": "noload"})
+    created_at:               datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+    updated_at:               datetime | None = Field(default=None, sa_column=Column(DateTime(timezone=True), server_default=func.now(), nullable=False))
+
+    wallet:                   Wallet   | None = Relationship(sa_relationship_kwargs={"lazy": "noload"})

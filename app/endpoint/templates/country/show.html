@@ -1,20 +1,23 @@
 {% extends "base.html" %}
-{% from "macros.html" import form_header, field, actions %}
-{% block title %}Country #{{ country.id }}{% endblock %}
-{% block header %}{{ form_header("Detalles de Country") }}{% endblock %}
+{% import "macros.html" as m %}
+{% block title %}{{ country.english_name }}{% endblock %}
+{% block header %}{{ m.form_header("Detalles de País") }}{% endblock %}
 {% block content %}
-<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-        <h1 class="text-xl font-semibold">{{ country.en_name }} <span class="text-gray-400 font-normal text-base">/ {{ country.name }}</span></h1>
-        <div class="space-y-1 text-gray-700 mt-2">
-            {{ field("ID", country.id) }}
-            {{ field("Nombre EN", country.en_name) }}
-            {{ field("Código", country.code) }}
-            {{ field("Currency", "#" ~ country.currency_id, "/views/currency/" ~ country.currency_id) }}
-            {{ field("created at", country.created_at) }}
-            {{ field("updated at", country.updated_at) }}
+        <h1 class="text-xl font-semibold mb-1">{{ country.english_name }}</h1>
+        <p class="text-gray-400 text-sm mb-4">{{ country.native_name }}</p>
+        <div class="space-y-2 text-gray-700">
+            {{ m.field("Código ISO", country.code) }}
+            {% if country.currency %}
+                {{ m.field("Moneda", country.currency.name ~ " (" ~ country.currency.code ~ " " ~ country.currency.symbol ~ ")", "/views/currency/" ~ country.currency_id) }}
+            {% else %}
+                {{ m.field("Moneda", None) }}
+            {% endif %}
+            {{ m.field("Creado", country.created_at) }}
+            {{ m.field("Actualizado", country.updated_at) }}
         </div>
-        {{ actions("/views/country", country.id, show=False, back=True) }}
+        {{ m.actions("/views/country", country.id, show=False, back=True) }}
     </div>
 </div></div>
 {% endblock %}

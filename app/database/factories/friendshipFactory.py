@@ -8,7 +8,10 @@ class FriendshipFactory(SQLAlchemyFactory[Friendship]):
     __model__ = Friendship
     __set_relationships__ = False
 
-    id         = Use(lambda: None)
-    status     = Use(lambda: "pending")
-    created_at = Use(lambda: None)
-    updated_at = Use(lambda: None)
+    id                   = Use(lambda: None)
+    status               = Use(lambda: "pending")
+    customer_user_id_1   = Use(lambda: None)
+    customer_user_id_2   = Use(lambda: None)
+
+    created_at           = Use(lambda: None)
+    updated_at           = Use(lambda: None)

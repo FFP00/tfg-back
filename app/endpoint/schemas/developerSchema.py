@@ -1,12 +1,11 @@
-import re
 from datetime import datetime
 
 from fastapi import UploadFile
 from pydantic import field_validator
 from sqlmodel import SQLModel
 
-_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-_PWD_RE   = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$")
+from app.endpoint.schemas.countrySchema import CountryShow
+from app.endpoint.schemas.userSchema import _EMAIL_RE, _PWD_RE
 
 
 class DeveloperCreate(SQLModel):
@@ -14,6 +13,7 @@ class DeveloperCreate(SQLModel):
     email:         str
     support_email: str
     password:      str
+    country_code:  str
     website_url:   str | None = None
 
     @field_validator("email", "support_email")
@@ -37,21 +37,21 @@ class DeveloperCreate(SQLModel):
 class DeveloperPublic(SQLModel):
     name:          str
     support_email: str
-    website_url:   str      | None = None
-
-    created_at:    datetime | None = None
-    updated_at:    datetime | None = None
+    website_url:   str         | None = None
+    country:       CountryShow | None = None
+    created_at:    datetime    | None = None
+    updated_at:    datetime    | None = None
 
 
 class DeveloperShow(SQLModel):
     name:          str
     email:         str
     support_email: str
-    website_url:   str      | None = None
+    website_url:   str         | None = None
     status:        bool
-
-    created_at:    datetime | None = None
-    updated_at:    datetime | None = None
+    country:       CountryShow | None = None
+    created_at:    datetime    | None = None
+    updated_at:    datetime    | None = None
 
 
 class DeveloperPatch(SQLModel):
@@ -60,6 +60,14 @@ class DeveloperPatch(SQLModel):
     support_email: str | None = None
     password:      str | None = None
     website_url:   str | None = None
+    country_code:  str | None = None
+
+    @field_validator("email", "support_email")
+    @classmethod
+    def validate_email(cls, v: str | None) -> str | None:
+        if v is not None and not _EMAIL_RE.match(v):
+            raise ValueError("Email inválido")
+        return v
 
     @field_validator("password")
     @classmethod

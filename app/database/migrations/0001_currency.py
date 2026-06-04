@@ -13,9 +13,9 @@ def upgrade():
 
         Column("id",            Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("name",          String, nullable=False, unique=True),
-        Column("code",          String, nullable=False, unique=True),
-        Column("symbol",        String, nullable=False),
+        Column("name",          String(50), nullable=False, unique=True),
+        Column("code",          String(3), nullable=False, unique=True),
+        Column("symbol",        String(10), nullable=False),
 
         Column("created_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),
         Column("updated_at",    DateTime(timezone=True), server_default=func.now(), nullable=False),

@@ -1,18 +1,43 @@
 {% extends "base.html" %}
-{% from "macros.html" import form_header, field, actions %}
-{% block title %}Transaction #{{ transaction.id }}{% endblock %}
-{% block header %}{{ form_header("Detalles de Transaction") }}{% endblock %}
+{% import "macros.html" as m %}
+{% block title %}Transacción #{{ transaction.id }}{% endblock %}
+{% block header %}{{ m.form_header("Detalles de Transacción") }}{% endblock %}
 {% block content %}
-<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="py-6"><div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-        <h1 class="text-xl font-semibold">Transaction #{{ transaction.id }}</h1>
-        <div class="space-y-1 text-gray-700 mt-2">
-            {{ field("ID", transaction.id) }}
-            {{ field("Customer", "#" ~ transaction.customer_id, "/views/customer/" ~ transaction.customer_id) }}
-            {{ field("created at", transaction.created_at) }}
-            {{ field("updated at", transaction.updated_at) }}
+        <h1 class="text-xl font-semibold mb-4">Transacción #{{ transaction.id }}</h1>
+        <div class="space-y-2 text-gray-700 mb-6">
+            {{ m.field("Customer", customer_name, "/views/customer/" ~ transaction.wallet_customer_user_id) }}
+            {{ m.field("Fecha", transaction.created_at) }}
         </div>
-        {{ actions("/views/transaction", transaction.id, show=False, edit=False, back=True) }}
+
+        {% if items %}
+        <div class="border-t pt-4">
+            <p class="font-semibold text-gray-700 mb-3">Títulos comprados</p>
+            <div class="overflow-hidden rounded border border-gray-100">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50 text-xs font-medium text-gray-500 uppercase text-left">
+                        <tr>
+                            <th class="px-4 py-2">Título ID</th>
+                            <th class="px-4 py-2">Precio pagado</th>
+                            <th class="px-4 py-2">Descuento</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                    {% for item in items %}
+                        <tr>
+                            <td class="px-4 py-2 text-gray-600">{{ item.title_id }}</td>
+                            <td class="px-4 py-2 font-medium">${{ item.price }}</td>
+                            <td class="px-4 py-2 text-gray-500">{{ item.discount }}%</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {{ m.actions("/views/transaction", transaction.id, show=False, edit=False, back=True) }}
     </div>
 </div></div>
 {% endblock %}

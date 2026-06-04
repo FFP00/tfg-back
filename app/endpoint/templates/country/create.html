@@ -6,8 +6,8 @@
 <div class="py-6"><div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
     <div class="bg-white shadow-sm sm:rounded-lg p-6">
         <form action="/views/country/" method="POST" class="space-y-4">
-            {{ input("Nombre", "name", form.name) }}
-            {{ input("Nombre EN", "en_name", form.en_name) }}
+            {{ input("Nombre nativo", "native_name", form.native_name) }}
+            {{ input("Nombre EN (inglés)", "english_name", form.english_name) }}
             {{ input("Código ISO", "code", form.code, placeholder="ES, US, FR...") }}
             {% call select_field("Currency", "currency_id", "— Sin currency —") %}
                 {% set cur = form.currency_id if form else "" %}

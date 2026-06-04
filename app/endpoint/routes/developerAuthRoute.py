@@ -2,34 +2,44 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Response
 from pwdlib import PasswordHash
-from sqlmodel import Session, select
+from sqlmodel import Session, or_, select
 
-from app.config.auth import (
-    create_access_token,
-    oauth2_developer,
-    revoke_token,
-)
+from app.config.auth import create_access_token, oauth2_developer, revoke_token
 from app.config.database import get_session
+from app.config.mail import send_admin_developer_pending
+from app.database.models.CountryModel import Country
 from app.database.models.DeveloperModel import Developer
+from app.database.models.UserModel import User
 from app.endpoint.schemas.authSchema import LoginForm
-from app.endpoint.schemas.developerSchema import (
-    DeveloperCreate,
-    DeveloperShow,
-    LoginDeveloperResponse,
-)
+from app.endpoint.schemas.countrySchema import CountryShow
+from app.endpoint.schemas.developerSchema import DeveloperCreate as CreateValidation
+from app.endpoint.schemas.developerSchema import DeveloperShow as ShowValidation
+from app.endpoint.schemas.developerSchema import LoginDeveloperResponse
 
 hasher = PasswordHash.recommended()
 router = APIRouter()
 
 
+def _build_show(developer: Developer) -> ShowValidation:
+    u = developer.user
+    return ShowValidation(
+        name          = u.name          if u else "",
+        email         = u.email         if u else "",
+        support_email = developer.support_email,
+        website_url   = developer.website_url,
+        status        = developer.status,
+        country       = CountryShow.model_validate(u.country, from_attributes=True) if u and u.country else None,
+        created_at    = developer.created_at,
+        updated_at    = developer.updated_at,
+    )
+
+
 @router.post("/register", status_code=201)
-def register(
-    payload: DeveloperCreate, session: Session = Depends(get_session)
-) -> Response:
-    if session.exec(select(Developer).where(Developer.email == payload.email)).first():
-        raise HTTPException(status_code=409, detail="Email ya registrado")
-    if session.exec(select(Developer).where(Developer.name == payload.name)).first():
-        raise HTTPException(status_code=409, detail="Nombre ya registrado")
+def register(payload: CreateValidation, session: Session = Depends(get_session)) -> Response:
+    if session.exec(
+        select(User).where(or_(User.email == payload.email, User.name == payload.name))
+    ).first():
+        raise HTTPException(status_code=409, detail="Email o nombre ya registrado")
     if session.exec(
         select(Developer).where(Developer.support_email == payload.support_email)
     ).first():
@@ -38,16 +48,24 @@ def register(
         select(Developer).where(Developer.website_url == payload.website_url)
     ).first():
         raise HTTPException(status_code=409, detail="Website URL ya registrada")
-    developer = Developer(
+    country = session.exec(select(Country).where(Country.code == payload.country_code)).first()
+    if not country:
+        raise HTTPException(status_code=404, detail="Country no encontrado")
+    user = User(
         name=payload.name,
         email=payload.email,
-        support_email=payload.support_email,
         password=hasher.hash(payload.password),
-        website_url=payload.website_url,
-        status=False,
+        country_id=country.id,
+        type="DEV",
     )
-    session.add(developer)
+    session.add(user)
+    session.flush()
+    session.add(Developer(user_id=user.id, support_email=payload.support_email, website_url=payload.website_url))
     session.commit()
+    try:
+        send_admin_developer_pending(payload.name, payload.support_email)
+    except Exception:  # noqa: BLE001, S110
+        pass
     return Response(status_code=201)
 
 
@@ -55,17 +73,14 @@ def register(
 def login(
     form: Annotated[LoginForm, Form()], session: Session = Depends(get_session)
 ) -> LoginDeveloperResponse:
-    developer = session.exec(
-        select(Developer).where(Developer.email == form.username, Developer.status)
-    ).first()
-    if not developer or not hasher.verify(form.password, developer.password):
+    user      = session.exec(select(User).where(User.email == form.username, User.type == "DEV")).first()
+    developer = session.get(Developer, user.id) if user else None
+    if not user or not developer or not developer.status or not hasher.verify(form.password, user.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-    token = create_access_token(
-        {"sub": str(developer.id), "role": "developer"}, session
-    )
+    token = create_access_token({"sub": str(user.id), "role": "developer"}, user.id, session)
     return LoginDeveloperResponse(
-        access_token=token,
-        developer=DeveloperShow.model_validate(developer, from_attributes=True),
+        access_token = token,
+        developer    = _build_show(developer),
     )
 
 

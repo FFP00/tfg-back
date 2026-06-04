@@ -8,7 +8,7 @@ class Image(SQLModel, table=True):
 
     __tablename__ = "image"
 
-    id:         int      | None = Field(default=None, primary_key=True)
+    user_id:    int             = Field(primary_key=True, foreign_key="user.id", nullable=False)
     profile:    bytes    | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
     banner:     bytes    | None = Field(default=None, sa_column=Column(LargeBinary, nullable=True))
 

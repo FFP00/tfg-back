@@ -14,10 +14,10 @@
             {{ input("Descuento (%)", "actual_discount", form.actual_discount or 0, type="number") }}
             {{ input("Fecha de lanzamiento", "release_date", form.release_date, type="date") }}
             {{ input("Precio ($)", "release_price", form.release_price, type="number") }}
-            {% call select_field("Developer", "developer_id", "— Sin developer —") %}
-                {% set cur = (form.developer_id if form else "")|string %}
+            {% call select_field("Developer", "developer_user_id", "— Sin developer —") %}
+                {% set cur = (form.developer_user_id if form else "")|string %}
                 {% for d in developers %}
-                <option value="{{ d.id }}" {{ 'selected' if d.id|string == cur }}>{{ d.name }}</option>
+                <option value="{{ d.user_id }}" {{ 'selected' if d.user_id|string == cur }}>{{ d.user.name }}</option>
                 {% endfor %}
             {% endcall %}
             {{ form_buttons("Crear Title", "/views/title/") }}

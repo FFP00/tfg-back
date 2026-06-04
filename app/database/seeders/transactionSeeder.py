@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def seed_transactions(session: Session, count: int) -> None:
-    wallets = session.exec(select(Wallet.customer_id)).all()
+    wallets = session.exec(select(Wallet.customer_user_id)).all()
 
     if not wallets:
         logger.info("No encontramos carteras")
@@ -20,7 +20,7 @@ def seed_transactions(session: Session, count: int) -> None:
     transactions = []
     for _ in range(count):
         transaction = TransactionFactory.build()
-        transaction.customer_id = secrets.choice(wallets)
+        transaction.wallet_customer_user_id = secrets.choice(wallets)
         transactions.append(transaction)
 
     session.add_all(transactions)

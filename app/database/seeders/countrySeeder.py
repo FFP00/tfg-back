@@ -23,25 +23,16 @@ def seed_currencies_countries(session: Session) -> None:
         data = json.load(file)
 
     currencies_unicas = set()
+    for entry in data:
+        currencies_unicas.add((entry["currency_name"], entry["currency_code"]))
 
-    for currency in data:
-        moneda = currency["currency_name"]
-        codigo = currency["currency_code"]
-
-        monedas = (moneda, codigo)
-
-        currencies_unicas.add(monedas)
+    symbols_map = {entry["currency_code"]: entry.get("currency_symbol", "$") for entry in data}
 
     currencies = []
-
-    symbols_map = {
-        entry["currency_code"]: entry.get("currency_symbol", "$") for entry in data
-    }
-
     for moneda, codigo in currencies_unicas:
-        currency = CurrencyFactory.build()
-        currency.name = moneda
-        currency.code = codigo
+        currency        = CurrencyFactory.build()
+        currency.name   = moneda
+        currency.code   = codigo
         currency.symbol = symbols_map.get(codigo, "$")
         currencies.append(currency)
 
@@ -50,24 +41,20 @@ def seed_currencies_countries(session: Session) -> None:
     session.flush()
 
     countries = []
-
     for pais in data:
-        country = CountryFactory.build()
-        country.name = pais["official_name"]
-        country.en_name = pais["name_en"]
-        country.code = pais["code"]
-
         currency_id = session.exec(
             select(Currency.id).where(Currency.code == pais["currency_code"])
         ).first()
 
-        if currency_id is not None:
-            country.currency_id = currency_id
-
-        else:
-            logger.info("No encontramos imagenes")
+        if currency_id is None:
+            logger.info("No encontramos moneda para el pais")
             return
 
+        country              = CountryFactory.build()
+        country.native_name  = pais["official_name"]
+        country.english_name = pais["name_en"]
+        country.code         = pais["code"]
+        country.currency_id  = currency_id
         countries.append(country)
 
     session.add_all(countries)

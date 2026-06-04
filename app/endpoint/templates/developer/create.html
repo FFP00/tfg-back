@@ -11,15 +11,15 @@
             {{ input("Support Email", "support_email", form.support_email, type="email") }}
             {{ input("Contraseña", "password", type="password") }}
             {{ input("Website URL", "website_url", form.website_url, placeholder="https://...") }}
+            {% call select_field("Country", "country_id", "— Sin country —") %}
+                {% set cur = (form.country_id if form else "")|string %}
+                {% for c in countries %}
+                <option value="{{ c.id }}" {{ 'selected' if c.id|string == cur }}>{{ c.name }} ({{ c.code }})</option>
+                {% endfor %}
+            {% endcall %}
             {% call select_field("Estado", "status") %}
                 <option value="true"  {{ 'selected' if form and form.status == 'true' }}>Activo</option>
                 <option value="false" {{ 'selected' if not form or form.status == 'false' }}>Inactivo</option>
-            {% endcall %}
-            {% call select_field("Image", "image_id", "— Sin imagen —") %}
-                {% set cur = (form.image_id if form else "")|string %}
-                {% for img in images %}
-                <option value="{{ img.id }}" {{ 'selected' if img.id|string == cur }}>Image #{{ img.id }}</option>
-                {% endfor %}
             {% endcall %}
             {{ form_buttons("Crear Developer", "/views/developer/") }}
         </form>

@@ -1,22 +1,55 @@
 {% extends "base.html" %}
-{% from "macros.html" import page_header, field, badge, actions, empty_state, pagination %}
+{% import "macros.html" as m %}
 {% block title %}Reviews{% endblock %}
-{% block header %}{{ page_header("Listado de Reviews", "/views/review/create") }}{% endblock %}
+{% block header %}{{ m.page_header("Reviews") }}{% endblock %}
 {% block content %}
-<div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-    <div class="flex flex-col gap-4">
-        {% for review in reviews %}
-        <div class="bg-white p-8 shadow-sm rounded-lg border border-gray-100">
-            <p class="text-gray-800 font-medium">{{ review.content }}</p>
-            <div class="space-y-1 text-gray-700 mt-2">
-                <p><strong>Recomienda:</strong> {{ badge(review.recommends, "Sí", "No") }}</p>
-                <p><strong>Estado:</strong> {{ badge(review.status, "Publicada", "Pendiente", "emerald", "yellow") }}</p>
-                {{ field("Votos", review.votes) }}
-            </div>
-            {{ actions("/views/review", review.id) }}
-        </div>
-        {% else %}{{ empty_state("No se encontraron reviews.") }}{% endfor %}
+<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+
+    <div class="bg-white p-4 shadow-sm rounded-lg mb-6 border border-gray-100">
+        <form method="GET" class="flex gap-3">
+            <input type="text" name="search" value="{{ search or '' }}" placeholder="Buscar por usuario..."
+                   class="flex-1 border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
+            <input type="text" name="game" value="{{ game or '' }}" placeholder="Buscar por juego..."
+                   class="flex-1 border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500">
+            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700">Filtrar</button>
+        </form>
     </div>
-    {{ pagination(page, has_prev, has_next) }}
-</div></div>
+
+    {% if rows %}
+    <div class="bg-white shadow-sm rounded-lg border border-gray-100 overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <tr>
+                    <th class="px-4 py-3">Estado</th>
+                    <th class="px-4 py-3">Usuario</th>
+                    <th class="px-4 py-3">Juego</th>
+                    <th class="px-4 py-3">Recomienda</th>
+                    <th class="px-4 py-3">Votos</th>
+                    <th class="px-4 py-3">Contenido</th>
+                    <th class="px-4 py-3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+            {% for row in rows %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3">
+                        {{ m.badge(row.review.status, "Publicada", "Pendiente", "emerald", "yellow") }}
+                    </td>
+                    <td class="px-4 py-3 font-medium">{{ row.customer_name }}</td>
+                    <td class="px-4 py-3 text-indigo-700">{{ row.title_name }}</td>
+                    <td class="px-4 py-3">{{ m.badge(row.review.recommends, "Sí", "No") }}</td>
+                    <td class="px-4 py-3 text-gray-500">{{ row.review.votes }}</td>
+                    <td class="px-4 py-3 text-gray-600 max-w-xs truncate">{{ row.review.content }}</td>
+                    <td class="px-4 py-3">{{ m.actions("/views/review", row.review.customer_title_id, show=True, edit=True, delete=True) }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ m.pagination(page, has_prev, has_next, search) }}
+    {% else %}
+    {{ m.empty_state("No hay reviews que coincidan con los filtros.") }}
+    {% endif %}
+
+</div>
 {% endblock %}
