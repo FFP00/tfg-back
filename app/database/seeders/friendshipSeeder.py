@@ -31,6 +31,7 @@ def seed_friendships(session: Session, count: int) -> None:
         friendship = FriendshipFactory.build()
         friendship.customer_user_id_1 = pequeño
         friendship.customer_user_id_2 = grande
+        friendship.initiator_id       = secrets.choice([pequeño, grande])
         friendship.status             = "accepted"
         friendships.append(friendship)
 

@@ -200,6 +200,25 @@ username=johndoe&password=Pass123!
 ```
 > `username` acepta tanto `name` como `email`.
 
+**Respuesta `202`:**
+```json
+{ "detail": "Código de verificación enviado a tu email" }
+```
+> No devuelve token. El token se obtiene en `/auth/customer/verify` tras introducir el código recibido por email.
+
+**Errores:** `401` credenciales incorrectas / cuenta inactiva.
+
+---
+
+### `POST /auth/customer/verify`
+**Público.** Segundo paso del login — verificar el código OTP recibido por email.
+
+**Body (`application/json`):**
+```json
+{ "email": "john@example.com", "code": "A3BX" }
+```
+> `code` es insensible a mayúsculas. Si el código es incorrecto se elimina la sesión OTP y hay que volver a hacer login.
+
 **Respuesta `200`:**
 ```json
 {
@@ -209,9 +228,9 @@ username=johndoe&password=Pass123!
   "wallet":       "WalletShow"
 }
 ```
-> Guardar `access_token` en localStorage. El `wallet.balance` empieza en `"0.00"`.
+> El código se consume al usarse (se elimina de DB). Para obtener uno nuevo, repetir `POST /auth/customer/login`.
 
-**Errores:** `401` credenciales incorrectas / cuenta inactiva.
+**Errores:** `400` código inválido · `404` usuario no encontrado.
 
 ---
 
@@ -259,6 +278,24 @@ username=acceso@miestudio.com&password=Pass123!
 ```
 > **Solo acepta email**, no nombre. Solo developers con `status=true` pueden entrar.
 
+**Respuesta `202`:**
+```json
+{ "detail": "Código de verificación enviado a tu email" }
+```
+> Igual que customer login — el token se obtiene en `/auth/developer/verify`.
+
+**Errores:** `401` credenciales incorrectas / cuenta pendiente de aprobación.
+
+---
+
+### `POST /auth/developer/verify`
+**Público.** Segundo paso del login de developer.
+
+**Body (`application/json`):**
+```json
+{ "email": "acceso@miestudio.com", "code": "A3BX" }
+```
+
 **Respuesta `200`:**
 ```json
 {
@@ -268,7 +305,7 @@ username=acceso@miestudio.com&password=Pass123!
 }
 ```
 
-**Errores:** `401` credenciales incorrectas / cuenta pendiente de aprobación.
+**Errores:** `400` código inválido · `404` usuario no encontrado.
 
 ---
 
@@ -831,7 +868,7 @@ const [genres, countries] = await Promise.all([
 // Usar countries[i].english_name / native_name para mostrar al usuario
 ```
 
-### Registro + login de customer
+### Registro + login de customer (flujo 2FA)
 ```js
 // Registrar
 await fetch('/auth/customer/register', {
@@ -840,11 +877,19 @@ await fetch('/auth/customer/register', {
   body: JSON.stringify({ name: 'johndoe', email: 'john@example.com', password: 'Pass123!', country_code: 'ES' }),
 })
 
-// Login
-const res  = await fetch('/auth/customer/login', {
+// Paso 1 — Login: envía credenciales, recibe 202 (no hay token todavía)
+await fetch('/auth/customer/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   body: new URLSearchParams({ username: 'johndoe', password: 'Pass123!' }),
+})
+// → el usuario recibe un email con el código de 4 caracteres
+
+// Paso 2 — Verify: envía el código recibido por email
+const res = await fetch('/auth/customer/verify', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email: 'john@example.com', code: 'A3BX' }),
 })
 const { access_token, customer, wallet } = await res.json()
 localStorage.setItem('token', access_token)

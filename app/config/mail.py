@@ -40,6 +40,18 @@ def send_admin_title_pending(title_name: str, developer_name: str) -> None:
     )
 
 
+def send_otp_code(to: str, code: str) -> None:
+    _send(
+        to      = to,
+        subject = "[Burnt] Tu código de verificación",
+        body    = (
+            f"Tu código de verificación es: {code}\n\n"
+            "Este código expira en 10 minutos.\n"
+            "Si no has solicitado este código, ignora este mensaje."
+        ),
+    )
+
+
 def send_admin_review_pending(customer_name: str, title_name: str) -> None:
     _send(
         to      = settings.MAIL_FROM,

@@ -1,3 +1,4 @@
+import secrets
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Response
@@ -6,15 +7,19 @@ from sqlmodel import Session, or_, select
 
 from app.config.auth import create_access_token, oauth2_developer, revoke_token
 from app.config.database import get_session
-from app.config.mail import send_admin_developer_pending
+from app.config.mail import send_admin_developer_pending, send_otp_code
 from app.database.models.CountryModel import Country
 from app.database.models.DeveloperModel import Developer
+from app.database.models.OtpModel import Otp
 from app.database.models.UserModel import User
 from app.endpoint.schemas.authSchema import LoginForm
 from app.endpoint.schemas.countrySchema import CountryShow
 from app.endpoint.schemas.developerSchema import DeveloperCreate as CreateValidation
 from app.endpoint.schemas.developerSchema import DeveloperShow as ShowValidation
 from app.endpoint.schemas.developerSchema import LoginDeveloperResponse
+from app.endpoint.schemas.otpSchema import OtpPending, OtpVerify
+
+_OTP_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 
 hasher = PasswordHash.recommended()
 router = APIRouter()
@@ -32,6 +37,18 @@ def _build_show(developer: Developer) -> ShowValidation:
         created_at    = developer.created_at,
         updated_at    = developer.updated_at,
     )
+
+
+def _generate_otp(user_id: int, session: Session) -> str:
+    code     = "".join(secrets.choice(_OTP_CHARS) for _ in range(4))
+    existing = session.get(Otp, user_id)
+    if existing:
+        existing.code = code
+        session.add(existing)
+    else:
+        session.add(Otp(user_id=user_id, code=code))
+    session.commit()
+    return code
 
 
 @router.post("/register", status_code=201)
@@ -69,15 +86,41 @@ def register(payload: CreateValidation, session: Session = Depends(get_session))
     return Response(status_code=201)
 
 
-@router.post("/login", response_model=LoginDeveloperResponse)
+@router.post("/login", status_code=202, response_model=OtpPending)
 def login(
     form: Annotated[LoginForm, Form()], session: Session = Depends(get_session)
-) -> LoginDeveloperResponse:
+) -> OtpPending:
     user      = session.exec(select(User).where(User.email == form.username, User.type == "DEV")).first()
     developer = session.get(Developer, user.id) if user else None
     if not user or not developer or not developer.status or not hasher.verify(form.password, user.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-    token = create_access_token({"sub": str(user.id), "role": "developer"}, user.id, session)
+    code = _generate_otp(user.id, session)
+    try:
+        send_otp_code(user.email, code)
+    except Exception:  # noqa: BLE001
+        pass
+    return OtpPending()
+
+
+@router.post("/verify", response_model=LoginDeveloperResponse)
+def verify(payload: OtpVerify, session: Session = Depends(get_session)) -> LoginDeveloperResponse:
+    user = session.exec(
+        select(User).where(User.email == payload.email, User.type == "DEV")
+    ).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    otp = session.exec(
+        select(Otp).where(Otp.user_id == user.id, Otp.code == payload.code.upper())
+    ).first()
+    if not otp:
+        raise HTTPException(status_code=400, detail="Código inválido")
+
+    session.delete(otp)
+
+    developer = session.get(Developer, user.id)
+    token     = create_access_token({"sub": str(user.id), "role": "developer"}, user.id, session)
+
     return LoginDeveloperResponse(
         access_token = token,
         developer    = _build_show(developer),
