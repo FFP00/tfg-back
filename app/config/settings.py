@@ -21,6 +21,13 @@ class Settings(BaseSettings):
     STRIPE_SUCCESS_URL:     str = ""
     STRIPE_CANCEL_URL:      str = ""
 
+    REDIS_HOST:             str = "redis"
+    REDIS_PORT:             int = 6379
+
+    @property
+    def REDIS_URL(self) -> str:
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}"
+
     @property
     def DATABASE_URL(self) -> str:
         return f"postgresql+psycopg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"

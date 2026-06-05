@@ -16,6 +16,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from app.config.ffmpeg import convert_video
+
 # ── Configuración ──────────────────────────────────────────────────────────────
 
 STORE_SEARCH_URL = "https://store.steampowered.com/search/results/"
@@ -32,7 +34,7 @@ COUNT:       int  = 100
 CONCURRENCY: int  = 10
 OUTPUT:      Path = _HERE / "data/games.json"
 IMAGE_DIR:   Path = _HERE / "image"
-QUALITY:     str  = "min"   # "max" | "min"
+VIDEO_QUALITY: str = "min"  # "max" | "min"  — solo afecta al trailer
 
 # Delay entre peticiones a la API de Steam.
 # Probado sin rate-limit hasta 0.05 s; 0.5 s deja margen holgado en sesiones largas.
@@ -218,7 +220,7 @@ def to_entry(appid: int, raw: dict) -> dict:
     si   = raw.get("support_info") or {}
     po   = raw.get("price_overview") or {}
     rd   = raw.get("release_date") or {}
-    ss   = "path_thumbnail" if QUALITY == "min" else "path_full"
+    ss   = "path_full"
     movies = raw.get("movies", [])
     src    = next((m for m in movies if m.get("highlight")), movies[0]) if movies else {}
     return {
@@ -355,7 +357,9 @@ def _fetch_image(session: requests.Session, url: str, dest: Path) -> bool:
     return False
 
 
-def _download_hls_segments(session: requests.Session, playlist_url: str, out: Path) -> bool:
+def _download_hls_segments(
+    session: requests.Session, playlist_url: str, out: Path, max_duration: float | None = None
+) -> bool:
     r = session.get(playlist_url, timeout=15)
     if r.status_code != HTTPStatus.OK:
         return False
@@ -373,7 +377,20 @@ def _download_hls_segments(session: requests.Session, playlist_url: str, out: Pa
         ),
         None,
     )
-    segs = [abs_url(ln.strip()) for ln in lines if ln.strip() and not ln.startswith("#")]
+
+    segs: list[str] = []
+    accumulated = 0.0
+    for ln in lines:
+        if ln.startswith("#EXTINF:"):
+            try:
+                accumulated += float(ln[8:].split(",")[0])
+            except ValueError:
+                pass
+        elif ln.strip() and not ln.startswith("#"):
+            segs.append(abs_url(ln.strip()))
+            if max_duration and accumulated >= max_duration:
+                break
+
     if not segs:
         return False
     with out.open("wb") as f:
@@ -418,20 +435,27 @@ def _fetch_video(session: requests.Session, url: str | None, dest: Path) -> bool
                 variants.append((bw, nxt if nxt.startswith("http") else f"{base}/{nxt}", m.group(1) if m else None))
 
         if variants:
-            variants.sort(key=lambda v: v[0], reverse=(QUALITY == "max"))
+            variants.sort(key=lambda v: v[0], reverse=(VIDEO_QUALITY == "max"))
             _, stream_url, audio_group = variants[0]
         else:
             stream_url, audio_group = url, None
 
-        if not _download_hls_segments(session, stream_url, tmp_v):
+        if not _download_hls_segments(session, stream_url, tmp_v, max_duration=60):
             return False
 
         audio_url = audio_groups.get(audio_group) if audio_group else None
-        if audio_url and _download_hls_segments(session, audio_url, tmp_a) and _mux_mp4(tmp_v, tmp_a, dest):
-            return True
+        if audio_url and _download_hls_segments(session, audio_url, tmp_a, max_duration=60) and _mux_mp4(tmp_v, tmp_a, dest):
+            pass
+        else:
+            log.debug("sin audio — guardando solo vídeo para '%s'", dest.parent.name)
+            tmp_v.rename(dest)
 
-        log.debug("sin audio — guardando solo vídeo para '%s'", dest.parent.name)
-        tmp_v.rename(dest)
+        webm = convert_video(dest.read_bytes())
+        if webm is None:
+            log.warning("conversión WebM fallida para '%s' → saltado", dest.parent.name)
+            dest.unlink(missing_ok=True)
+            return False
+        dest.write_bytes(webm)
         return True
 
     except (requests.RequestException, OSError, ValueError, IndexError) as exc:
@@ -496,7 +520,7 @@ def scrape() -> None:
         log.error("Sin candidatos.")
         raise SystemExit(1)
 
-    log.info("Fase 1: metadatos (calidad=%s)…", QUALITY)
+    log.info("Fase 1: metadatos (imágenes=max, vídeo=%s)…", VIDEO_QUALITY)
     entries: list[dict] = []
     target = COUNT + max(COUNT // 2, 20)
     for app in candidates:

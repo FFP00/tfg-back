@@ -24,7 +24,7 @@ def upgrade():
 
         Column("id",                    Integer, primary_key=True, autoincrement=True, nullable=False),
 
-        Column("name",                  String(100), nullable=False, unique=True),
+        Column("name",                  String(255), nullable=False, unique=True),
         Column("status",                Boolean, nullable=False, server_default="false"),
         Column("actual_discount",       Integer, nullable=False),
         Column("release_date",          Date, nullable=False),

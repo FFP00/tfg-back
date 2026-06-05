@@ -120,13 +120,13 @@ Al insertar un `title` → se crea automáticamente `media` (todos los campos va
 ```json
 {
   "name":            "A Short Hike",
-  "release_price":   "6.39",
+  "release_price":   "7.99",
   "actual_discount": 20,
   "genres":          [{ "name": "Indie" }],
   "developer_name":  "adamgryu | null"
 }
 ```
-> **`release_price` ya incluye el descuento aplicado** (`release_price × (1 - actual_discount/100)`).
+> `release_price` es el precio **base sin descuento**. Para el precio final: `release_price × (1 - actual_discount / 100)`.
 
 ### `TitleShow` _(detalle completo)_
 ```json
@@ -138,12 +138,13 @@ Al insertar un `title` → se crea automáticamente `media` (todos los campos va
   "release_price":   "7.99",
   "genres":          [{ "name": "Adventure" }, { "name": "Indie" }],
   "developer":       "DeveloperPublic | null",
+  "owner_count":     42,
   "created_at":      "... | null",
   "updated_at":      "... | null"
 }
 ```
-> En `GET /api/title/{name}` (público): `release_price` es el precio **final con descuento**.
-> En `GET /api/title/me` (developer): `release_price` es el precio **base sin descuento**.
+> `release_price` es siempre el precio **base sin descuento** en todos los endpoints. Para mostrar el precio final: `release_price × (1 - actual_discount / 100)`.
+> En `GET /api/title/me` (developer): `owner_count` indica cuántos customers tienen el juego. En `GET /api/title/{name}` (público): `owner_count` es `null`.
 
 ### `ReviewShow`
 ```json
@@ -276,7 +277,7 @@ localStorage.removeItem('token')
 ```
 username=acceso@miestudio.com&password=Pass123!
 ```
-> **Solo acepta email**, no nombre. Solo developers con `status=true` pueden entrar.
+> Acepta `name` o `email` (no `support_email`). Solo developers con `status=true` pueden entrar.
 
 **Respuesta `202`:**
 ```json
@@ -337,6 +338,13 @@ username=acceso@miestudio.com&password=Pass123!
 **Query:** `?search=texto` → filtra por `name` o `email` (case-insensitive, parcial).
 
 **Respuesta `200`:** `[CustomerPublic, ...]`
+
+---
+
+### `DELETE /api/customer/me`
+**Token de customer.** Desactiva la propia cuenta (`status=false`). El customer deja de aparecer en listados públicos y no puede volver a hacer login hasta que el admin reactive la cuenta.
+
+**Respuesta:** `204` vacío.
 
 ---
 
@@ -405,6 +413,17 @@ username=acceso@miestudio.com&password=Pass123!
 **Público.** Juegos del customer.
 
 **Respuesta `200`:** `[{ "name": "A Short Hike" }, ...]`
+
+> Para mostrar datos extra por juego (si tiene review, si recomienda), cruzar en el front con `GET /api/customer/{name}/reviews` usando `title_name` como clave:
+> ```js
+> const [library, reviews] = await Promise.all([
+>   fetch(`/api/customer/${name}/library`).then(r => r.json()),
+>   fetch(`/api/customer/${name}/reviews`).then(r => r.json()),
+> ])
+> const reviewMap = Object.fromEntries(reviews.map(r => [r.title_name, r]))
+> const enriched = library.map(g => ({ ...g, review: reviewMap[g.name] ?? null }))
+> // enriched[i].review → { recommends, votes, content, ... } o null si no hay review aprobada
+> ```
 
 ---
 
@@ -498,7 +517,7 @@ username=acceso@miestudio.com&password=Pass123!
 **Token de developer.** Todos los títulos del developer, **incluyendo `status=false`** (pendientes).
 
 **Respuesta `200`:** `[TitleShow, ...]`
-> `release_price` es el **precio base sin descuento** (vista interna del developer).
+> `release_price` es el precio **base sin descuento**. `owner_count` es el número de customers que tienen el juego.
 
 ---
 
@@ -515,7 +534,7 @@ username=acceso@miestudio.com&password=Pass123!
 > Si `genre` o `developer` no existen → devuelve `[]`, no 404.
 
 **Respuesta `200`:** `[TitleCard, ...]`
-> `release_price` en `TitleCard` es el precio **final con descuento**.
+> `release_price` es el precio **base sin descuento**. El front calcula el precio final con `actual_discount`.
 
 ---
 
@@ -641,7 +660,7 @@ username=acceso@miestudio.com&password=Pass123!
 **Público.** Detalle de un título activo.
 
 **Respuesta `200`:** `TitleShow`
-> `release_price` es el precio **final con descuento**.
+> `release_price` es el precio **base sin descuento**. Para el precio final: `release_price × (1 - actual_discount / 100)`.
 
 ---
 
@@ -740,6 +759,27 @@ username=acceso@miestudio.com&password=Pass123!
 **Respuesta:** `204` vacío.
 
 **Errores:** `404` relación no encontrada.
+
+---
+
+## Contacto — `/api/contact`
+
+### `POST /api/contact/`
+**Token de customer o developer.** Envía un mensaje al admin. El remitente se identifica automáticamente por nombre y rol.
+
+**Body (`application/json`):**
+```json
+{ "textarea": "Hola, tengo un problema con..." }
+```
+
+**Respuesta `201`:**
+```json
+{ "detail": "Mensaje enviado correctamente" }
+```
+
+> El email llega al admin con el formato: `De: johndoe (customer)\n\nMensaje:\n...`
+
+**Errores:** `401` sin token / token inválido / token revocado.
 
 ---
 
@@ -975,7 +1015,7 @@ const [title, reviews] = await Promise.all([
   fetch(`/api/title/${encodeURIComponent(name)}`).then(r => r.json()),         // TitleShow
   fetch(`/api/title/${encodeURIComponent(name)}/reviews`).then(r => r.json()), // [ReviewShow]
 ])
-// title.release_price → precio final con descuento
+// title.release_price → precio base; precio final = release_price * (1 - actual_discount / 100)
 // title.developer.name, title.developer.support_email
 
 // Imágenes:

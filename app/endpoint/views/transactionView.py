@@ -4,7 +4,6 @@ from sqlalchemy import func
 from sqlmodel import Session, col, select
 
 from app.config.database import get_session
-from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.CustomerModel import Customer
 from app.database.models.TitleTransactionModel import TitleTransaction
@@ -85,4 +84,4 @@ def delete(id: int, session: Session = Depends(get_session)):
         return RedirectResponse("/views/transaction/?success=Transacción+eliminada", status_code=302)
     except Exception as e:
         session.rollback()
-        return RedirectResponse(f"/views/transaction/?error={human_error(e)}", status_code=302)
+        return RedirectResponse(f"/views/transaction/?error={str(e)}", status_code=302)

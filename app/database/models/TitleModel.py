@@ -12,7 +12,7 @@ class Title(SQLModel, table=True):
     __tablename__ = "title"
 
     id:                  int      | None = Field(default=None, primary_key=True)
-    name:                str             = Field(unique=True, nullable=False, max_length=100)
+    name:                str             = Field(unique=True, nullable=False, max_length=255)
     status:              bool            = Field(default=False, nullable=False)
     actual_discount:     int             = Field(default=0, nullable=False)
     release_date:        date            = Field(nullable=False)

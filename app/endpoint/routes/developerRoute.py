@@ -2,11 +2,13 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException
 from fastapi.responses import Response
+from redis import Redis
 from pwdlib import PasswordHash
 from sqlmodel import Session, col, select
 
 from app.config.auth import get_current_developer, oauth2_developer
 from app.config.database import get_session
+from app.config.redis import get_redis
 from app.database.models.CountryModel import Country
 from app.database.models.DeveloperModel import Developer
 from app.database.models.ImageModel import Image
@@ -148,18 +150,24 @@ async def upload_image(
     body:    Annotated[DeveloperImageUpload, Form()],
     current: Developer = Depends(get_current_developer),
     session: Session   = Depends(get_session),
+    redis:   Redis     = Depends(get_redis),
 ) -> Response:
     if not body.profile and not body.banner:
         raise HTTPException(status_code=400, detail="Se requiere al menos un campo: profile o banner")
     image = session.get(Image, current.user_id)
     if not image:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
+    name = current.user.name if current.user else ""
     if body.profile:
         image.profile = await body.profile.read()
     if body.banner:
         image.banner = await body.banner.read()
     session.add(image)
     session.commit()
+    if body.profile:
+        redis.delete(f"img:developer:{name}:profile")
+    if body.banner:
+        redis.delete(f"img:developer:{name}:banner")
     return Response(status_code=204)
 
 
@@ -167,9 +175,16 @@ async def upload_image(
 
 
 @router.get("/{name}/image/{field}")
-def get_image(name: str, field: str, session: Session = Depends(get_session)) -> Response:
+def get_image(
+    name: str, field: str,
+    session: Session = Depends(get_session),
+    redis:   Redis   = Depends(get_redis),
+) -> Response:
     if field not in _IMAGE_FIELDS:
         raise HTTPException(status_code=400, detail=f"Campo inválido. Válidos: {list(_IMAGE_FIELDS)}")
+    cache_key = f"img:developer:{name}:{field}"
+    if cached := redis.get(cache_key):
+        return Response(content=cached, media_type="image/jpeg")
     developer = _developer_by_name(name, session)
     image     = session.get(Image, developer.user_id)
     if not image:
@@ -177,6 +192,7 @@ def get_image(name: str, field: str, session: Session = Depends(get_session)) ->
     data: bytes | None = getattr(image, field, None)
     if not data:
         raise HTTPException(status_code=404, detail=f"Campo '{field}' vacío")
+    redis.set(cache_key, data, ex=604800)
     return Response(content=data, media_type="image/jpeg")
 
 

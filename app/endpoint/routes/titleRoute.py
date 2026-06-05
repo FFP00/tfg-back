@@ -1,14 +1,16 @@
 from collections.abc import Iterator
-from decimal import Decimal
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import Response, StreamingResponse
+from redis import Redis
 from sqlalchemy import func
 from sqlmodel import Session, col, select
 
 from app.config.auth import get_current_customer, get_current_developer
 from app.config.database import get_session
+from app.config.ffmpeg import convert_video
+from app.config.redis import get_redis
 from app.config.mail import send_admin_review_pending, send_admin_title_pending
 from app.database.models.CustomerModel import Customer
 from app.database.models.CustomerTitleModel import CustomerTitle
@@ -57,12 +59,6 @@ def _genres_for(title_id: int, session: Session) -> list[Genre]:
     return result
 
 
-def _customer_price(title: Title) -> Decimal:
-    if title.actual_discount == 0:
-        return title.release_price
-    return (title.release_price * (1 - Decimal(title.actual_discount) / 100)).quantize(Decimal("0.01"))
-
-
 def _build_developer_public(developer: Developer) -> DeveloperPublic:
     u = developer.user
     return DeveloperPublic(
@@ -81,14 +77,14 @@ def _to_card(title: Title, session: Session) -> TitleCard:
     dev_name = title.developer.user.name if title.developer and title.developer.user else None
     return TitleCard(
         name            = title.name,
-        release_price   = _customer_price(title),
+        release_price   = title.release_price,
         actual_discount = title.actual_discount,
         genres          = [{"name": g.name} for g in genres],
         developer_name  = dev_name,
     )
 
 
-def _to_show(title: Title, session: Session, *, customer: bool = False) -> ShowValidation:
+def _to_show(title: Title, session: Session, *, owner_count: int | None = None) -> ShowValidation:
     title_id  = title.id or 0
     genres    = _genres_for(title_id, session)
     developer = _build_developer_public(title.developer) if title.developer else None
@@ -97,9 +93,10 @@ def _to_show(title: Title, session: Session, *, customer: bool = False) -> ShowV
         status          = title.status,
         actual_discount = title.actual_discount,
         release_date    = title.release_date,
-        release_price   = _customer_price(title) if customer else title.release_price,
+        release_price   = title.release_price,
         genres          = [{"name": g.name} for g in genres],
         developer       = developer,
+        owner_count     = owner_count,
         created_at      = title.created_at,
         updated_at      = title.updated_at,
     )
@@ -122,7 +119,13 @@ def my_titles(
     session: Session   = Depends(get_session),
 ) -> list[ShowValidation]:
     titles = session.exec(select(Title).where(Title.developer_user_id == current.user_id)).all()
-    return [_to_show(t, session) for t in titles]
+    result = []
+    for t in titles:
+        count = session.exec(
+            select(func.count()).select_from(CustomerTitle).where(CustomerTitle.title_id == t.id)
+        ).one()
+        result.append(_to_show(t, session, owner_count=count))
+    return result
 
 
 @router.get("/", response_model=list[TitleCard])
@@ -183,6 +186,7 @@ async def patch_media(
     body:    Annotated[TitleMediaUpload, Form()],
     current: Developer = Depends(get_current_developer),
     session: Session   = Depends(get_session),
+    redis:   Redis     = Depends(get_redis),
 ) -> Response:
     title = session.exec(
         select(Title).where(Title.name == name, Title.developer_user_id == current.user_id)
@@ -202,18 +206,36 @@ async def patch_media(
         raise HTTPException(status_code=400, detail="Se requiere al menos un campo")
     for field, upload in uploads.items():
         if upload:
-            setattr(media, field, await upload.read())
+            raw = await upload.read()
+            if field == "trailer":
+                converted = convert_video(raw)
+                if converted is None:
+                    raise HTTPException(status_code=400, detail="El trailer no se pudo convertir a WebM")
+                raw = converted
+            setattr(media, field, raw)
     session.add(media)
     session.commit()
+    for field in _IMAGE_FIELDS:
+        if uploads.get(field):
+            redis.delete(f"img:title:{name}:{field}")
     return Response(status_code=204)
 
 
 @router.get("/{name}/media/{field}")
 def get_media(
-    name: str, field: str, request: Request, session: Session = Depends(get_session)
+    name: str, field: str, request: Request,
+    session: Session = Depends(get_session),
+    redis:   Redis   = Depends(get_redis),
 ) -> Response:
     if field not in (*_IMAGE_FIELDS, "trailer"):
         raise HTTPException(status_code=400, detail=f"Campo inválido. Válidos: {[*_IMAGE_FIELDS, 'trailer']}")
+
+    cache_key: str | None = None
+    if field in _IMAGE_FIELDS:
+        cache_key = f"img:title:{name}:{field}"
+        if cached := redis.get(cache_key):
+            return Response(content=cached, media_type="image/jpeg")
+
     title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
     if not title:
         raise HTTPException(status_code=404, detail="Título no encontrado")
@@ -224,7 +246,8 @@ def get_media(
     if not data:
         raise HTTPException(status_code=404, detail=f"Campo '{field}' vacío")
 
-    if field != "trailer":
+    if cache_key:
+        redis.set(cache_key, data, ex=604800)
         return Response(content=data, media_type="image/jpeg")
 
     total        = len(data)
@@ -438,4 +461,4 @@ def show(name: str, session: Session = Depends(get_session)) -> ShowValidation:
     title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
     if not title:
         raise HTTPException(status_code=404, detail="Título no encontrado")
-    return _to_show(title, session, customer=True)
+    return _to_show(title, session)

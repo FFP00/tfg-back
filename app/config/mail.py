@@ -62,3 +62,11 @@ def send_admin_review_pending(customer_name: str, title_name: str) -> None:
             "http://localhost:8000/views/review/"
         ),
     )
+
+
+def send_admin_contact(sender: str, message: str) -> None:
+    _send(
+        to      = settings.MAIL_FROM,
+        subject = f"[Burnt] Nuevo mensaje de contacto: {sender}",
+        body    = f"De: {sender}\n\nMensaje:\n{message}",
+    )

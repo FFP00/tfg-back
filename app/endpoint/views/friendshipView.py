@@ -4,7 +4,6 @@ from sqlalchemy import func
 from sqlmodel import Session, col, or_, select
 
 from app.config.database import get_session
-from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.CustomerModel import Customer
 from app.database.models.FriendshipModel import Friendship
@@ -105,7 +104,7 @@ def update(
         friendship = session.get(Friendship, id)
         names      = _names_map([friendship], session) if friendship else {}
         return templates.TemplateResponse(request, "friendship/edit.html",
-            _ctx(request, friendship=friendship, names=names, error=human_error(e)),
+            _ctx(request, friendship=friendship, names=names, error=str(e)),
         )
 
 
@@ -120,4 +119,4 @@ def delete(id: int, session: Session = Depends(get_session)):
         return RedirectResponse("/views/friendship/?success=Amistad+eliminada", status_code=302)
     except Exception as e:
         session.rollback()
-        return RedirectResponse(f"/views/friendship/?error={human_error(e)}", status_code=302)
+        return RedirectResponse(f"/views/friendship/?error={str(e)}", status_code=302)

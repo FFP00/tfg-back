@@ -7,7 +7,6 @@ from sqlalchemy import func
 from sqlmodel import Session, col, select
 
 from app.config.database import get_session
-from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.DeveloperModel import Developer
 from app.database.models.MediaModel import Media
@@ -84,7 +83,7 @@ def store(
     except Exception as e:
         session.rollback()
         return templates.TemplateResponse(request, "title/create.html",
-            _ctx(request, error=human_error(e), developers=_developers(session),
+            _ctx(request, error=str(e), developers=_developers(session),
                  form={"name": name, "status": status == "true", "actual_discount": actual_discount,
                        "release_date": release_date, "release_price": release_price,
                        "developer_user_id": developer_user_id}),
@@ -161,7 +160,7 @@ def update(
         session.rollback()
         title = session.get(Title, id)
         return templates.TemplateResponse(request, "title/edit.html",
-            _ctx(request, title=title, error=human_error(e), developers=_developers(session),
+            _ctx(request, title=title, error=str(e), developers=_developers(session),
                  form={"name": name, "status": status == "true", "actual_discount": actual_discount,
                        "release_date": release_date, "release_price": release_price,
                        "developer_user_id": developer_user_id}),
@@ -179,4 +178,4 @@ def delete(id: int, session: Session = Depends(get_session)):
         return RedirectResponse("/views/title/?success=Título+eliminado", status_code=302)
     except Exception as e:
         session.rollback()
-        return RedirectResponse(f"/views/title/?error={human_error(e)}", status_code=302)
+        return RedirectResponse(f"/views/title/?error={str(e)}", status_code=302)

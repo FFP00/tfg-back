@@ -4,7 +4,6 @@ from sqlalchemy import func
 from sqlmodel import Session, col, select
 
 from app.config.database import get_session
-from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.CountryModel import Country
 from app.database.models.CurrencyModel import Currency
@@ -74,7 +73,7 @@ def store(
     except Exception as e:
         session.rollback()
         return templates.TemplateResponse(request, "country/create.html",
-            _ctx(request, error=human_error(e), currencies=_currencies(session),
+            _ctx(request, error=str(e), currencies=_currencies(session),
                  form={"native_name": native_name, "english_name": english_name,
                        "code": code, "currency_id": currency_id}),
         )
@@ -123,7 +122,7 @@ def update(
         session.rollback()
         country = session.get(Country, id)
         return templates.TemplateResponse(request, "country/edit.html",
-            _ctx(request, country=country, error=human_error(e), currencies=_currencies(session),
+            _ctx(request, country=country, error=str(e), currencies=_currencies(session),
                  form={"native_name": native_name, "english_name": english_name,
                        "code": code, "currency_id": currency_id}),
         )
@@ -140,4 +139,4 @@ def delete(id: int, session: Session = Depends(get_session)):
         return RedirectResponse("/views/country/?success=País+eliminado", status_code=302)
     except Exception as e:
         session.rollback()
-        return RedirectResponse(f"/views/country/?error={human_error(e)}", status_code=302)
+        return RedirectResponse(f"/views/country/?error={str(e)}", status_code=302)

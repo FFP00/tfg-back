@@ -1,0 +1,86 @@
+(BURNT) - OBJETIVOS DEL FRONTEND CON API REAL
+
+REGLAS GLOBALES
+- Auth con dos tokens separados (customer y developer, no intercambiables). Header: Authorization: Bearer <token>. Token equivocado 403, token revocado tras logout 401. Logout (POST /auth/{rol}/logout) revoca en DB.
+- Login en 2 pasos: POST /auth/{rol}/login devuelve 202 y envia codigo de 4 caracteres por email; POST /auth/{rol}/verify con {email, code} devuelve el access_token. Customer login acepta name o email; developer login solo email y solo status=true.
+- IDs publicos: siempre name/email/code, nunca id. Precios y balances son string Decimal, ej "29.99".
+- Imagenes: image/jpeg, usar como <img src>. Trailer: video/mp4 con Range, usar <video><source>.
+- Solo titulos con status=true salen en catalogo publico; solo reviews con status=true salen en respuestas publicas. GET de un titulo inactivo o inexistente devuelve 404.
+- Al arrancar precargar GET /api/genre/, GET /api/country/ y GET /api/currency/ ([{name, code, symbol}]) para selects, filtros y mostrar simbolos de moneda.
+
+VISITANTES (no autenticados)
+1. Navbar (Tienda, About us, FAQ).
+
+2. Home con titulo destacado: GET /api/title/random -> TitleCard de un titulo activo aleatorio (hero/banner rotativo). 404 si no hay titulos activos.
+
+3. Tienda por generos, grid scroll lateral, imagen = campo header:
+   - GET /api/title/?genre={nombre} por cada genero de GET /api/genre/ (genre/developer inexistente devuelve [], no 404). Tambien admite ?search= y ?developer=.
+   - Devuelve [TitleCard] = {name, release_price, actual_discount, genres:[{name}], developer_name}. release_price es el precio BASE sin descuento. Calcular precio final en frontend: release_price * (1 - actual_discount / 100).
+   - Imagen del grid: GET /api/title/{name}/media/header.
+4. Ficha de detalle: GET /api/title/{name} -> TitleShow {name, status, actual_discount, release_date, release_price, genres:[{name}], developer:DeveloperPublic|null, owner_count, created_at, updated_at}. release_price es siempre el precio BASE sin descuento (calcular precio final: release_price * (1 - actual_discount / 100)). owner_count es null en el endpoint publico. Media: capsule, header, store_1..store_6 (404 si vacio), trailer en /api/title/{name}/media/{field} (galeria de screenshots + reproductor de trailer).
+5. Detalle de la desarrolladora: ya viene en TitleShow.developer (DeveloperPublic = {name, support_email, website_url, country, created_at, updated_at}). Independiente: GET /api/developer/{name}. Imagen: GET /api/developer/{name}/image/{profile|banner}.
+6. Reviews validadas, de mas reciente a mas antigua: GET /api/title/{name}/reviews -> [ReviewShow] {content, recommends, votes, customer_name, title_name, created_at}. La API no garantiza orden: ORDENAR EN FRONTEND por created_at desc. Mostrar recommends (pulgar arriba/abajo) y votes (utilidad).
+7. Directorios y busqueda de comunidad:
+   - Customers: GET /api/customer/?search=texto -> [CustomerPublic] (filtra por name o email parcial).
+   - Developers: GET /api/developer/?search=texto -> [DeveloperPublic] (filtra por name parcial). Sirve como pagina "Desarrolladoras".
+8. Perfil publico de un customer (pagina de usuario): combinar
+   - GET /api/customer/{name} -> CustomerPublic {name, country, created_at, updated_at}.
+   - GET /api/customer/{name}/library -> [{name}] (juegos que tiene).
+   - GET /api/customer/{name}/friends -> [{name}] (amigos aceptados).
+   - GET /api/customer/{name}/reviews -> [ReviewShow] (reviews aprobadas, con title_name).
+   - Imagenes: GET /api/customer/{name}/image/{profile|banner}.
+9. Registro y login de customer:
+   - Registro: POST /auth/customer/register {name, email, password, country_code}. Password min 8, 1 mayus, 1 minus, 1 numero, 1 especial. country_code ISO alpha-2 de GET /api/country/. Resp 201. Errores 404 pais, 409 duplicado, 422 validacion.
+   - Login paso 1: POST /auth/customer/login (x-www-form-urlencoded: username=name o email, password) -> 202 + codigo por email.
+   - Login paso 2: POST /auth/customer/verify {email, code} -> 200 {access_token, token_type, customer:CustomerShow, wallet:WalletShow}. Guardar access_token.
+10. Contacto con admin via formulario: POST /api/contact/ {textarea:"..."} -> 201 {detail}. Requiere token de customer o developer (401 sin token/invalido/revocado). El remitente se identifica automaticamente por nombre y rol.
+11. FAQ / normas de uso: contenido estatico del frontend, sin endpoint.
+
+CUSTOMER (autenticado)
+1. Comprar si hay saldo (carrito multiple): POST /api/transaction/ {titles:[...]} (atomica, todo o nada) -> 201 {titles_purchased, total_spent, wallet_balance}. Permite comprar varios juegos a la vez. Errores 400 lista vacia, 402 saldo insuficiente, 404 wallet/titulo, 409 ya en biblioteca.
+2. Recargar saldo via Stripe: POST /api/stripe/checkout {amount:"20.00"} -> {checkout_url}, redirigir con window.location.href. Stripe vuelve a success_url?session_id=... Luego GET /api/stripe/success?session_id=... -> WalletShow {balance}. Errores 400/402/403/404/503. Tarjeta test 4242 4242 4242 4242, fecha futura, cualquier CVC. (Solo dev/test sin Stripe: POST /api/customer/me/deposit {amount}.)
+3. Datos privados y desactivar cuenta:
+   - Ver: GET /api/customer/me -> {access_token, token_type, customer:CustomerShow {name, email, status, country, created_at, updated_at}, wallet:WalletShow|null}. Usar tambien para refrescar sesion y mostrar el saldo en el navbar.
+   - Editar parcial: PATCH /api/customer/me {name?, email?, password?, country_code?} -> CustomerShow. Errores 404 pais, 409 duplicado, 422 password debil.
+   - Imagen de perfil y banner: PATCH /api/customer/me/image (multipart, profile y/o banner, al menos uno).
+   - Desactivar cuenta propia: DELETE /api/customer/me -> 204. Pone status=false, deja de aparecer en listados publicos y no puede hacer login hasta que el admin la reactive.
+4. Crear y gestionar reseñas de juegos comprados:
+   - Crear: POST /api/title/{name}/reviews {content, recommends} (debe poseer el juego) -> 201 ReviewShow con status=false. Errores 403 no lo tienes, 404 titulo, 409 ya tienes review.
+   - Editar propia: PATCH /api/title/{name}/reviews/me {content?, recommends?}.
+   - Votar como util la review de otro: POST /api/title/{name}/reviews/{customer_name}/vote -> {votes}. No se puede votar la propia (400).
+   - Estado pendiente/validada/rechazada: los endpoints publicos solo devuelven reviews aprobadas, no hay GET del estado de una review pendiente propia. Pendiente confirmar si se necesita un GET .../reviews/me.
+5. Amistades (sistema social):
+   - Solicitudes recibidas pendientes: GET /api/friendship/pending -> [FriendshipShow {status:"pending", from_name, created_at}].
+   - Enviar solicitud: POST /api/friendship/{name} -> 201 FriendshipShow pending. Errores 400 a si mismo, 404 usuario, 409 ya existe relacion.
+   - Aceptar (solo el receptor): PATCH /api/friendship/{name} {status:"accepted"} -> 200. Errores 403 eres el emisor, 404 no encontrada, 409 ya procesada.
+   - Rechazar / cancelar / eliminar amigo: DELETE /api/friendship/{name} -> 204 (sirve para los tres casos).
+   - Ver amigos de cualquiera: GET /api/customer/{name}/friends.
+6. Historial:
+   - Compras: GET /api/transaction/me -> [{created_at, titles:[{name, price_paid, discount_applied}]}].
+   - Reseñas publicadas: GET /api/customer/{name}/reviews -> [ReviewShow] (solo aprobadas).
+   - Movimientos de cartera: NO hay historial de wallet, solo balance actual. Las recargas no se historizan. Pendiente si se requiere detalle completo.
+7. Biblioteca personal (imagen = campo capsule, busqueda por nombre, filtro por genero):
+   - GET /api/customer/{name}/library -> [{name}] (solo nombres).
+   - Imagen: GET /api/title/{name}/media/capsule.
+   - Busqueda por nombre: filtrar en cliente o usar GET /api/title/?search=.
+   - Enriquecer con reviews: cruzar library con GET /api/customer/{name}/reviews usando title_name como clave -> cada juego obtiene su review (recommends, votes, content) o null.
+   - Filtro por genero: la biblioteca solo trae name, no trae genres. Para filtrar por genero hay que cruzar cada titulo con GET /api/title/{name} (que trae genres:[{name}]) y filtrar en cliente. Cargar GET /api/genre/ para poblar el selector.
+
+DEVELOPER (autenticado)
+1. Registro y acceso de developer:
+   - Registro: POST /auth/developer/register {name, email, support_email, password, country_code, website_url?}. Nace con status=false hasta aprobacion del admin (se le envia email). Resp 201. Errores 404 pais, 409 name/email/support_email/website_url duplicado, 422 validacion.
+   - Login: por name o email (no support_email), solo status=true (2 pasos como en reglas globales). verify devuelve {access_token, token_type, developer:DeveloperShow}.
+2. Perfil propio de la desarrolladora:
+   - Ver: GET /api/developer/me -> {..., developer:DeveloperShow {name, email, support_email, website_url, status, country, created_at, updated_at}}.
+   - Editar parcial: PATCH /api/developer/me {name?, email?, support_email?, password?, website_url?, country_code?} -> DeveloperShow. Errores 404 pais, 409 duplicados.
+   - Imagen de perfil y banner: PATCH /api/developer/me/image (multipart, profile y/o banner).
+3. Catalogo propio con activos/inactivos: GET /api/title/me -> [TitleShow] incluyendo status=false. El campo status distingue activo (aprobado) de inactivo/pendiente. release_price es el precio base SIN descuento.
+4. Publicar un titulo (alta): POST /api/title/ {name, release_date, release_price, actual_discount?} -> 201 TitleShow con status=false (requiere aprobacion del admin, se le envia email) y genres:[]. El registro de media se crea vacio automaticamente.
+5. Subir / actualizar multimedia del titulo: PATCH /api/title/{name}/media (multipart) con campos capsule, header, store_1..store_6, trailer. Al menos un campo; reemplaza solo los enviados. En el primer envio hacer obligatorios capsule, header y store_1. Errores 400 sin campos, 404 no encontrado o no eres propietario.
+6. Editar precio efectivo y generos del titulo: PATCH /api/title/{name} {actual_discount?, genres?}. genres REEMPLAZA por completo la lista (enviar [] elimina todos); usar nombres exactos de GET /api/genre/. Errores 404 titulo/no propietario, 404 genero inexistente.
+7. Metricas basicas: en GET /api/title/me cada titulo trae owner_count (numero de customers que lo tienen). Es la unica metrica disponible; otras (ventas por fecha, ingresos) no existen en la API.
+
+ADMIN (panel HTML Jinja2 en /views/)
+1. Alta/baja de customers y developers y mantener datos basicos. Los developers nacen con status=false y requieren aprobacion (email al admin al registrarse). Las rutas viven en /views/, no documentadas como API JSON. Confirmar rutas del panel.
+2. Validar o rechazar reseñas (bloque unico, todo o nada). Las reviews nacen con status=false (email al admin). Validar pasa a status=true (se publica), rechazar la oculta/elimina. Tambien en /views/, no como API JSON. Confirmar rutas.
+3. Aprobar titulos: los titulos nacen con status=false (email al admin al crearse) y no salen al catalogo hasta aprobarse. Gestion en /views/, no como API JSON.

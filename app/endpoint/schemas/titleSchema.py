@@ -30,8 +30,9 @@ class TitleShow(SQLModel):
     release_date:    date
     release_price:   Decimal
 
-    genres:          list[GenreShow]  = []
+    genres:          list[GenreShow]       = []
     developer:       DeveloperPublic | None = None
+    owner_count:     int             | None = None
     created_at:      datetime        | None = None
     updated_at:      datetime        | None = None
 

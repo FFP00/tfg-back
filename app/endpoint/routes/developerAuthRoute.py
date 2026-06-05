@@ -90,7 +90,7 @@ def register(payload: CreateValidation, session: Session = Depends(get_session))
 def login(
     form: Annotated[LoginForm, Form()], session: Session = Depends(get_session)
 ) -> OtpPending:
-    user      = session.exec(select(User).where(User.email == form.username, User.type == "DEV")).first()
+    user      = session.exec(select(User).where(or_(User.email == form.username, User.name == form.username), User.type == "DEV")).first()
     developer = session.get(Developer, user.id) if user else None
     if not user or not developer or not developer.status or not hasher.verify(form.password, user.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")

@@ -7,7 +7,6 @@ from sqlalchemy import func
 from sqlmodel import Session, col, select
 
 from app.config.database import get_session
-from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.CountryModel import Country
 from app.database.models.CustomerModel import Customer
@@ -81,7 +80,7 @@ def store(
     except Exception as e:
         session.rollback()
         return templates.TemplateResponse(request, "customer/create.html",
-            _ctx(request, error=human_error(e), countries=_countries(session),
+            _ctx(request, error=str(e), countries=_countries(session),
                  form={"name": name, "email": email, "country_id": country_id}),
         )
 
@@ -146,7 +145,7 @@ def update(
         customer = session.get(Customer, id)
         wallet   = session.get(Wallet, id)
         return templates.TemplateResponse(request, "customer/edit.html",
-            _ctx(request, customer=customer, wallet=wallet, error=human_error(e),
+            _ctx(request, customer=customer, wallet=wallet, error=str(e),
                  countries=_countries(session),
                  form={"name": name, "email": email, "country_id": country_id,
                        "status": status == "true", "balance": balance}),
@@ -168,4 +167,4 @@ def delete(id: int, session: Session = Depends(get_session)):
         return RedirectResponse("/views/customer/?success=Customer+eliminado", status_code=302)
     except Exception as e:
         session.rollback()
-        return RedirectResponse(f"/views/customer/?error={human_error(e)}", status_code=302)
+        return RedirectResponse(f"/views/customer/?error={str(e)}", status_code=302)

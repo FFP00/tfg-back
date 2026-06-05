@@ -74,11 +74,12 @@ def confirm_checkout(
     if checkout.payment_status != "paid":
         raise HTTPException(status_code=402, detail="El pago no se ha completado")
 
-    meta_uid = int(checkout.metadata.get("customer_user_id", 0))
+    metadata: dict = checkout.metadata._data if checkout.metadata else {}
+    meta_uid = int(metadata.get("customer_user_id", 0))
     if meta_uid != current.user_id:
         raise HTTPException(status_code=403, detail="Sesión de pago no pertenece a este usuario")
 
-    amount = Decimal(checkout.metadata.get("amount", "0"))
+    amount = Decimal(metadata.get("amount", "0"))
     wallet = db.get(Wallet, current.user_id)
     if not wallet:
         raise HTTPException(status_code=404, detail="Wallet no encontrada")

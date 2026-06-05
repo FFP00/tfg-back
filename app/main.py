@@ -4,6 +4,7 @@ from app.config.session import AdminSessionMiddleware
 from app.config.settings import settings
 
 # ── API routes ────────────────────────────────────────────────────────────────
+from app.endpoint.routes.contactRoute import router as contact_router
 from app.endpoint.routes.countryRoute import router as country_router
 from app.endpoint.routes.currencyRoute import router as currency_router
 
@@ -52,6 +53,7 @@ app.include_router(title_router,       prefix="/api/title",       tags=["Title"]
 app.include_router(transaction_router, prefix="/api/transaction", tags=["Transaction"])
 app.include_router(stripe_router,      prefix="/api/stripe",      tags=["Stripe"])
 app.include_router(friendship_router,  prefix="/api/friendship",  tags=["Friendship"])
+app.include_router(contact_router,     prefix="/api/contact",     tags=["Contact"])
 
 # ── Admin panel (Jinja2 views) ────────────────────────────────────────────────
 

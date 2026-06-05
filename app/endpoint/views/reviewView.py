@@ -4,7 +4,6 @@ from sqlalchemy import func
 from sqlmodel import Session, col, select
 
 from app.config.database import get_session
-from app.config.errors import human_error
 from app.config.templates import templates
 from app.database.models.CustomerModel import Customer
 from app.database.models.CustomerTitleModel import CustomerTitle
@@ -130,7 +129,7 @@ def update(
         review   = session.get(Review, id)
         enriched = _enrich([review], session) if review else [{"review": None, "title_name": "—", "customer_name": "—"}]
         return templates.TemplateResponse(request, "review/edit.html",
-            _ctx(request, review=review, row=enriched[0], error=human_error(e),
+            _ctx(request, review=review, row=enriched[0], error=str(e),
                  form={"content": content, "recommends": recommends == "true", "status": status == "true"}),
         )
 
@@ -146,4 +145,4 @@ def delete(id: int, session: Session = Depends(get_session)):
         return RedirectResponse("/views/review/?success=Review+eliminada", status_code=302)
     except Exception as e:
         session.rollback()
-        return RedirectResponse(f"/views/review/?error={human_error(e)}", status_code=302)
+        return RedirectResponse(f"/views/review/?error={str(e)}", status_code=302)
