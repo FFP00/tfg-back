@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, HTTPException
 from fastapi.responses import Response
-from redis import Redis
 from pwdlib import PasswordHash
+from redis import Redis
 from sqlmodel import Session, col, select
 
 from app.config.auth import get_current_developer, oauth2_developer

@@ -105,7 +105,10 @@ def login(
 @router.post("/verify", response_model=LoginDeveloperResponse)
 def verify(payload: OtpVerify, session: Session = Depends(get_session)) -> LoginDeveloperResponse:
     user = session.exec(
-        select(User).where(User.email == payload.email, User.type == "DEV")
+        select(User).where(
+            or_(User.email == payload.email, User.name == payload.email),
+            User.type == "DEV",
+        )
     ).first()
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")

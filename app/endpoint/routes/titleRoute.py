@@ -10,8 +10,8 @@ from sqlmodel import Session, col, select
 from app.config.auth import get_current_customer, get_current_developer
 from app.config.database import get_session
 from app.config.ffmpeg import convert_video
-from app.config.redis import get_redis
 from app.config.mail import send_admin_review_pending, send_admin_title_pending
+from app.config.redis import get_redis
 from app.database.models.CustomerModel import Customer
 from app.database.models.CustomerTitleModel import CustomerTitle
 from app.database.models.DeveloperModel import Developer
@@ -236,7 +236,7 @@ def get_media(
         if cached := redis.get(cache_key):
             return Response(content=cached, media_type="image/jpeg")
 
-    title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
+    title = session.exec(select(Title).where(Title.name == name)).first()
     if not title:
         raise HTTPException(status_code=404, detail="Título no encontrado")
     media = session.exec(select(Media).where(Media.title_id == title.id)).first()
@@ -418,6 +418,39 @@ def vote_review(
     if not review:
         raise HTTPException(status_code=404, detail="Reseña no encontrada")
     review.votes = (review.votes or 0) + 1
+    session.add(review)
+    session.commit()
+    return VoteResponse(votes=review.votes)
+
+
+@router.delete("/{name}/reviews/{customer_name}/vote", response_model=VoteResponse)
+def unvote_review(
+    name:          str,
+    customer_name: str,
+    current:       Customer = Depends(get_current_customer),
+    session:       Session  = Depends(get_session),
+) -> VoteResponse:
+    title = session.exec(select(Title).where(Title.name == name, Title.status)).first()
+    if not title:
+        raise HTTPException(status_code=404, detail="Título no encontrado")
+    author_user = session.exec(select(User).where(User.name == customer_name)).first()
+    author      = session.get(Customer, author_user.id) if author_user else None
+    if not author or not author.status:
+        raise HTTPException(status_code=404, detail="Autor de la reseña no encontrado")
+    if author.user_id == current.user_id:
+        raise HTTPException(status_code=400, detail="No puedes votar tu propia reseña")
+    ct = session.exec(
+        select(CustomerTitle).where(
+            CustomerTitle.title_id == title.id,
+            CustomerTitle.customer_user_id == author.user_id,
+        )
+    ).first()
+    if not ct:
+        raise HTTPException(status_code=404, detail="Reseña no encontrada")
+    review = session.exec(select(Review).where(Review.customer_title_id == ct.id)).first()
+    if not review:
+        raise HTTPException(status_code=404, detail="Reseña no encontrada")
+    review.votes = max(0, (review.votes or 0) - 1)
     session.add(review)
     session.commit()
     return VoteResponse(votes=review.votes)
